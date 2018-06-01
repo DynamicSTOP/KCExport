@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  kcex:
+    tty: true
+    build: .
+    env_file:
+      - .env
+    ports:
+     - "${APP_PORT}:8080"
+    image: kcex
+    volumes:
+    - "${PWD}:/app"

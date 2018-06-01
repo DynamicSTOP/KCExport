@@ -1,0 +1,9 @@
+@import "generated/ship-sprite.scss";
+@import "helpers.scss";
+
+@each $sprite in $spritesheet-sprites {
+  $sprite-name: nth($sprite, 10);
+  .#{$sprite-name} {
+    @include responsive-s-sprite($sprite);
+  }
+}
