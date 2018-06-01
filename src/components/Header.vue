@@ -3,7 +3,7 @@
         <div class="col nav align-self-start">
             <router-link class="link" :to="{name:'Home'}" tag="div">Home</router-link>
             <router-link class="link" :to="{name:'ShipList'}" tag="div">ShipList</router-link>
-            <div class="link" @click="$store.dispatch('saveLastShipList')">Save</div>
+            <div class="link" @click="$store.dispatch('saveCurrentShipList')">Save</div>
             <router-link class="link" :to="{name:'Storage'}" tag="div">Storage</router-link>
         </div>
 

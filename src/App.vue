@@ -14,7 +14,6 @@
         components: {appHeader},
         created() {
             if (this.$route.name !== "NewTab") {
-                console.log(`loading from ls`);
                 this.$store.dispatch('startup');
             }
         }

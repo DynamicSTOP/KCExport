@@ -33,7 +33,7 @@
         components: {kcShip},
         mounted(){
             if(this.$route.params && this.$route.params.raw){
-                this.$store.dispatch('updateLastShipList', dataPacker.unpackShips(this.$route.params.raw));
+                this.$store.dispatch('updateCurrentShipList', dataPacker.unpackShips(this.$route.params.raw));
                 this.$router.push({name:"ShipList"});
             }
 

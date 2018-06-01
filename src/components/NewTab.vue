@@ -14,13 +14,11 @@
         },
         methods: {
             newMessage(message) {
-                console.log(message,this);
                 try {
                     if (typeof(message.data.kc3assets) !== "undefined")
                         this.$store.dispatch('updateAssetsUrl', message.data.kc3assets);
                     if (message.data.type === "KC3_SHIPS"){
-                        console.log(`dispatching ships`);
-                        this.$store.dispatch('updateLastShipList', message.data.ships);
+                        this.$store.dispatch('updateCurrentShipList', message.data.ships);
                         this.$router.push({name:"ShipList"});
                     }
                 } catch (e) {
