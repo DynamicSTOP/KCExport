@@ -1,8 +1,8 @@
 # Kancolle Export Lists
 
-### installation
+## installation
 
-####1. Setup environment  
+###1. Setup environment  
 
 You have two variants:  
 
@@ -17,11 +17,11 @@ You have two variants:
     you will need to run those manually.
   - go to project root folder.
    
-####2. Setup modules  
+###2. Setup modules  
 
 - generally all you need to do now is run `npm install` to get node_modules
 
-####3. Update helper files  
+###3. Update helper files  
 
 This step will most likely would repeated a lot. Once new ship\remodel is added or new equip is out or stats changed etc.   
 
@@ -33,10 +33,10 @@ This step will most likely would repeated a lot. Once new ship\remodel is added 
   - if needed update lock images `src/images/locks`
   - run `yarn sprites`
   
-####4. Run local server
+###4. Run local server
 
   - run `yarn serve`
   
-####5. Deploy
+###5. Deploy
 
  - To be discussed. Probably Travis will deploy stuff from master.
