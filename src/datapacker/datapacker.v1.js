@@ -47,7 +47,7 @@ class datapacker_v1 {
         } while (input);
 
         return hash;
-    };
+    }
 
     /**
      * decodes int from base79
@@ -61,7 +61,7 @@ class datapacker_v1 {
             (carry, item) => carry * this.alphabet.length + item,
             0
         );
-    };
+    }
 
     /**
      *
@@ -120,7 +120,7 @@ class datapacker_v1 {
             str += this._to79(shipData[i]);
         }
         return str;
-    };
+    }
 
     /**
      *
@@ -176,7 +176,7 @@ class datapacker_v1 {
         arr.join("").match(/./g).map((d) => shipData.push(this._from79(d)));
 
         return shipData;
-    };
+    }
 
     /**
      *
