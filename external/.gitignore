@@ -1,0 +1,4 @@
+# this folder contains downloaded WCTF files.
+# for more info, check https://github.com/TeamFleet/WhoCallsTheFleet app-db folder
+#
+# run "yarn WCTF" to download files from github
