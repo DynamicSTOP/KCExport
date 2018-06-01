@@ -13,8 +13,10 @@
     export default {
         components: {appHeader},
         created() {
-            if (this.$route.name !== "NewTab") {
-                this.$store.dispatch('startup');
+            this.$store.dispatch('loadStored');
+            //TODO this is not the right place for it... right...
+            if (this.$route.name !== "NewTab" && this.$route.name !=="ShipListRaw" && this.$route.name !=="ShipListShort") {
+                this.$store.dispatch('loadLast');
             }
         }
     }

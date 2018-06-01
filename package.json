@@ -5,13 +5,13 @@
   "scripts": {
     "WCTF": "node scripts/WhoCallsTheFleetDb.js",
     "sprites": "node scripts/sprites.js",
-
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "vue": "^2.5.16",
+    "vue-resource": "^1.5.1",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },

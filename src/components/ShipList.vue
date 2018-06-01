@@ -36,7 +36,10 @@
                 this.$store.dispatch('updateCurrentShipList', dataPacker.unpackShips(this.$route.params.raw));
                 this.$router.push({name:"ShipList"});
             }
-
+            if(this.$route.params && this.$route.params.short){
+                this.$store.dispatch('loadShipListByLink', this.$route.params.short);
+                this.$router.push({name:"ShipList"});
+            }
         }
     }
 </script>
