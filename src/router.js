@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import ShipList from '@/components/ShipList.vue'
+import ShipListRaw from '@/components/ShipListRaw.vue'
 import NewTab from '@/components/NewTab.vue'
 import Home from '@/components/Home.vue'
 import ListStorage from '@/components/ListStorage.vue'
@@ -26,9 +27,9 @@ export default new Router({
             component: ShipList
         },
         {
-            path: '/ship-list-raw/:raw',
+            path: '/ship-list-raw/*',
             name: 'ShipListRaw',
-            component: ShipList
+            component: ShipListRaw
         },
         {
             path: '/ship-list-short/:short',

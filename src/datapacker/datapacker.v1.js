@@ -109,7 +109,7 @@ class datapacker_v1 {
          * later while unpacking we can just add missing 0 to the beginning
          */
         let canSkip = true;
-        for (let i = 4; i < 9; i++) {
+        for (let i = 5; i < 9; i++) {
             if (!canSkip || shipData[i] !== 0) {
                 canSkip = false;
                 str += this._to79(shipData[i]);
