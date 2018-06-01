@@ -1,15 +1,15 @@
 /**
  * This packer version takes Array in the following format
  * [
- *  ship_id, ship_master_id, ship_lvl, sally,
+ *  ship_id, ship_master_id, ship_lvl, sally, ex_slot_open
  *  ship_tp_left, ship_ar_left, ship_fp_left, ship_aa_left, ship_lk_left,
  *  ship_hp_mod, ship_as_mod
  * ]
- * usually tp is more common them ar -> fp -> aa -> lk
+ * usually tp is more common then ar -> fp -> aa -> lk
  * This is used in order as left points.
  * Top modded ship will get 00000 which would be omit in output.
- * in result for [1, 237, 63, 0, 0, 0, 0, 0, 47, 0, 0]
- * we will get "01300$L00" instead of "13000000$0L00"
+ * in result for [1, 237, 64, 0, 0, 0, 0, 0, 0, 47, 0, 0]
+ * we will get "01300&L00" instead of "01300&00000L00"
  *
  * it's important to note that last 2 params is mod val, which is 0 for stock ship
  */
@@ -65,8 +65,8 @@ class datapacker_v1 {
 
     /**
      *
-     * @param shipData {Array} [1, 237, 63, 0, 0, 0, 0, 0, 47, 0, 0]
-     * @returns {string} packed string like "0E2!0ygpL00" or "1j$1K03MrhEI00"
+     * @param shipData {Array} [1, 237, 64, 0, 0, 0, 0, 0, 0, 47, 0, 0]
+     * @returns {string} packed string like 01300&L00
      */
     _packShip(shipData) {
         let str, s;
@@ -75,7 +75,18 @@ class datapacker_v1 {
          */
         const packedId = this._to79(shipData[0]);
 
-        str = this._to79(shipData[3] * 5 + packedId.length - 1);
+        /**
+
+         shipData[3] * 5 + packedId.length - 1
+         we assume that we have 5 symbols at max for ship id
+         so if you try this._from79("?????") you'll get 3077056398 as max ship id
+         ? - is the last symbol in alphabet.
+
+         shipData[4] * 39
+         extra slot could be open or no. since it's "binary" state we can use closest number to half length
+         this will leave us with only 7 ship lock flags, but that should be enough. Max so far is 5 locks.
+         */
+        str = this._to79(shipData[4] * 39 + shipData[3] * 5 + packedId.length - 1);
 
         str += packedId;
 
@@ -113,14 +124,16 @@ class datapacker_v1 {
 
     /**
      *
-     * @param str {string} like "0E2!0ygpL00" or "1j$1K03MrhEI00"
-     * @returns {Array} like this [1, 237, 63, 0, 0, 0, 0, 0, 47, 0, 0]
+     * @param str {string} like 01300&L00
+     * @returns {Array} like this [1, 237, 64, 0, 0, 0, 0, 0, 0, 47, 0, 0]
      */
     _unpackShip(str) {
         let shipData = [];
         let arr = str.split(""), s="";
 
-        const combined = this._from79(arr.shift());
+        let combined = this._from79(arr.shift());
+        const extra_slot = Math.floor(combined / 39);
+        combined -= extra_slot * 39;
         const sally = Math.floor(combined / 5);
         const id_len = combined % 5 + 1;
 
@@ -147,6 +160,11 @@ class datapacker_v1 {
          * sally
          */
         shipData.push(sally);
+
+        /**
+         * extra slot open
+         */
+        shipData.push(extra_slot);
 
         /**
          * what remains is

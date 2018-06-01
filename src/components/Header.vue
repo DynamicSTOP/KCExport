@@ -1,10 +1,10 @@
 <template>
     <div class="row">
         <div class="col nav align-self-start">
-            <router-link class="link" to="/" tag="div">Home</router-link>
-            <router-link class="link" to="/ship-list" tag="div">ShipList</router-link>
-            <div class="link">Save</div>
-            <router-link class="link" to="/saved" tag="div">Storage</router-link>
+            <router-link class="link" :to="{name:'Home'}" tag="div">Home</router-link>
+            <router-link class="link" :to="{name:'ShipList'}" tag="div">ShipList</router-link>
+            <div class="link" @click="$store.dispatch('saveLastShipList')">Save</div>
+            <router-link class="link" :to="{name:'Storage'}" tag="div">Storage</router-link>
         </div>
 
     </div>

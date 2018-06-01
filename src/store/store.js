@@ -6,12 +6,16 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         lastShipList: [],
+        storedShipLists:[],
         assetsUrl: null
     },
     getters: {
         lastShipList: state => state.lastShipList,
-        shipList: state => ShipParser.parseShipsData(state.lastShipList)
+        shipList: state => ShipParser.parseShipsData(state.lastShipList),
+        storedShipLists: state => state.storedShipLists
     },
+
+    /* no async stuff allowed here*/
     mutations: {
         updateLastShipList(state, shipList) {
             if(typeof shipList === "string"){
@@ -33,19 +37,43 @@ export default new Vuex.Store({
         updateAssetsUrl(state, shipIconBaseUrl) {
             if (shipIconBaseUrl)
                 state.assetsUrl = shipIconBaseUrl;
+        },
+        updateStoredShipList(state, storedShipList){
+            state.storedShipLists = storedShipList;
+        },
+
+        saveLastShipList(state){
+            if (state.lastShipList.length === 0) return;
+            //checking existing
+            state.storedShipLists.push(state.lastShipList);
+            try{
+                localStorage.setItem('storedShipList',JSON.stringify(state.storedShipLists))
+            }catch(e){
+                console.error(e);
+            }
         }
     },
+
+    /* all async stuff goes here*/
     actions: {
         startup(context) {
             if (localStorage.getItem('lastShipList')) {
-                let lastShipList = [];
                 try {
-                    lastShipList = JSON.parse(localStorage.getItem('lastShipList'));
+                    let lastShipList = JSON.parse(localStorage.getItem('lastShipList')) || [];
                     if (lastShipList.length)
                         context.commit('updateLastShipList', lastShipList);
                 } catch (e) {
-                    return;
+                    console.error(e);
                 }
+            }
+            if (localStorage.getItem('storedShipList')) {
+                 try {
+                    let storedShipList = JSON.parse(localStorage.getItem('storedShipList')) || [];
+                    if (storedShipList.length)
+                        context.commit('updateStoredShipList', storedShipList);
+                } catch (e) {
+                     console.error(e);
+                 }
             }
         },
         updateLastShipList(context, ships) {
@@ -53,6 +81,9 @@ export default new Vuex.Store({
         },
         updateAssetsUrl(context, assetsUrl) {
             context.commit('updateAssetsUrl', assetsUrl);
+        },
+        saveLastShipList(context){
+            context.commit('saveLastShipList');
         }
     }
 })

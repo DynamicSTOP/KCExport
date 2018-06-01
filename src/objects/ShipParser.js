@@ -12,7 +12,7 @@ class ShipParser {
     makeShipsData(shipList) {
         return [].concat.apply([], shipList.map(l =>
             l.ships.map(s => [
-                s.id, s.masterId, s.lvl, s.sally,
+                s.id, s.masterId, s.lvl, s.sally, s.extraSlot ? 1 : 0,
                 s.tp[1] - s.tp[0],
                 s.ar[1] - s.ar[0],
                 s.fp[1] - s.fp[0],
@@ -36,6 +36,7 @@ class ShipParser {
                     masterId: s[1],
                     lvl: s[2],
                     sally: s[3],
+                    extraSlot: s[4] === 1,
                     // TODO shouldn't you move this into datapacker ?
                     // tp ar fp aa lk comes as remaining points
                     tp: [master.stat.torpedo_max - s[4], master.stat.torpedo_max],

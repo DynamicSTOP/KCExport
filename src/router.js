@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import ShipList from '@/components/ShipList.vue'
 import NewTab from '@/components/NewTab.vue'
 import Home from '@/components/Home.vue'
+import ListStorage from '@/components/ListStorage.vue'
 
 Vue.use(Router);
 
@@ -10,8 +11,13 @@ export default new Router({
     routes: [
         {
             path: '/',
-            name: 'home',
+            name: 'Home',
             component: Home
+        },
+        {
+            path: '/storage',
+            name: 'Storage',
+            component: ListStorage
         },
         {
             /* normal ship list from last ship list or raw*/
