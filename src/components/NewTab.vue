@@ -1,6 +1,6 @@
 <template>
     <div>
-        This page was opened to handle message Channels job.
+        This page was opened to handle message Channels job. If you still reading this text then something probably went wrong.
     </div>
 </template>
 

@@ -12,6 +12,7 @@
 </template>
 
 <script>
+    import dataPacker from '@/datapacker/datapacker.v1';
     import kcShip from '@/components/Ship.vue';
     import '@/sass/ships.scss';
     import { mapGetters } from 'vuex'
@@ -29,7 +30,14 @@
                 return this.shipList.filter((l)=>l.ships.length);
             }
         },
-        components: {kcShip}
+        components: {kcShip},
+        mounted(){
+            if(this.$route.params && this.$route.params.raw){
+                this.$store.dispatch('updateLastShipList', dataPacker.unpackShips(this.$route.params.raw));
+                this.$router.push({name:"ShipList"});
+            }
+
+        }
     }
 </script>
 

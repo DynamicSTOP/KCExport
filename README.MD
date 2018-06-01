@@ -23,7 +23,7 @@ You have two variants:
 
 ### 3. Update helper files  
 
-This step will most likely would repeated a lot. Once new ship\remodel is added or new equip is out or stats changed etc.   
+This step will most likely would be repeated a lot. Once new ship\remodel is added or new equip is out or stats changed etc.   
 
 - you will need to run script that will download [WCTF db](https://github.com/TeamFleet/WhoCallsTheFleet) files (btw spend a minute and add a star, we use it a lot after all).
   To do so run `yarn WCTF`. If you want to update existing db files you need to manually remove them from `./external` folder.
