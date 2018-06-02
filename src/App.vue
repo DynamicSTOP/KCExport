@@ -32,4 +32,9 @@
             }
         }
     }
+
+    body {
+      background-color:#293435;
+      color:#e6e6e6;
+    }
 </style>

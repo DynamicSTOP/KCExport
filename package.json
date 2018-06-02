@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "WCTF": "node scripts/WhoCallsTheFleetDb.js",
+    "KC3Avatars": "node scripts/KC3Avatars.js",
     "sprites": "node scripts/sprites.js",
     "serve": "./node_modules/\\@vue/cli-service/bin/vue-cli-service.js serve",
     "build": "./node_modules/\\@vue/cli-service/bin/vue-cli-service.js build",
@@ -11,6 +12,8 @@
   },
   "dependencies": {
     "@vue/cli": "^3.0.0-beta.15",
+    "node-sass": "^4.9.0",
+    "sass-loader": "^7.0.2",
     "vue": "^2.5.16",
     "vue-resource": "^1.5.1",
     "vue-router": "^3.0.1",
@@ -20,8 +23,6 @@
     "@vue/cli-plugin-babel": "^3.0.0-beta.11",
     "@vue/cli-plugin-eslint": "^3.0.0-beta.11",
     "@vue/cli-service": "^3.0.0-beta.15",
-    "node-sass": "^4.9.0",
-    "sass-loader": "^7.0.1",
     "spritesmith": "^3.3.0",
     "vue-template-compiler": "^2.5.16"
   },
