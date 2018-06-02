@@ -19,7 +19,7 @@ cache:
     - $HOME/.local
 
 before_install:
-  - pip install --local awscli
+  - pip install --user awscli
 
 install:
  - yarn install
