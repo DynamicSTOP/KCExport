@@ -5,9 +5,9 @@
   "scripts": {
     "WCTF": "node scripts/WhoCallsTheFleetDb.js",
     "sprites": "node scripts/sprites.js",
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "serve": "./node_modules/\\@vue/cli-service/bin/vue-cli-service.js serve",
+    "build": "./node_modules/\\@vue/cli-service/bin/vue-cli-service.js build",
+    "lint": "./node_modules/\\@vue/cli-service/bin/vue-cli-service.js lint"
   },
   "dependencies": {
     "@vue/cli": "^3.0.0-beta.15",
