@@ -39,15 +39,15 @@ class ShipParser {
                     extraSlot: s[4] === 1,
                     // TODO shouldn't you move this into datapacker ?
                     // tp ar fp aa lk comes as remaining points
-                    tp: [master.stat.torpedo_max - s[4], master.stat.torpedo_max],
-                    ar: [master.stat.armor_max - s[5], master.stat.armor_max],
-                    fp: [master.stat.fire_max - s[6], master.stat.fire_max],
-                    aa: [master.stat.aa_max - s[7], master.stat.aa_max],
-                    lk: [master.stat.luck_max - s[8], master.stat.luck_max],
+                    tp: [master.stat.torpedo_max - s[5], master.stat.torpedo_max],
+                    ar: [master.stat.armor_max - s[6], master.stat.armor_max],
+                    fp: [master.stat.fire_max - s[7], master.stat.fire_max],
+                    aa: [master.stat.aa_max - s[8], master.stat.aa_max],
+                    lk: [master.stat.luck_max - s[9], master.stat.luck_max],
                     // hp and as comes as mod value
-                    hp: [master.stat.hp + s[9], master.stat.hp_max, s[9]],
+                    hp: [master.stat.hp + s[10], master.stat.hp_max, s[10]],
                     // asw grows by itself so i am not sure if i should just subtract current from max
-                    as: [master.stat.asw + s[10], master.stat.asw_max, s[10]],
+                    as: [master.stat.asw + s[11], master.stat.asw_max, s[11]],
                     name: master.name.ja_romaji !== "" ? master.name.ja_romaji : master.name.ja_jp,
                     speed: master.speed,
                     suffix: master.name.suffix_rj || null,
