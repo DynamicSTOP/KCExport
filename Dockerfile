@@ -6,13 +6,6 @@ RUN apt-get update && apt-get install -y \
     man \
     ssh \
     optipng \
-    python \
-    python-dev \
-    python-pip \
-    python-virtualenv \
-    vim \
-    && npm install -g @vue/cli \
-    && npm install -g @vue/cli-init \
-    && npm install -g @vue/cli-service-global
+    vim
 
 WORKDIR /app
