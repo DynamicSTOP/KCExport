@@ -1,5 +1,7 @@
 # Kancolle Export Lists
 
+[![Build Status](https://travis-ci.org/DynamicSTOP/kcexport.svg?branch=master)](https://travis-ci.org/DynamicSTOP/kcexport)
+
 ## installation
 
 ### 1. Setup environment  
