@@ -18,7 +18,10 @@ addons:
     - optipng
 
 cache:
+  timeout: 2592000  # 1 week
   directories:
+    - "external"
+    - "src/images/ships"
     - "node_modules"
     - $HOME/.local
 
@@ -27,6 +30,7 @@ before_install:
 
 install:
  - yarn install
+ - yarn versionCheck
  - yarn WCTF
  - yarn KC3Avatars
  - yarn sprites
