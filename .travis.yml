@@ -8,6 +8,10 @@ env:
   global:
     - PATH=$HOME/.local/bin:$PATH
 
+branches:
+  only:
+  - master
+
 addons:
   apt:
     packages:
