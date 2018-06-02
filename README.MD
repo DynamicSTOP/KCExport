@@ -13,13 +13,11 @@ You have two variants:
 - **Native way** 
   - check Dockerfile for string like this `FROM node:8.11.2`. 
     8.11.2 here is node version that you will need. Download and install it from [nodejs.org](https://nodejs.org/en/).
-  - in same Dockerfile look for `npm install` commands like this `npm install -g @vue/cli`
-    you will need to run those manually.
   - go to project root folder.
    
 ### 2. Setup modules  
 
-- generally all you need to do now is run `npm install` to get node_modules
+- generally all you need to do now is run `yarn install` to get node_modules
 
 ### 3. Update helper files  
 
