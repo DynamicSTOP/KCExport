@@ -27,7 +27,7 @@ class DataPacker{
         const arr = shipsString.split(`;;`);
         this.getPacker(`v`+arr.shift()).unpackShips(shipsString);
     }
-};
+}
 
 const dataPacker = new DataPacker();
 export default dataPacker;
