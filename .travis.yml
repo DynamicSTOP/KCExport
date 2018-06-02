@@ -4,11 +4,22 @@ language: node_js
 node_js:
 - "8.11.2"
 
+env:
+  global:
+    - PATH=$HOME/.local/bin:$PATH
+
+addons:
+  apt:
+    packages:
+    - optipng
+
 cache:
   directories:
     - "node_modules"
+    - $HOME/.local
 
-before_install: true
+before_install:
+  - pip install --local aws-cli
 
 install:
  - yarn install
@@ -20,11 +31,8 @@ before_script: yarn lint
 
 script: yarn build
 
-deploy:
-  provider: pages
-  local-dir: dist
-  skip-cleanup: true
-  github-token: $GITHUB_TOKEN
-  #keep-history: true
-  on:
-    branch: master
+after_success:
+  - find dist -name "*.png" -exec optipng {} \;
+  - aws s3 sync ./dist/ s3://${AWS_CF_DOMAIN} --acl public-read --metadata-directive REPLACE --cache-control public,max-age=5184000 --exclude "index.html" --delete
+  - aws s3 cp ./dist/index.html s3://${AWS_CF_DOMAIN}/index.html --acl public-read --metadata-directive REPLACE --cache-control public,max-age=3600
+  - aws cloudfront create-invalidation --distribution-id=${AWS_CF_DISTRIBUTION_ID} --paths /index.html
