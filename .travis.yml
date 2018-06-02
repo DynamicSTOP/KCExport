@@ -19,7 +19,7 @@ cache:
     - $HOME/.local
 
 before_install:
-  - pip install --local aws-cli
+  - pip install --local awscli
 
 install:
  - yarn install
