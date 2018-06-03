@@ -73,9 +73,8 @@ class ShipParser {
                     // asw grows by itself so i am not sure if i should just subtract current from max
                     as: [master.stat.asw + s[11], master.stat.asw_max, s[11]],
                     name: master.name.ja_romaji !== "" ? master.name.ja_romaji : master.name.ja_jp,
-                    speed: master.speed,
                     suffix: master.name.suffix_rj || null,
-                    stype: master.type,
+                    stype: master.stype,
                     sortno: master.no
                 });
                 return true;
