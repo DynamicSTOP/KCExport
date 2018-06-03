@@ -2,7 +2,19 @@
 
 [![Build Status](https://travis-ci.org/DynamicSTOP/kcexport.svg?branch=master)](https://travis-ci.org/DynamicSTOP/kcexport)
 
-## installation
+**Website** [https://export.kc-db.info](https://export.kc-db.info). Ship list [example](https://export.kc-db.info/#/ship-list-short/6d5d085470f1)  
+
+Made for easy sharing **digital** version of ship lists. Equip lists are planned feature.
+ 
+Is actively using following projects:
+ - [KC3Kai](https://github.com/KC3Kai/KC3Kai)
+ - [WhoCallsTheFleet](https://github.com/TeamFleet/WhoCallsTheFleet)
+ 
+Frameworks and other worse mentioning links:
+ - [Vue.js](https://vuejs.org/)
+ - [Travis CI](https://travis-ci.org/)
+
+## Installation
 
 ### 1. Setup environment  
 

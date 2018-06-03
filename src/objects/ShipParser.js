@@ -10,8 +10,9 @@ class ShipParser {
     }
 
     makeShipsData(shipList) {
-        return [].concat.apply([], shipList.map(l =>
-            l.ships.map(s => [
+        return [].concat.apply([], shipList.filter((s)=>typeof s.new === "undefined")
+            //we don't have min max data on new faces stats
+            .map(l => l.ships.map(s => [
                 s.id, s.masterId, s.lvl, s.sally, s.extraSlot ? 1 : 0,
                 s.tp[1] - s.tp[0],
                 s.ar[1] - s.ar[0],
@@ -27,8 +28,31 @@ class ShipParser {
     parseShipsData(ships = []) {
         let tempShipsData = this.stype.map((t) => Object.assign({}, {name: t, ships: []}));
         ships.map((s) => {
-                const type = this.stype.indexOf(WCTFships[s[1]].api_typen);
                 const master = WCTFships[s[1]];
+                if(typeof master === "undefined"){
+                    tempShipsData[0].ships.push({
+                        id: s[0],
+                        masterId: s[1],
+                        new: true,
+                        lvl: s[2],
+                        sally: s[3],
+                        extraSlot: s[4] === 1,
+                        tp: [s[5], s[5]],
+                        ar: [s[6], s[6]],
+                        fp: [s[7], s[7]],
+                        aa: [s[8], s[8]],
+                        lk: [s[9], s[9]],
+                        hp: [s[10], s[10], s[10]],
+                        as: [s[11], s[11], s[11]],
+                        name: "New Face",
+                        speed: 5,
+                        suffix: "",
+                        stype: 0,
+                        sortno: 9999
+                    });
+                    return true;
+                }
+                const type = this.stype.indexOf(WCTFships[s[1]].api_typen);
 
                 tempShipsData[type].ships.push({
                     // WCTF: master,
@@ -49,9 +73,8 @@ class ShipParser {
                     // asw grows by itself so i am not sure if i should just subtract current from max
                     as: [master.stat.asw + s[11], master.stat.asw_max, s[11]],
                     name: master.name.ja_romaji !== "" ? master.name.ja_romaji : master.name.ja_jp,
-                    speed: master.speed,
                     suffix: master.name.suffix_rj || null,
-                    stype: master.type,
+                    stype: master.stype,
                     sortno: master.no
                 });
                 return true;

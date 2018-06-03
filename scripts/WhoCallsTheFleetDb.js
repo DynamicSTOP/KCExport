@@ -52,18 +52,44 @@ check("https://raw.githubusercontent.com/TeamFleet/WhoCallsTheFleet/master/app-d
     let obj = {};
     rawShips.split("\n").map((master)=>{
         master = JSON.parse(master);
-        master.name.ja_jp = master.name.ja_jp.split(" ").map((s)=>s.charAt(0).toUpperCase() + s.slice(1)).join(" ");
-        master.name.ja_romaji = master.name.ja_romaji.split(" ").map((s)=>s.charAt(0).toUpperCase() + s.slice(1)).join(" ");
+        let ship = {
+            id:master.id,
+            no:master.no,
+            stype:master.type,
+            name:{
+                ja_jp: master.name.ja_jp.split(" ").map((s)=>s.charAt(0).toUpperCase() + s.slice(1)).join(" ")
+            },
+            stat:{
+                fire: master.stat.fire,
+                fire_max: master.stat.fire_max,
+                torpedo: master.stat.torpedo,
+                torpedo_max: master.stat.torpedo_max,
+                aa: master.stat.aa,
+                aa_max: master.stat.aa_max,
+                asw: master.stat.asw,
+                asw_max: master.stat.asw_max,
+                hp: master.stat.hp,
+                hp_max: master.stat.hp_max,
+                armor: master.stat.armor,
+                armor_max: master.stat.armor_max,
+                luck: master.stat.luck,
+                luck_max: master.stat.luck_max
+            },
+            api_typen:stypes[`s${master.type}`].toUpperCase(),
+
+
+        };
+        if (typeof master.name.ja_romaji !== "undefined"){
+            ship.name.ja_romaji = master.name.ja_romaji.split(" ").map((s)=>s.charAt(0).toUpperCase() + s.slice(1)).join(" ");
+        }
         if(master.name.suffix!==null){
-            master.name.suffix_rj = suff[`s${master.name.suffix}`].ja_romaji.split(" ").map((s)=>s.charAt(0).toUpperCase() + s.slice(1)).join(" ");
+            ship.name.suffix_rj = suff[`s${master.name.suffix}`].ja_romaji.split(" ").map((s)=>s.charAt(0).toUpperCase() + s.slice(1)).join(" ");
         }
 
-        master.api_typen=stypes[`s${master.type}`].toUpperCase();
-        obj[master.id]=master;
+        obj[ship.id]=ship;
     });
 
-
-    let str = "const ships="+JSON.stringify(obj)+";\n";
+    let str = "const ships="+JSON.stringify(obj,false," ")+";\n";
     str+="export default ships;";
 
     fs.writeFileSync(__dirname + '/../src/generated/ships.js',str,{encoding:'utf8'});
