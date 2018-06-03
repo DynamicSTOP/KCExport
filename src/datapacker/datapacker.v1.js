@@ -1,17 +1,16 @@
 /**
  * This packer version takes Array in the following format
  * [
- *  ship_id, ship_master_id, ship_lvl, sally, ex_slot_open
- *  ship_tp_left, ship_ar_left, ship_fp_left, ship_aa_left, ship_lk_left,
- *  ship_hp_mod, ship_as_mod
+ *  ship_id, ship_master_id, ship_lvl, sally, ex_slot_open,
+ *  ship_as_mod, ship_aa,
+ *  ship_tp, ship_ar, ship_fp, ship_lk, ship_hp
  * ]
- * usually tp is more common then ar -> fp -> aa -> lk
- * This is used in order as left points.
- * Top modded ship will get 00000 which would be omit in output.
- * in result for [1, 237, 64, 0, 0, 0, 0, 0, 0, 47, 0, 0]
- * we will get "01300&L00" instead of "01300&00000L00"
+ * asw and aa can be 0 so we can skip it sometimes
  *
- * it's important to note that last 2 params is mod val, which is 0 for stock ship
+ * in result for [21367, 120, 1, 0, 0, 0, 18, 40, 18, 30, 5, 40]
+ * we will get "23xB1F010i0E0i0u050E"
+ *
+ * note: in case of any "major" changes aws lambda might need to be updated too
  */
 class datapacker_v1 {
     constructor() {
@@ -65,8 +64,8 @@ class datapacker_v1 {
 
     /**
      *
-     * @param shipData {Array} [1, 237, 64, 0, 0, 0, 0, 0, 0, 47, 0, 0]
-     * @returns {string} packed string like 01300&L00
+     * @param shipData {Array} [12249, 392, 93, 0, 0, 0, 78, 96, 0, 96, 24, 89]
+     * @returns {string} packed string like "21@44@1e0?1h001h0o1a"
      */
     _packShip(shipData) {
         let str, s;
@@ -109,23 +108,21 @@ class datapacker_v1 {
          * later while unpacking we can just add missing 0 to the beginning
          */
         let canSkip = true;
-        for (let i = 5; i < 9; i++) {
+        for (let i = 5; i < shipData.length; i++) {
             if (!canSkip || shipData[i] !== 0) {
                 canSkip = false;
-                str += this._to79(shipData[i]);
+                s = this._to79(shipData[i]);
+                if (s.length === 1) s = `0${s}`;
+                str += s;
             }
-        }
-
-        for (let i = 9; i < shipData.length; i++) {
-            str += this._to79(shipData[i]);
         }
         return str;
     }
 
     /**
      *
-     * @param str {string} like 01300&L00
-     * @returns {Array} like this [1, 237, 64, 0, 0, 0, 0, 0, 0, 47, 0, 0]
+     * @param str {string} like "21@44@1e0?1h001h0o1a"
+     * @returns {Array} like this [12249, 392, 93, 0, 0, 0, 78, 96, 0, 96, 24, 89]
      */
     _unpackShip(str) {
         let shipData = [];
@@ -168,12 +165,12 @@ class datapacker_v1 {
 
         /**
          * what remains is
-         * ["tp", "ar", "fp", "aa", "lk", "hp", "as"]
+         * ["as", "aa", "tp", "ar", "fp", "aa", "lk", "hp"]
          * but since capped is dropped we need to read them.
          */
-        arr.splice(0, 0, ...new Array(7 - arr.length).fill("0"));
+        arr.splice(0, 0, ...new Array(14 - arr.length).fill("0"));
 
-        arr.join("").match(/./g).map((d) => shipData.push(this._from79(d)));
+        arr.join("").match(/.{2}/g).map((d) => shipData.push(this._from79(d)));
 
         return shipData;
     }
@@ -211,7 +208,7 @@ class datapacker_v1 {
         if (testString.replace(regExp, '').length > 0)
             throw new Error(`invalid characters -> ${testString.replace(regExp, '')}`);
 
-        if (testString.length === 0 || testString.length > 7500) {//5k symbols should cover 400 ships
+        if (testString.length === 0 || testString.length > 9000) {//should cover 400 ships
             throw new Error(`invalid size -> ${testString.length}`)
         }
 
@@ -225,8 +222,8 @@ class datapacker_v1 {
             throw new Error(`incorrect packer version ${v}, should be ${this.version}`);
 
         arr[0].split(",").map((s) => {
-            if(s.length===0 || s.length>17){
-                throw new Error(`ship length problem -> ${s.length}, '${s.substr(0,20)}'`)
+            if(s.length<14 || s.length>24){
+                throw new Error(`ship length problem -> ${s.length}, '${s.substr(0,30)}'`)
             }
             return true;
         });
@@ -237,3 +234,5 @@ class datapacker_v1 {
 }
 const dp1 = new datapacker_v1();
 export default dp1;
+//aws version
+//module.exports = dp1;

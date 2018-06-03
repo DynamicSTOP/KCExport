@@ -9,17 +9,35 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
+        /**
+         * array of arrays. why ship as array? more easy to store and compare in local storage
+         * avoid using it, check getters.shipList for some nice looking data
+         */
         currentShipList: [],
+        /**
+         * check local storage
+         * it should contain Array of Objects that have
+         * - Array .ships -> as currentShipList
+         * - String .comment -> by default date of creation
+         * - String .listId -> tiny hash from remote storage
+         */
         storedShipLists: [],
-        assetsUrl: null
+        /**
+         * link to kc3 extension. reuse kc3 avatars instead of loading sprites
+         */
+        assetsUrl: false
     },
+
     getters: {
-        currentShipList: state => state.currentShipList,
-        shipList: state => ShipParser.parseShipsData(state.currentShipList),
+        shipList: state => ShipParser.buildShipObjects(state.currentShipList),
         storedShipLists: state => state.storedShipLists
     },
 
-    /* no async stuff allowed here*/
+    /**
+     *  No async stuff allowed here!
+     *  Use async methods in actions.
+     *  see https://vuex.vuejs.org/guide/actions.html
+     */
     mutations: {
         updateCurrentShipList(state, shipList) {
             // in case it wasn't parsed
@@ -38,6 +56,12 @@ export default new Vuex.Store({
             } catch (e) {
                 console.error(e);
             }
+        },
+        updateCurrentShipListFromObject(state, ships){
+            if(typeof ships === "string"){
+                ships = JSON.parse(ships);
+            }
+            state.currentShipList = ShipParser.makeShipsArrays(ships);
         },
         updateAssetsUrl(state, shipIconBaseUrl) {
             if (shipIconBaseUrl)
@@ -79,7 +103,7 @@ export default new Vuex.Store({
             }
             if (newIndex === -1) return;//TODO list was removed, what to do? i dunno
 
-            state.storedShipLists[update.index].listId = update.listId;
+            state.storedShipLists[newIndex].listId = update.listId;
             try {
                 localStorage.setItem('storedShipList', JSON.stringify(state.storedShipLists))
             } catch (e) {
@@ -96,7 +120,10 @@ export default new Vuex.Store({
         }
     },
 
-    /* all async stuff goes here*/
+    /**
+     *  place for async stuff (http requests \ timers etc)
+     *  consider using actions instead of mutations outside of storage
+     */
     actions: {
         loadLast(context) {
             if (localStorage.getItem('currentShipList')) {
@@ -122,6 +149,11 @@ export default new Vuex.Store({
         },
         updateCurrentShipList(context, ships) {
             context.commit('updateCurrentShipList', ships);
+        },
+        updateCurrentShipListFromObject(context, ships){
+            // don't confuse people by previous state
+            context.commit('clearCurrentShipList');
+            context.commit('updateCurrentShipListFromObject', ships);
         },
         updateAssetsUrl(context, assetsUrl) {
             context.commit('updateAssetsUrl', assetsUrl);

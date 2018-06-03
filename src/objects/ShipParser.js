@@ -9,23 +9,24 @@ class ShipParser {
         ];
     }
 
-    makeShipsData(shipList) {
-        return [].concat.apply([], shipList.filter((s)=>typeof s.new === "undefined")
-            //we don't have min max data on new faces stats
-            .map(l => l.ships.map(s => [
-                s.id, s.masterId, s.lvl, s.sally, s.extraSlot ? 1 : 0,
-                s.tp[1] - s.tp[0],
-                s.ar[1] - s.ar[0],
-                s.fp[1] - s.fp[0],
-                s.aa[1] - s.aa[0],
-                s.lk[1] - s.lk[0],
-                s.hp[2],
-                s.as[2]
-            ])
-        )).sort((a, b) => a[0] - b[0]);
+    makeShipsArrays(shipObjects){
+        return shipObjects.map((s)=>[
+            s.id,
+            s.masterId,
+            s.level,
+            s.sally,
+            s.extra_slot,
+            s.as,
+            s.aa,
+            s.fp,
+            s.tp,
+            s.ar,
+            s.lk,
+            s.hp
+        ]);
     }
 
-    parseShipsData(ships = []) {
+    buildShipObjects(ships = []) {
         let tempShipsData = this.stype.map((t) => Object.assign({}, {name: t, ships: []}));
         ships.map((s) => {
                 const master = WCTFships[s[1]];
@@ -37,13 +38,13 @@ class ShipParser {
                         lvl: s[2],
                         sally: s[3],
                         extraSlot: s[4] === 1,
-                        tp: [s[5], s[5]],
-                        ar: [s[6], s[6]],
-                        fp: [s[7], s[7]],
-                        aa: [s[8], s[8]],
-                        lk: [s[9], s[9]],
-                        hp: [s[10], s[10], s[10]],
-                        as: [s[11], s[11], s[11]],
+                        aa: [s[6], s[6]],
+                        tp: [s[7], s[7]],
+                        ar: [s[8], s[8]],
+                        fp: [s[9], s[9]],
+                        lk: [s[10], s[10]],
+                        hp: [s[11], s[11], s[11]],
+                        as: [s[5], s[5], s[5]],
                         name: "New Face",
                         speed: 5,
                         suffix: "",
@@ -61,17 +62,24 @@ class ShipParser {
                     lvl: s[2],
                     sally: s[3],
                     extraSlot: s[4] === 1,
-                    // TODO shouldn't you move this into datapacker ?
-                    // tp ar fp aa lk comes as remaining points
-                    tp: [master.stat.torpedo_max - s[5], master.stat.torpedo_max],
-                    ar: [master.stat.armor_max - s[6], master.stat.armor_max],
-                    fp: [master.stat.fire_max - s[7], master.stat.fire_max],
-                    aa: [master.stat.aa_max - s[8], master.stat.aa_max],
-                    lk: [master.stat.luck_max - s[9], master.stat.luck_max],
-                    // hp and as comes as mod value
-                    hp: [master.stat.hp + s[10], master.stat.hp_max, s[10]],
-                    // asw grows by itself so i am not sure if i should just subtract current from max
-                    as: [master.stat.asw + s[11], master.stat.asw_max, s[11]],
+                    aa: s[6],
+                    aa_max: master.stat.aa_max,
+                    tp: s[7],
+                    tp_max: master.stat.torpedo_max,
+                    ar: s[8],
+                    ar_max: master.stat.armor_max,
+                    fp: s[9],
+                    fp_max: master.stat.fire_max,
+                    lk: s[10],
+                    lk_max: master.stat.luck_max,
+                    //hp
+                    hp: s[11],
+                    hp_def: master.stat.hp,
+                    hp_max: master.stat.hp_max,
+                    //asw grows with lvl, have fun detecting if it's up
+                    as: s[5],
+                    as_def:master.stat.asw,
+                    as_max:master.stat.asw_max,
                     name: master.name.ja_romaji !== "" ? master.name.ja_romaji : master.name.ja_jp,
                     suffix: master.name.suffix_rj || null,
                     stype: master.stype,

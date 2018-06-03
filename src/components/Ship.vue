@@ -30,10 +30,10 @@
                 return `ship${this.ship.masterId}`;
             },
             mainStatsMaxed(){
-                return this.ship.tp[0]===this.ship.tp[1]
-                    && this.ship.fp[0]===this.ship.fp[1]
-                    && this.ship.aa[0]===this.ship.aa[1]
-                    && this.ship.ar[0]===this.ship.ar[1];
+                return this.ship.tp===this.ship.tp_max
+                    && this.ship.fp===this.ship.fp_max
+                    && this.ship.aa===this.ship.aa_max
+                    && this.ship.ar===this.ship.ar_max;
             },
             lvlClass() {
                 if (this.ship.lvl >= 100) {
@@ -49,7 +49,7 @@
                 return `${this.ship.name} ${this.ship.suffix?this.ship.suffix:""}`.trim();
             },
             availableStats(){
-                if(this.ship.as[1]>0)
+                if(this.ship.as_max>0)
                     return ["as","lk","hp"];
                 else
                     return ["lk","hp"];
@@ -66,15 +66,15 @@
         },
         methods: {
             statTitle(name) {
-                return `${name.toUpperCase()} ${this.ship[name][0]}/${this.ship[name][1]}`;
+                return `${name.toUpperCase()} ${this.ship[name]}/${this.ship[`${name}_max`]}`;
             },
             maxed(name) {
-                return this.ship[name][0] >= this.ship[name][1] ? "max" : "";
+                return this.ship[name] >= this.ship[`${name}_max`] ? "max" : "";
             },
             generateStat(name) {
                 if(name==="lk"){
-                    if(this.ship.lk[0]>=50) return `kce-ship-${name} max`;
-                    else if (this.ship.lk[0]>=40) return `kce-ship-${name} half`;
+                    if(this.ship.lk>=50) return `kce-ship-${name} max`;
+                    else if (this.ship.lk>=40) return `kce-ship-${name} half`;
                 }
                 return `kce-ship-${name}`;
             }
