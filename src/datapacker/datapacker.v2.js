@@ -231,7 +231,7 @@ class datapacker_v2 {
         return true;
     }
 
-    _test(){
+    __test(){
         console.log(`SOME UNUSED STUFF SO FUNC WILL GROW`);
     }
 
