@@ -12,13 +12,13 @@
  *
  * note: in case of any "major" changes aws lambda might need to be updated too
  */
-class datapacker_v1 {
+class datapacker_v2 {
     constructor() {
         /**
          * will be placed in front of ship list and checked on unpackShips
          * @type {string}
          */
-        this.version = "1";
+        this.version = "2";
 
         /**
          * allowed symbols into hash
@@ -231,9 +231,13 @@ class datapacker_v1 {
         return true;
     }
 
+    _test(){
+        console.log(`SOME UNUSED STUFF SO FUNC WILL GROW`);
+    }
+
 }
-console.log('loaded packer 1');
-const dp1 = new datapacker_v1();
-export default dp1;
+console.log('loaded packer2');
+const dp2 = new datapacker_v2();
+export default dp2;
 //aws version
 //module.exports = dp1;

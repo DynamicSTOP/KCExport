@@ -1,33 +1,24 @@
-const packerV1 = resolve => {
-    require.ensure([`datapacker.v1.js`], ()=>{
-        resolve(require(`datapacker.v1.js`));
-    });
-};
-
-class DataPacker{
-    constructor(){
+class DataPacker {
+    constructor() {
         this.desiredVersion = `v1`;
-        this.packers={};
+        this.versions = {};
     }
 
-    async getPacker(version){
-        if(typeof this.packers[version]==="undefined"){
-            switch (version){
-                case `v1`: this.packers[version] = packerV1;
-            }
-        }
-        return this.packers[version];
+    async getPacker(version) {
+        console.log(`getting version ${version}`);
+        if (typeof this.versions[version] === "undefined")
+            this.versions[version] = (await import(`./datapacker.${version}.js`)).default;
+        return this.versions[version];
     }
 
-    async packShips(shipsArray){
-        this.getPacker(this.desiredVersion).packShips(shipsArray);
+    async packShips(shipsArray) {
+        return (await this.getPacker(this.desiredVersion)).packShips(shipsArray);
     }
 
-    async unpackShips(shipsString){
-        const arr = shipsString.split(`;;`);
-        this.getPacker(`v`+arr.shift()).unpackShips(shipsString);
+    async unpackShips(shipsString) {
+        return (await this.getPacker(`v` + shipsString.split(`;;`).shift())).unpackShips(shipsString);
     }
 }
-
+console.log('loaded packer');
 const dataPacker = new DataPacker();
 export default dataPacker;

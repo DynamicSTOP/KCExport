@@ -12,7 +12,7 @@
 </template>
 
 <script>
-    import dataPacker from '@/datapacker/datapacker.v1';
+    import dataPacker from '@/datapacker/datapacker';
     import kcShip from '@/components/Ship.vue';
     import '@/sass/ships.scss';
     import { mapGetters } from 'vuex'
@@ -31,9 +31,9 @@
             }
         },
         components: {kcShip},
-        mounted(){
+        async mounted(){
             if(this.$route.params && this.$route.params.raw){
-                this.$store.dispatch('updateCurrentShipList', dataPacker.unpackShips(this.$route.params.raw));
+                this.$store.dispatch('updateCurrentShipList', await dataPacker.unpackShips(this.$route.params.raw));
                 this.$router.push({name:"ShipList"});
             }
             if(this.$route.params && this.$route.params.short){

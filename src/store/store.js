@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import ShipParser from '@/objects/ShipParser'
 import VueResource from 'vue-resource'
-import dataPacker from '@/datapacker/datapacker.v1.js'
+import dataPacker from '@/datapacker/datapacker'
 
 Vue.use(VueResource);
 Vue.use(Vuex);
@@ -171,7 +171,7 @@ export default new Vuex.Store({
             const data = await Vue.http.put(
                 "https://api.kc-db.info/v1/list/ships",
                 JSON.stringify({
-                    data: dataPacker.packShips(stored.ships)
+                    data: await dataPacker.packShips(stored.ships)
                 }), {
                     headers: {
                         Accept: 'application/json',
@@ -202,7 +202,7 @@ export default new Vuex.Store({
             if (typeof answer.data !== "undefined" && answer.data.length > 0) {
                 let ships = [];
                 try {
-                    ships = dataPacker.unpackShips(answer.data);
+                    ships = await dataPacker.unpackShips(answer.data);
                 } catch (e) {
                     console.error(e);
                 }
