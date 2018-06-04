@@ -232,7 +232,6 @@ class datapacker_v1 {
     }
 
 }
-console.log('loaded packer 1');
 const dp1 = new datapacker_v1();
 export default dp1;
 //aws version
