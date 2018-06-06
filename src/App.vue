@@ -1,7 +1,9 @@
 <template>
-    <div id="app">
-        <div class="container-fluid">
+    <div class="section">
+        <div class="navbar">
             <appHeader></appHeader>
+        </div>
+        <div class="container">
             <router-view/>
         </div>
     </div>
@@ -9,6 +11,8 @@
 
 <script>
     import appHeader from '@/components/Header.vue';
+    import '@/sass/main.scss';
+    import 'buefy/lib/buefy.css';
 
     export default {
         components: {appHeader},
@@ -22,19 +26,8 @@
     }
 </script>
 <style lang="scss">
-    #nav {
-        padding: 30px;
-        a {
-            font-weight: bold;
-            color: #2c3e50;
-            &.router-link-exact-active {
-                color: #42b983;
-            }
-        }
-    }
-
     body {
-      background-color:#293435;
-      color:#e6e6e6;
+        background-color:#293435;
+        color:#e6e6e6;
     }
 </style>
