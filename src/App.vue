@@ -12,7 +12,6 @@
 <script>
     import appHeader from '@/components/Header.vue';
     import '@/sass/main.scss';
-    import 'buefy/lib/buefy.css';
 
     export default {
         components: {appHeader},
