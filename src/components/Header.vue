@@ -1,55 +1,42 @@
 <template>
-    <div class="row">
-        <div class="col nav align-self-start">
-            <router-link class="link" :to="{name:'Home'}" tag="div">Home</router-link>
-            <router-link class="link" :to="{name:'ShipList'}" tag="div">ShipList</router-link>
-            <div class="link" @click="$store.dispatch('saveCurrentShipList')">Save</div>
-            <router-link class="link" :to="{name:'Storage'}" tag="div">Storage</router-link>
+    <nav class="navbar" role="navigation" aria-label="mani navigation">
+        <div class="navbar-brand">
+            <img class="app-logo" src="/site-fb-i.png">
+
+            <a role="button" class="navbar-burger" :class="{'is-active':menuShown}" @click="menuShown=!menuShown" aria-label="menu" aria-expanded="false">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
         </div>
 
-    </div>
+        <div class="navbar-menu" :class="{'is-active':menuShown}">
+            <div class="navbar-start">
+                <router-link class="navbar-item" :to="{name:'Home'}" tag="div">Home</router-link>
+                <router-link class="navbar-item" :to="{name:'ShipList'}" tag="div">ShipList</router-link>
+                <div class="navbar-item" @click="$store.dispatch('saveCurrentShipList')">Save</div>
+                <router-link class="navbar-item" :to="{name:'Storage'}" tag="div">Storage</router-link>
+            </div>
+        </div>
+
+    </nav>
 </template>
 <script>
     export default {
-
+        data(){
+            return {
+                menuShown:false
+            }
+        }
     }
 </script>
 
 <style lang="scss">
-    .nav {
-        background-image: linear-gradient(#484e55, #3a3f44 60%, #313539);
-        background-repeat: no-repeat;
-        -webkit-filter: none;
-        filter: none;
+    .app-logo{
+        width: 52px;
+        height: 52px;
     }
-
-    .link{
-        background-image: linear-gradient(#484e55, #3a3f44 60%, #313539);
-        background-repeat: no-repeat;
-        -webkit-filter: none;
-        filter: none;
-
-        display: inline-block;
-        cursor:pointer;
-        float:left;
-        padding:5px 20px;
-        font-size:20px;
-        font-weight: 600;
-        border-left:2px solid black;
-        border-bottom:2px solid black;
-        text-decoration: none;
-        color:#FFF;
-        text-shadow: 2px 2px 2px #000;
-    }
-    .link:hover,.link.router-link-exact-active{
-        background: #1f1f1f;
-    }
-    .link:first-child{
-        margin-left:20px;
-        border-bottom-left-radius:10px;
-    }
-    .link:last-child{
-        border-right:2px solid black;
-        border-bottom-right-radius:10px;
+    .navbar-item{
+        cursor: pointer;
     }
 </style>
