@@ -1,8 +1,8 @@
 #!/bin/bash
-if [ $1 -eq "production" ]; then
+if [ "$1" = "production" ]; then
     AWS_CF_DOMAIN="export.kc3.moe";
     AWS_CF_DISTRIBUTION_ID="E1YNMJPENI6H1S"
-elif [ $1 -eq "dev" ]; then
+elif [ "$1" = "dev" ]; then
     AWS_CF_DOMAIN="export.kc-db.info";
     AWS_CF_DISTRIBUTION_ID="E1HL82941ZQTFJ"
 fi
