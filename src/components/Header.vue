@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar" role="navigation" aria-label="mani navigation">
         <div class="navbar-brand">
-            <img class="app-logo" src="/site-fb-i.png">
+            <router-link class="app-logo" src="/site-fb-i.png" :to="{name:'Home'}" tag="img">Home</router-link>
 
             <a role="button" class="navbar-burger" :class="{'is-active':menuShown}" @click="menuShown=!menuShown" aria-label="menu" aria-expanded="false">
                 <span aria-hidden="true"></span>
@@ -16,6 +16,7 @@
                 <router-link class="navbar-item" :to="{name:'ShipList'}" tag="div">ShipList</router-link>
                 <div class="navbar-item" @click="$store.dispatch('saveCurrentShipList')">Save</div>
                 <router-link class="navbar-item" :to="{name:'Storage'}" tag="div">Storage</router-link>
+                <div class="navbar-item" @click="$store.dispatch('saveCurrentShipList')">Save</div>
             </div>
         </div>
 
@@ -36,7 +37,7 @@
         width: 52px;
         height: 52px;
     }
-    .navbar-item{
+    .navbar-item, .app-logo{
         cursor: pointer;
     }
 </style>

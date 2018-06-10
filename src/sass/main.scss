@@ -6,11 +6,10 @@ $gap: 0 !default;
  * all code that should change default bulma styles goes here
  */
 
-$app-bg-color: #222 !default;
-$app-text-color: findColorInvert($app-bg-color);
+$app-bg-color: #1a2627;
 
-$navbar-background-color: $app-bg-color;
-$navbar-item-color: $app-text-color !default
+$navbar-background-color: #222 !default;
+$navbar-item-color: findColorInvert(#222) !default
 
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
@@ -22,6 +21,9 @@ html {
   background-color: $app-bg-color;
 }
 
+body {
+
+}
 body {
   background-color: $app-bg-color;
   color: #e6e6e6;
@@ -35,7 +37,7 @@ body {
   min-width: calc(var(--ship-element-width) * 1.1);
 }
 
-
+$shipelement-padding:20px;
 
 .kce-list-header{
   background-color: rgba(0, 0, 0, 0.6);
@@ -51,7 +53,7 @@ body {
   border-radius: calc(var(--ship-element-height) / 10);
   line-height: var(--ship-element-height);
   max-height: var(--ship-element-height);
-  min-width: var(--ship-element-width);
+  min-width: calc(var(--ship-element-width) + #{$shipelement-padding} * 2);
 
   position: relative;
   background-image:linear-gradient(#484e55, #3a3f44 60%, #313539);
@@ -61,7 +63,7 @@ body {
 
 .kce-ship-list{
   min-height:200px;
-  padding:20px;
+  padding:$shipelement-padding;
   text-align: center;
 
   .kce-ship-element.kce-ship {
