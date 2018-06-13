@@ -1,9 +1,7 @@
 <template>
     <div class="section">
-        <div class="navbar">
-            <appHeader></appHeader>
-        </div>
-        <div class="container">
+        <appHeader></appHeader>
+        <div>
             <router-view/>
         </div>
     </div>
@@ -24,9 +22,3 @@
         }
     }
 </script>
-<style lang="scss">
-    body {
-        background-color:#293435;
-        color:#e6e6e6;
-    }
-</style>

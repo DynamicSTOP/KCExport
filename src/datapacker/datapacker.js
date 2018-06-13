@@ -5,7 +5,6 @@ class DataPacker {
     }
 
     async getPacker(version) {
-        console.log(`getting version ${version}`);
         if (typeof this.versions[version] === "undefined"){
             if(version===this.desiredVersion){
                 this.versions[version] = (await import(/* webpackChunkName: "datapacker.latest" */`./datapacker.${version}.js`)).default;
