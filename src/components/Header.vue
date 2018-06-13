@@ -16,7 +16,7 @@
                 <router-link class="navbar-item" :to="{name:'ShipList'}" tag="div">ShipList</router-link>
                 <router-link class="navbar-item" :to="{name:'Storage'}" tag="div">Storage</router-link>
                 <div class="navbar-item save" @click="$store.dispatch('saveCurrentShipList')" v-show="showSave">Save</div>
-                <div class="navbar-item saved" @click="$store.dispatch('saveCurrentShipList')" v-show="showSaved">Saved</div>
+                <div class="navbar-item saved" v-show="showSaved">Saved</div>
             </div>
         </div>
 
@@ -31,10 +31,10 @@
         },
         computed:{
             showSave(){
-                return this.$route.name==='ShipList';
+                return this.$route.name === 'ShipList' && !this.$store.getters.isCurrentStored;
             },
             showSaved(){
-                return this.$route.name==='ShipList' && false;
+                return this.$route.name === 'ShipList' && this.$store.getters.isCurrentStored;
             }
         }
     }

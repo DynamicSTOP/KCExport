@@ -31,7 +31,11 @@ export default new Vuex.Store({
     getters: {
         shipList: state => ShipParser.buildShipObjects(state.currentShipList),
         assetsUrl: state => state.assetsUrl,
-        storedShipLists: state => state.storedShipLists
+        storedShipLists: state => state.storedShipLists,
+        isCurrentStored: function(state){
+            const currentJSON = JSON.stringify(state.currentShipList);
+            return state.storedShipLists.filter((storedList)=>JSON.stringify(storedList.ships)===currentJSON).length > 0;
+        }
     },
 
     /**
