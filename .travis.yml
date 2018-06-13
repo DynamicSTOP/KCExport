@@ -11,6 +11,7 @@ env:
 branches:
   only:
   - master
+  - dev
 
 addons:
   apt:
@@ -18,7 +19,7 @@ addons:
     - optipng
 
 cache:
-  timeout: 2592000  # 1 week
+  timeout: 2592000  # 1 month
   directories:
     - "external"
     - "src/images/ships"
@@ -40,8 +41,14 @@ before_script: yarn lint
 script: yarn build
 
 deploy:
-  provider: script
-  skip_cleanup: true
-  script: bash scripts/deploy.sh
-  on:
-    branch: master
+  - provider: script
+    skip_cleanup: true
+    script: bash scripts/deploy.sh production
+    on:
+      branch: master
+    #
+  - provider: script
+    skip_cleanup: true
+    script: bash scripts/deploy.sh dev
+    on:
+      branch: dev
