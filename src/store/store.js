@@ -103,11 +103,14 @@ export default new Vuex.Store({
         },
         saveShipsToLocalStorage(state) {
             try {
-                const listsToStore = state.storedShipLists.slice(0).map((l) => {
-                    delete l.raw;
-                    return l;
+                const listsToStore = state.storedShipLists.map((l) => {
+                    return {
+                        comment:l.comment,
+                        listId:l.listId,
+                        ships:l.ships
+                    };
                 });
-                localStorage.setItem('storedShipList', JSON.stringify(listsToStore))
+                localStorage.setItem('storedShipList', JSON.stringify(listsToStore));
             } catch (e) {
                 console.error(e);
             }
