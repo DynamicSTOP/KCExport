@@ -14,9 +14,9 @@
             <div class="navbar-start">
                 <router-link class="navbar-item" :to="{name:'Home'}" tag="div">Home</router-link>
                 <router-link class="navbar-item" :to="{name:'ShipList'}" tag="div">ShipList</router-link>
-                <div class="navbar-item" @click="$store.dispatch('saveCurrentShipList')">Save</div>
                 <router-link class="navbar-item" :to="{name:'Storage'}" tag="div">Storage</router-link>
-                <div class="navbar-item" @click="$store.dispatch('saveCurrentShipList')">Save</div>
+                <div class="navbar-item save" @click="$store.dispatch('saveCurrentShipList')" v-show="showSave">Save</div>
+                <div class="navbar-item saved" @click="$store.dispatch('saveCurrentShipList')" v-show="showSaved">Saved</div>
             </div>
         </div>
 
@@ -27,6 +27,14 @@
         data(){
             return {
                 menuShown:false
+            }
+        },
+        computed:{
+            showSave(){
+                return this.$route.name==='ShipList';
+            },
+            showSaved(){
+                return this.$route.name==='ShipList' && false;
             }
         }
     }
@@ -39,5 +47,23 @@
     }
     .navbar-item, .app-logo{
         cursor: pointer;
+    }
+
+    .navbar-item.save{
+        background: rgba(255,255,255,0.05);
+    }
+
+    .navbar-item.saved{
+        background: rgba(0,0,0,0.2);
+        cursor:default;
+    }
+    .navbar-item.saved:hover{
+        background: rgba(0,0,0,0.2);
+        cursor:default;
+    }
+
+
+    .navbar-item:hover{
+        background: rgba(255,255,255,0.2);
     }
 </style>

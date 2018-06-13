@@ -168,6 +168,7 @@ $shipelement-padding:20px;
     .kce-ship-stats-box {
       display: inline-block;
       height: calc(var(--ship-element-height) / 2);
+      float:right;
 
       .kce-ship-hp, .kce-ship-as, .kce-ship-lk {
         content: " ";

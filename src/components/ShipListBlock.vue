@@ -1,5 +1,5 @@
 <template>
-    <div class="section">
+    <div>
         <div class="kce-list-header">{{shipsBlock.name}} - {{ shipsBlock.ships.length }}</div>
         <ul class="kce-ship-list">
             <kc-ship v-for="ship in shipsBlock.ships" :ship="ship" :key="ship.id"></kc-ship>

@@ -9,8 +9,8 @@
                     <div class="kce-ship-stats-box">
                         <div v-for="(stat) in availableStats" :class="generateStat(stat)" :title="statTitle(stat)"
                              :key="(stat)"></div>
-                        <!--<div class="kce-main-stats" :class="{maxed:mainStatsMaxed}">{{ mainStatsMaxed?"&#9733;&#9711;":"&#9734;&#11044;"}}</div>-->
                     </div>
+                    <!-- bottom line: space for bp, max stats, daihatsu icon, etc-->
                 </div>
                 <div class="kce-ship-name kce-ship-name8" :title="name">{{name}}</div>
             </div>
