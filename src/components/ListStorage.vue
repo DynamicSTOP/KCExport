@@ -8,7 +8,7 @@
         <!--</div>-->
 
         <div class="shipTable">
-            <div class="columns">
+            <div class="columns noHover">
                 <div class="column">#</div>
                 <div class="column">ship count</div>
                 <div class="column">Short link</div>
@@ -16,14 +16,14 @@
                 <div class="column">Comment</div>
                 <div class="column">Delete</div>
             </div>
-            <div class="columns" @click.once="open(i)" v-for="(list, i) in storedShipLists" :key="i">
+            <div class="columns" @click.once="open(list.ships)" v-for="(list, i) in storedShipLists" :key="i">
                 <div class="column">{{i+1}}</div>
                 <div class="column">{{list.ships.length}}</div>
                 <div class="column">
                     <div v-if="list.listId"><router-link :to="{name:'ShipListShort',params:{'short':list.listId}}">short</router-link></div>
-                    <div v-else><button @click.once="shortifyShipList(i)">make short link</button></div>
+                    <div v-else><button @click.stop.once="shortifyShipList(i)">make short link</button></div>
                 </div>
-                <div class="column">make long link (raw)</div>
+                <div class="column"><router-link :to="{path:'/ship-list-raw/'+list.raw}">Raw</router-link></div>
                 <div class="column" @click.stop="edit(i)">{{ list.comment }}</div>
                 <div class="column"><button @click.stop.once="remove(i)">delete</button></div>
             </div>
@@ -43,14 +43,15 @@
             shortifyShipList(index){
                 this.$store.dispatch('shortifyShipList', index);
             },
-            open(i){
-                console.log(`open list ${i}`);
+            open(shipList){
+                this.$store.dispatch('updateCurrentShipList', shipList);
+                this.$router.push({name:"ShipList"});
             },
             edit(i){
                 console.log(`edit comment of ${i}`);
             },
-            remove(i){
-                console.log(`removing elment ${i}`);
+            remove(index){
+                this.$store.dispatch('removeShipList', index);
             }
         }
     }
@@ -66,10 +67,14 @@
     }
 
     .shipTable{
-        cursor:pointer;
-
-        > :nth-child(2n+1){
+        > :nth-child(2n+1), > .noHover:hover{
+            cursor:default;
             background: rgba(0, 0, 0, 0.2);
+        }
+
+        > :hover{
+            cursor:pointer;
+            background: rgba(255,255,255,0.4);
         }
     }
 </style>

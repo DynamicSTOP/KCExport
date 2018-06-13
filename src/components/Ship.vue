@@ -1,23 +1,19 @@
 <template>
-    <div>
-        <li class="kce-ship-element kce-ship ">
-            <div class="kce-ship-icon" :class="avatarClass"></div>
-            <div class="kce-ship-lock " title=""></div>
-            <div class="kce-ship-details">
-                <div class="kce-ship-top-line">
-                    <div class="kce-ship-level" :class="lvlClass">LVL {{ship.lvl}}</div>
-                    <div class="kce-ship-stats-box">
-                        <div v-for="(stat) in availableStats" :class="generateStat(stat)" :title="statTitle(stat)"
-                             :key="(stat)"></div>
-                    </div>
-                    <!-- bottom line: space for bp, max stats, daihatsu icon, etc-->
+    <li class="kce-ship-element kce-ship ">
+        <div class="kce-ship-icon" :class="avatarClass"></div>
+        <div class="kce-ship-lock " title=""></div>
+        <div class="kce-ship-details">
+            <div class="kce-ship-top-line">
+                <div class="kce-ship-level" :class="lvlClass">LVL {{ship.lvl}}</div>
+                <div class="kce-ship-stats-box">
+                    <div v-for="(stat) in availableStats" :class="generateStat(stat)" :title="statTitle(stat)"
+                         :key="(stat)"></div>
                 </div>
-                <div class="kce-ship-name kce-ship-name8" :title="name">{{name}}</div>
+                <!-- bottom line: space for bp, max stats, daihatsu icon, etc-->
             </div>
-        </li>
-
-    </div>
-
+            <div class="kce-ship-name kce-ship-name8" :title="name">{{name}}</div>
+        </div>
+    </li>
 </template>
 
 <script>

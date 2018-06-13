@@ -30,6 +30,7 @@ export default new Vuex.Store({
 
     getters: {
         shipList: state => ShipParser.buildShipObjects(state.currentShipList),
+        assetsUrl: state => state.assetsUrl,
         storedShipLists: state => state.storedShipLists
     },
 
@@ -57,39 +58,29 @@ export default new Vuex.Store({
                 console.error(e);
             }
         },
-        updateCurrentShipListFromObject(state, ships){
-            if(typeof ships === "string"){
+        updateCurrentShipListFromObject(state, ships) {
+            if (typeof ships === "string") {
                 ships = JSON.parse(ships);
             }
             state.currentShipList = ShipParser.makeShipsArrays(ships);
         },
         updateAssetsUrl(state, shipIconBaseUrl) {
-            if (shipIconBaseUrl)
+            if (shipIconBaseUrl) {
                 state.assetsUrl = shipIconBaseUrl;
+                try {
+                    localStorage.setItem('assetsUrl', shipIconBaseUrl);
+                } catch (e) {
+                    console.error(e);
+                }
+            }
         },
+
         updateStoredShipList(state, storedShipList) {
             state.storedShipLists = storedShipList;
         },
-        saveCurrentShipList(state) {
-            // if no ships
-            if (state.currentShipList.length === 0) return;
-
-            // if already exists
-            // wouldn't it be faster if we have some boolean showing that current was already saved?
-            let current = JSON.stringify(state.currentShipList);
-            if (state.storedShipLists.filter((stored) => current === JSON.stringify(stored.ships)).length) return;
-
-            state.storedShipLists.push({
-                ships: state.currentShipList,
-                listId: null,
-                comment: `${(new Date()).toDateString()} ${(new Date()).toLocaleTimeString()}`
-            });
-
-            try {
-                localStorage.setItem('storedShipList', JSON.stringify(state.storedShipLists))
-            } catch (e) {
-                console.error(e);
-            }
+        saveCurrentShipList(state, newList) {
+            state.storedShipLists.push(newList);
+            this.commit('saveShipsToLocalStorage');
         },
         updateShipsShortLink(state, update) {
             // object might be equal, but performing actions on it won't trigger observers
@@ -104,8 +95,15 @@ export default new Vuex.Store({
             if (newIndex === -1) return;//TODO list was removed, what to do? i dunno
 
             state.storedShipLists[newIndex].listId = update.listId;
+            this.commit('saveShipsToLocalStorage');
+        },
+        saveShipsToLocalStorage(state) {
             try {
-                localStorage.setItem('storedShipList', JSON.stringify(state.storedShipLists))
+                const listsToStore = state.storedShipLists.slice(0).map((l) => {
+                    delete l.raw;
+                    return l;
+                });
+                localStorage.setItem('storedShipList', JSON.stringify(listsToStore))
             } catch (e) {
                 console.error(e);
             }
@@ -117,6 +115,19 @@ export default new Vuex.Store({
             } catch (e) {
                 console.error(e);
             }
+        },
+        removeShipsList(state,list){
+            let newIndex = -1;
+            for (let i = 0; i < state.storedShipLists.length; i++) {
+                if (state.storedShipLists[i] === list) {
+                    newIndex = i;
+                    break;
+                }
+            }
+            if (newIndex === -1) return;
+
+            state.storedShipLists.splice(newIndex,1);
+            this.commit('saveShipsToLocalStorage');
         }
     },
 
@@ -136,21 +147,32 @@ export default new Vuex.Store({
                 }
             }
         },
-        loadStored(context) {
+        async loadStored(context) {
             if (localStorage.getItem('storedShipList')) {
                 try {
                     let storedShipList = JSON.parse(localStorage.getItem('storedShipList')) || [];
-                    if (storedShipList.length)
+                    if (storedShipList.length) {
+                        for (let i = 0; i < storedShipList.length; i++) {
+                            storedShipList[i].raw = await dataPacker.packShips(storedShipList[i].ships);
+                        }
                         context.commit('updateStoredShipList', storedShipList);
+                    }
                 } catch (e) {
                     console.error(e);
                 }
             }
+            if (localStorage.getItem('assetsUrl')) {
+                const assetsUrl = localStorage.getItem('assetsUrl');
+                if (assetsUrl.length > 0) {
+                    context.commit('updateAssetsUrl', assetsUrl);
+                }
+            }
         },
         updateCurrentShipList(context, ships) {
+            context.commit('clearCurrentShipList');
             context.commit('updateCurrentShipList', ships);
         },
-        updateCurrentShipListFromObject(context, ships){
+        updateCurrentShipListFromObject(context, ships) {
             // don't confuse people by previous state
             context.commit('clearCurrentShipList');
             context.commit('updateCurrentShipListFromObject', ships);
@@ -158,8 +180,22 @@ export default new Vuex.Store({
         updateAssetsUrl(context, assetsUrl) {
             context.commit('updateAssetsUrl', assetsUrl);
         },
-        saveCurrentShipList(context) {
-            context.commit('saveCurrentShipList');
+        async saveCurrentShipList(context) {
+            // if no ships
+            if (context.state.currentShipList.length === 0) return;
+
+            const newList = {
+                ships: context.state.currentShipList,
+                listId: null,
+                comment: `${(new Date()).toDateString()} ${(new Date()).toLocaleTimeString()}`,
+                raw: await dataPacker.packShips(context.state.currentShipList)
+            };
+
+            // if already exists
+            // wouldn't it be faster if we have some boolean showing that current was already saved?
+            if (context.state.storedShipLists.filter((stored) => newList.raw === stored.raw).length) return;
+
+            context.commit('saveCurrentShipList', newList);
         },
         shortifyShipList: async function (context, index) {
             if (context.state.storedShipLists.length <= index || context.state.storedShipLists[index].ships.length === 0)
@@ -168,22 +204,34 @@ export default new Vuex.Store({
 
             if (stored.listId !== null) return;
 
-            const data = await Vue.http.put(
-                "https://api.kc-db.info/v1/list/ships",
-                JSON.stringify({
-                    data: await dataPacker.packShips(stored.ships)
-                }), {
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                    }
-                });
+            const dataPack = await dataPacker.packShips(stored.ships);
+            let data;
+            try {
+                data = await Vue.http.put(
+                    "https://api.kc-db.info/v1/list/ships",
+                    JSON.stringify({
+                        data: dataPack
+                    }), {
+                        headers: {
+                            Accept: 'application/json',
+                            'Content-Type': 'application/json',
+                        }
+                    });
+            } catch (e) {
+                console.error(e);
+                return alert(`Wow! That's rare!\nShortify failed. Check dev tools console for more info and contact devs!`);
+            }
             const answer = await data.json();
             if (typeof answer.listId !== "undefined" && answer.listId.length > 0) {
                 context.commit('updateShipsShortLink', {listId: answer.listId, stored});
             } else {
                 console.error(`shortify error`, answer);
             }
+        },
+        removeShipList: function (context, index) {
+            if (context.state.storedShipLists.length <= index || context.state.storedShipLists[index].ships.length === 0)
+                return;
+            context.commit('removeShipsList', context.state.storedShipLists[index]);
         },
         loadShipListByLink: async function (context, listId) {
             // don't confuse people by previous state
@@ -197,8 +245,20 @@ export default new Vuex.Store({
                 }
             }
 
-            const data = await Vue.http.get(`https://api.kc-db.info/v1/list/ships/${listId}`, {headers: {Accept: 'application/json'}});
-            const answer = await data.json();
+            let data;
+            try {
+                data = await Vue.http.get(`https://api.kc-db.info/v1/list/ships/${listId}`, {headers: {Accept: 'application/json'}});
+            } catch (e) {
+                return alert(`Wow! That's rare!\nShortlink failed. Check dev tools console for more info and contact devs!\nIn the meantime you can also ask for full link.`);
+            }
+
+            let answer;
+            try {
+                answer = await data.json();
+            } catch (e) {
+                return alert(`Looks like requested list was removed or never existed`);
+            }
+
             if (typeof answer.data !== "undefined" && answer.data.length > 0) {
                 let ships = [];
                 try {
