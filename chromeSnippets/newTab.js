@@ -87,7 +87,7 @@
 
             shipData.push(extra_slot);
 
-            arr.splice(0, 0, ...new Array(14 - arr.length).fill("0"));
+            arr.splice(0, 0, ...new Array(2*8 - arr.length).fill("0"));
 
             arr.join("").match(/.{2}/g).map((d) => shipData.push(this._from79(d)));
 
