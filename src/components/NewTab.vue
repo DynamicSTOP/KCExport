@@ -18,7 +18,7 @@
                     if (typeof(message.data.kc3assets) !== "undefined")
                         this.$store.dispatch('updateAssetsUrl', message.data.kc3assets);
                     if (message.data.type === "KC3_SHIPS"){
-                        this.$store.dispatch('updateCurrentShipListFromObject', message.data.ships);
+                        this.$store.dispatch('updateCurrentShipListFromMessageChannel', message.data.ships);
                         this.$router.push({name:"ShipList"});
                     }
                 } catch (e) {

@@ -3,7 +3,7 @@ import ShipParser from '@/objects/ShipParser'
 import dataPacker from '@/datapacker/datapacker'
 
 class ShipList {
-    constructor(options) {
+    constructor(options={}) {
         /**
          * tiny hash from remote storage
          * @type {String|null}
@@ -23,10 +23,10 @@ class ShipList {
         this.comment = options.comment || `${(new Date()).toDateString()} ${(new Date()).toLocaleTimeString()}`;
 
         /**
-         * Ships
+         * Groups of ships. DE, DD, CL, etc
          * @type {Array}
          */
-        this.ships = options.ships || [];
+        this.groups = options.groups || [];
     }
 
     stringify() {
@@ -36,10 +36,9 @@ class ShipList {
 
 const state = {
     /**
-     * array of arrays. why ship as array? more easy to store and compare in local storage
-     * avoid using it, check getters.shipList for some nice looking data
+     * ShipList object from above
      */
-    currentShipList: [],
+    currentShipList: new ShipList(),
     /**
      * Array of ShipList objects
      */
@@ -47,17 +46,19 @@ const state = {
 };
 
 const getters = {
-    //shipList: state => ShipParser.buildShipObjects(state.currentShipList),
-    shipList: state => ShipParser.buildShipObjects(state.currentShipList.ships),
+    currentshipList: state => state.currentShipList,
     storedShipLists: state => state.storedShipLists,
     isCurrentStored: function (state) {
-        const currentJSON = JSON.stringify(state.currentShipList.ships);
-        return state.storedShipLists.filter((storedList) => JSON.stringify(storedList.ships) === currentJSON).length > 0;
+        return state.storedShipLists.filter((storedList) => storedList.ships.raw === state.currentShipList.raw).length > 0;
     }
 };
 
 //async aren't allowed here
 const mutations = {
+    setCurrentShipList(state,ShipList){
+        state.currentShipList = ShipList;
+    },
+
     /**
      * from anywhere inside app. ships are already in array form
      * @param state
@@ -80,18 +81,6 @@ const mutations = {
         } catch (e) {
             console.error(e);
         }
-    },
-
-    /**
-     * this might come through "NewTab & message channels"
-     * @param state
-     * @param ships
-     */
-    updateCurrentShipListFromObject(state, ships) {
-        if (typeof ships === "string") {
-            ships = JSON.parse(ships);
-        }
-        state.currentShipList = new ShipList({ships: ShipParser.makeShipsArrays(ships)});
     },
 
     /**
@@ -193,19 +182,33 @@ const actions = {
         context.commit('clearCurrentShipList');
         context.commit('updateCurrentShipList', ships);
     },
-    updateCurrentShipListFromObject(context, ships) {
+    async updateCurrentShipListFromMessageChannel(context, ships) {
         // don't confuse people by previous state
         context.commit('clearCurrentShipList');
-        context.commit('updateCurrentShipListFromObject', ships);
-    }, async saveCurrentShipList(context) {
+        try{
+            ships = JSON.parse(ships);
+        }catch (e) {
+            return;
+        }
+        ships = ships.sort((a, b) => a.id - b.id);
+
+        const newList = {
+            groups: ShipParser.buildFromShipsObjects(ships),
+            listId: null,
+            comment: `${(new Date()).toDateString()} ${(new Date()).toLocaleTimeString()}`,
+            raw: await dataPacker.packShips(ShipParser.makeShipsArrays(ships))
+        };
+        context.commit('setCurrentShipList', newList);
+    },
+    async saveCurrentShipList(context) {
         // if no ships
         if (context.state.currentShipList.length === 0) return;
 
         const newList = {
-            ships: context.state.currentShipList,
+            groups: context.state.currentShipList.ships,
             listId: null,
             comment: `${(new Date()).toDateString()} ${(new Date()).toLocaleTimeString()}`,
-            raw: await dataPacker.packShips(context.state.currentShipList)
+            raw: await dataPacker.packShips(context.state.currentShipList.ships)
         };
 
         // if already exists
@@ -220,7 +223,7 @@ const actions = {
         const stored = context.state.storedShipLists[index];
 
         if (stored.listId !== null) return;
-
+        console.log(stored.ships);
         const dataPack = await dataPacker.packShips(stored.ships);
         let data;
         try {

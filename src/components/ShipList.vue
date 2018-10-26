@@ -1,6 +1,7 @@
 <template>
     <div class="section">
-        <kcShipListBlock :shipsBlock="shipsBlock" v-for="shipsBlock in shipListFiltred" :key="shipsBlock.name"></kcShipListBlock>
+        <kcShipListBlock :shipsBlock="shipsBlock" v-for="shipsBlock in shipListFiltred"
+                         :key="shipsBlock.name"></kcShipListBlock>
     </div>
 </template>
 
@@ -8,10 +9,10 @@
     import dataPacker from '@/datapacker/datapacker';
     import kcShipListBlock from '@/components/ShipListBlock.vue';
     import '@/sass/ships.scss';
-    import { mapGetters } from 'vuex'
+    import {mapGetters} from 'vuex'
 
     export default {
-        data(){
+        data() {
             return {
                 raw: this.$route.params.raw,
                 order: ["DE", "DD", "CL", "CLT", "CA", "CAV",
@@ -20,21 +21,25 @@
             }
         },
         name: "ShipList",
-        computed:{
-            ...mapGetters(['shipList']),
-            shipListFiltred(){
-                return this.shipList.filter((l)=>l.ships.length).sort((a,b)=>this.order.indexOf(a.name)-this.order.indexOf(b.name));
+        computed: {
+            ...mapGetters(['currentshipList']),
+            shipListFiltred() {
+                /**
+                 * TODO check initializers
+                 */
+                if(this.currentshipList.groups)
+                return this.currentshipList.groups.filter((g) => g.ships.length).sort((a, b) => this.order.indexOf(a.name) - this.order.indexOf(b.name));
             }
         },
         components: {kcShipListBlock},
-        async mounted(){
-            if(this.$route.params && this.$route.params.raw){
+        async mounted() {
+            if (this.$route.params && this.$route.params.raw) {
                 this.$store.dispatch('updateCurrentShipList', await dataPacker.unpackShips(this.$route.params.raw));
-                this.$router.push({name:"ShipList"});
+                this.$router.push({name: "ShipList"});
             }
-            if(this.$route.params && this.$route.params.short){
+            if (this.$route.params && this.$route.params.short) {
                 this.$store.dispatch('loadShipListByLink', this.$route.params.short);
-                this.$router.push({name:"ShipList"});
+                this.$router.push({name: "ShipList"});
             }
         }
     }
