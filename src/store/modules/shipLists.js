@@ -97,10 +97,9 @@ const mutations = {
      * @param state
      * @param newList
      */
-    saveCurrentShipList(state, newList) {
-        const shipsJSON = JSON.stringify(newList.ships);
-        if(state.storedShipLists.filter((storedList) => JSON.stringify(storedList.ships) === shipsJSON).length === 0){
-            state.storedShipLists.push(newList);
+    saveCurrentShipList(state) {
+        if(!getters.isCurrentStored(state)){
+            state.storedShipLists.push(state.currentShipList);
             this.commit('saveShipsToLocalStorage');
         }
     },
@@ -137,7 +136,7 @@ const mutations = {
                 return {
                     comment: l.comment,
                     listId: l.listId,
-                    ships: l.ships
+                    groups: l.groups
                 };
             });
             localStorage.setItem('storedShipList', JSON.stringify(listsToStore));
@@ -202,20 +201,11 @@ const actions = {
     },
     async saveCurrentShipList(context) {
         // if no ships
-        if (context.state.currentShipList.length === 0) return;
+        if (context.state.currentShipList.raw.length === 0) return;
+        //if already stored
+        if (getters.isCurrentStored(context.state)) return;
 
-        const newList = {
-            groups: context.state.currentShipList.ships,
-            listId: null,
-            comment: `${(new Date()).toDateString()} ${(new Date()).toLocaleTimeString()}`,
-            raw: await dataPacker.packShips(context.state.currentShipList.ships)
-        };
-
-        // if already exists
-        // wouldn't it be faster if we have some boolean showing that current was already saved?
-        if (context.state.storedShipLists.filter((stored) => newList.raw === stored.raw).length) return;
-
-        context.commit('saveCurrentShipList', newList);
+        context.commit('saveCurrentShipList');
     },
     shortifyShipList: async function (context, index) {
         if (context.state.storedShipLists.length <= index || context.state.storedShipLists[index].ships.length === 0)
