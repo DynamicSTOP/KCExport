@@ -39,6 +39,7 @@ check("https://raw.githubusercontent.com/TeamFleet/WhoCallsTheFleet/master/app-d
     });
     stypes[`s7`]="FBB";
     stypes[`s11`]="CVB";
+    stypes[`s34`]="CL";
 
     let suff={};
     const rawSuff = fs.readFileSync(__dirname + '/../external/ship_namesuffix.nedb', 'utf8');

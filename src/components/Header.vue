@@ -15,8 +15,22 @@
                 <router-link class="navbar-item" :to="{name:'Home'}" tag="div">Home</router-link>
                 <router-link class="navbar-item" :to="{name:'ShipList'}" tag="div">ShipList</router-link>
                 <router-link class="navbar-item" :to="{name:'Storage'}" tag="div">Storage</router-link>
-                <div class="navbar-item save" @click="$store.dispatch('saveCurrentShipList')" v-show="showSave">Save</div>
-                <div class="navbar-item saved" v-show="showSaved">Saved</div>
+
+                <div class="navbar-item share" title="Raw link">
+                    <img src="@/images/raw.svg">
+                </div>
+
+                <div class="navbar-item save" @click="$store.dispatch('saveCurrentShipList')" v-show="showSave" title="Save">
+                    <img src="@/images/save.svg">
+                </div>
+
+                <div class="navbar-item share" v-show="showShortify" title="Make short link">
+                    <img src="@/images/uncompressed.svg">
+                </div>
+
+                <div class="navbar-item share" v-show="showShortLink" title="Short link">
+                    <img src="@/images/compressed.svg">
+                </div>
             </div>
         </div>
 
@@ -33,8 +47,11 @@
             showSave(){
                 return this.$route.name === 'ShipList' && !this.$store.getters.isCurrentStored;
             },
-            showSaved(){
-                return this.$route.name === 'ShipList' && this.$store.getters.isCurrentStored;
+            showShortify(){
+                return this.$route.name === 'ShipList' && true;
+            },
+            showShortLink(){
+                return this.$route.name === 'ShipList' && true;
             }
         }
     }
@@ -49,21 +66,25 @@
         cursor: pointer;
     }
 
+    .navbar-item.share,.navbar-item.save,.navbar-item.saved{
+        padding:0;
+        img{
+            width:50px;
+            height:50px;
+            max-height:50px;
+        }
+    }
+
     .navbar-item.save{
-        background: rgba(255,255,255,0.05);
+        background: rgba(255,255,255,0.1);
     }
 
     .navbar-item.saved{
-        background: rgba(0,0,0,0.2);
+        background: rgba(255,255,255,0.6);
         cursor:default;
     }
-    .navbar-item.saved:hover{
-        background: rgba(0,0,0,0.2);
-        cursor:default;
-    }
-
 
     .navbar-item:hover{
-        background: rgba(255,255,255,0.2);
+        background: rgba(255,255,255,0.6);
     }
 </style>
