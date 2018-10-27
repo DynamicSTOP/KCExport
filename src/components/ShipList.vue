@@ -6,7 +6,6 @@
 </template>
 
 <script>
-    import dataPacker from '@/datapacker/datapacker';
     import kcShipListBlock from '@/components/ShipListBlock.vue';
     import '@/sass/ships.scss';
     import {mapGetters} from 'vuex'
