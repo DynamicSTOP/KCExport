@@ -39,7 +39,7 @@ class ShipParser {
         return this.arrayFromShips(([].concat(...groups.map(g => g.ships))).sort((a, b) => a.id - b.id))
     }
 
-    buildShipObjectsFromRawArray(ships = []) {
+    groupsFromRawArray(ships = []) {
         let tempShipsData = this.stype.map((t) => Object.assign({}, {name: t, ships: []}));
         ships.map((s) => {
                 const master = WCTFships[s[1]];
@@ -200,10 +200,6 @@ class ShipParser {
             }
         );
         return tempShipsData;
-    }
-
-    groupsToArray(groups = []) {
-
     }
 
     getSType() {

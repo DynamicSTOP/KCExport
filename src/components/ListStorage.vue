@@ -16,9 +16,9 @@
                 <div class="column">Comment</div>
                 <div class="column">Delete</div>
             </div>
-            <div class="columns" @click.once="open(list.ships)" v-for="(list, i) in storedShipLists" :key="i">
+            <div class="columns" @click.once="open(list)" v-for="(list, i) in storedShipLists" :key="i">
                 <div class="column">{{i+1}}</div>
-                <div class="column">{{list.ships.length}}</div>
+                <div class="column">{{list.array.length}}</div>
                 <div class="column">
                     <div v-if="list.listId"><router-link :to="{name:'ShipListShort',params:{'short':list.listId}}">short</router-link></div>
                     <div v-else><button @click.stop.once="shortifyShipList(i)">make short link</button></div>
@@ -44,7 +44,7 @@
                 this.$store.dispatch('shortifyShipList', index);
             },
             open(shipList){
-                this.$store.dispatch('updateCurrentShipList', shipList);
+                this.$store.commit('setCurrentShipList', shipList);
                 this.$router.push({name:"ShipList"});
             },
             edit(i){

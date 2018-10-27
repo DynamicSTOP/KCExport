@@ -56,8 +56,9 @@ const getters = {
 
 //async aren't allowed here
 const mutations = {
-    setCurrentShipList(state,ShipList){
-        state.currentShipList = ShipList;
+    setCurrentShipList(state,list){
+        state.currentShipList = list;
+        localStorage.setItem('kce_currentShipList', JSON.stringify(state.currentShipList));
     },
 
     /**
@@ -290,6 +291,7 @@ const actions = {
                 if (storedShipList.length) {
                     for (let i = 0; i < storedShipList.length; i++) {
                         storedShipList[i].raw = await dataPacker.packShips(storedShipList[i].array);
+                        storedShipList[i].groups = ShipParser.groupsFromRawArray(storedShipList[i].array);
                     }
                     context.commit('setStoredShipList', storedShipList);
                 }
@@ -303,8 +305,8 @@ const actions = {
         if (localStorage.getItem('kce_currentShipList')) {
             try {
                 let currentShipList = JSON.parse(localStorage.getItem('kce_currentShipList')) || [];
-                if (currentShipList.length)
-                    context.commit('updateCurrentShipList', currentShipList);
+                if (currentShipList.array && currentShipList.array.length)
+                    context.commit('setCurrentShipList', currentShipList);
             } catch (e) {
                 console.error(e);
             }
