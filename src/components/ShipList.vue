@@ -22,13 +22,13 @@
         },
         name: "ShipList",
         computed: {
-            ...mapGetters(['currentshipList']),
+            ...mapGetters(['currentShipList']),
             shipListFiltred() {
                 /**
                  * TODO check initializers
                  */
-                if(this.currentshipList.groups)
-                return this.currentshipList.groups.filter((g) => g.ships.length).sort((a, b) => this.order.indexOf(a.name) - this.order.indexOf(b.name));
+                if(this.currentShipList.groups)
+                return this.currentShipList.groups.filter((g) => g.ships.length).sort((a, b) => this.order.indexOf(a.name) - this.order.indexOf(b.name));
             }
         },
         components: {kcShipListBlock},

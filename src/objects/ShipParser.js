@@ -18,13 +18,13 @@ class ShipParser {
         ];
     }
 
-    arrayFromShips(shipObjects){
-        return shipObjects.map((s)=>[
+    arrayFromShips(shipObjects) {
+        return shipObjects.map((s) => [
             s.id,
             s.masterId,
             s.lvl,
-            s.sally?s.sally:0,
-            s.extra_slot?1:0,
+            s.sally ? s.sally : 0,
+            s.extra_slot ? 1 : 0,
             s.as,
             s.aa,
             s.fp,
@@ -35,7 +35,7 @@ class ShipParser {
         ]);
     }
 
-    arrayFromGroups(groups = []){
+    arrayFromGroups(groups = []) {
         return this.arrayFromShips(([].concat(...groups.map(g => g.ships))).sort((a, b) => a.id - b.id))
     }
 
@@ -43,7 +43,7 @@ class ShipParser {
         let tempShipsData = this.stype.map((t) => Object.assign({}, {name: t, ships: []}));
         ships.map((s) => {
                 const master = WCTFships[s[1]];
-                if(typeof master === "undefined"){
+                if (typeof master === "undefined") {
                     tempShipsData[0].ships.push({
                         id: s[0],
                         masterId: s[1],
@@ -91,8 +91,8 @@ class ShipParser {
                     hp_max: master.stat.hp_max,
                     //asw grows with lvl, have fun detecting if it's up
                     as: s[5],
-                    as_def:master.stat.asw,
-                    as_max:master.stat.asw_max,
+                    as_def: master.stat.asw,
+                    as_max: master.stat.asw_max,
                     name: master.name.ja_romaji !== "" ? master.name.ja_romaji : master.name.ja_jp,
                     suffix: master.name.suffix_rj || null,
                     stype: master.stype,
@@ -121,13 +121,11 @@ class ShipParser {
     }
 
 
-
-
     groupsFromShipsObjects(ships = []) {
         let tempShipsData = this.stype.map((t) => Object.assign({}, {name: t, ships: []}));
         ships.map((s) => {
                 const master = WCTFships[s.masterId];
-                if(typeof master === "undefined"){
+                if (typeof master === "undefined") {
                     tempShipsData[0].ships.push({
                         id: s.id,
                         masterId: s.masterId,
@@ -175,8 +173,8 @@ class ShipParser {
                     hp_max: master.stat.hp_max,
                     //asw grows with lvl, have fun detecting if it's up
                     as: s.as,
-                    as_def:master.stat.asw,
-                    as_max:master.stat.asw_max,
+                    as_def: master.stat.asw,
+                    as_max: master.stat.asw_max,
                     name: master.name.ja_romaji !== "" ? master.name.ja_romaji : master.name.ja_jp,
                     suffix: master.name.suffix_rj || null,
                     stype: master.stype,
@@ -204,11 +202,11 @@ class ShipParser {
         return tempShipsData;
     }
 
-    groupsToArray(groups=[]){
+    groupsToArray(groups = []) {
 
     }
 
-    getSType(){
+    getSType() {
         return this.stype.slice();
     }
 }

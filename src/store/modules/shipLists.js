@@ -46,10 +46,11 @@ const state = {
 };
 
 const getters = {
-    currentshipList: state => state.currentShipList,
+    currentShipList: state => state.currentShipList,
     storedShipLists: state => state.storedShipLists,
     isCurrentStored: function (state) {
-        return state.storedShipLists.filter((storedList) => storedList.ships.raw === state.currentShipList.raw).length > 0;
+        if ( typeof state.currentShipList.raw === "undefined" || state.currentShipList.raw.length === 0) return false;
+        return state.storedShipLists.filter((storedList) => storedList.raw === state.currentShipList.raw).length > 0;
     }
 };
 
@@ -88,7 +89,7 @@ const mutations = {
      * @param state
      * @param storedShipList
      */
-    updateStoredShipList(state, storedShipList) {
+    setStoredShipList(state, storedShipList) {
         state.storedShipLists = storedShipList;
     },
 
@@ -290,7 +291,7 @@ const actions = {
                     for (let i = 0; i < storedShipList.length; i++) {
                         storedShipList[i].raw = await dataPacker.packShips(ShipParser.arrayFromGroups(storedShipList[i].groups));
                     }
-                    context.commit('updateStoredShipList', storedShipList);
+                    context.commit('setStoredShipList', storedShipList);
                 }
             } catch (e) {
                 console.error(e);
