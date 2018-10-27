@@ -85,6 +85,10 @@
         background: rgb(0, 100, 0);
     }
 
+    .navbar-item.senpoi.active{
+        background: #492b5f;
+    }
+
     .navbar-item.save{
         background: rgba(255,255,255,0.1);
     }

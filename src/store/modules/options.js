@@ -11,14 +11,14 @@ const basemode = {
             hp: false
         },
     },
-    highlightMasterId:[],
-    showInHeader:true
+    highlightMasterId: [],
+    showInHeader: true
 };
 
 const state = {
-    modes:{
-        regular:{/* build from basemode */},
-        senpoi:{
+    modes: {
+        regular: {/* build from basemode */},
+        senpoi: {
             display: {
                 ship: {
                     fp: true,
@@ -30,8 +30,8 @@ const state = {
                     lk: true
                 }
             },
-            highlightMasterId:[182,187],
-            showInHeader:true
+            highlightMasterId: [182, 187],
+            showInHeader: true
         }
     },
     currentMode: "regular"
@@ -52,25 +52,33 @@ const mutations = {
         state.currentMode = state.currentMode === "regular" ? "senpoi" : "regular";
         mutations.saveOptions(state);
     },
-    saveOptions(state){
+    saveOptions(state) {
         try {
             localStorage.setItem("kce_options", JSON.stringify(state));
         } catch (e) {
             console.error(e);
         }
     },
-    loadOptions(state){
+    loadOptions(state) {
         try {
             let kce_options = JSON.parse(localStorage.getItem("kce_options"));
-            Object.assign(state,kce_options);
+            Object.assign(state, kce_options);
         } catch (e) {
             console.error(e);
         }
+    },
+    updateOptionsDisplayStat(state, {modeName, statName, value}) {
+        state.modes[modeName].display.ship[statName] = value;
+        mutations.saveOptions(state);
+    },
+    updateShipHighlight(state,{modeName, statName, value}){
+        state.modes[modeName].highlightMasterId = value;
+        mutations.saveOptions(state);
     }
 };
 
 const actions = {
-    loadOptions(context){
+    loadOptions(context) {
         context.commit('loadOptions');
     }
 };
