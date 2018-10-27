@@ -71,7 +71,7 @@ const mutations = {
         state.modes[modeName].display.ship[statName] = value;
         mutations.saveOptions(state);
     },
-    updateShipHighlight(state,{modeName, statName, value}){
+    updateShipHighlight(state,{modeName, value}){
         state.modes[modeName].highlightMasterId = value;
         mutations.saveOptions(state);
     }
