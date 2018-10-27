@@ -271,7 +271,7 @@ const actions = {
         // no need to request if you already got them
         for (let i = 0; i < context.state.storedShipLists.length; i++) {
             if (context.state.storedShipLists[i].listId === listId) {
-                context.commit('updateCurrentShipList', context.state.storedShipLists[i].ships);
+                context.commit('setCurrentShipList', context.state.storedShipLists[i]);
                 return;
             }
         }
@@ -291,14 +291,13 @@ const actions = {
         }
 
         if (typeof answer.data !== "undefined" && answer.data.length > 0) {
-            let ships = [];
             try {
-                ships = await dataPacker.unpackShips(answer.data);
+                const list = new ShipList({raw:answer.data,listId:listId});
+                await list.restoreFromRaw();
+                context.commit('setCurrentShipList', list);
             } catch (e) {
                 console.error(e);
             }
-            if (ships.length > 0)
-                context.commit('updateCurrentShipList', ships);
         }
 
     },
