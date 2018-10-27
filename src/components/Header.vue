@@ -16,12 +16,13 @@
                 <router-link class="navbar-item" :to="{name:'ShipList'}" tag="div">ShipList</router-link>
                 <router-link class="navbar-item" :to="{name:'Storage'}" tag="div">Storage</router-link>
 
-                <div class="navbar-item share" title="Raw link">
+                <div class="navbar-item share" title="Raw link" v-show="false">
                     <img src="@/images/raw.svg">
                 </div>
 
                 <div class="navbar-item save" @click="$store.dispatch('saveCurrentShipList')" v-show="showSave" title="Save">
-                    <img src="@/images/save.svg">
+                    <!--<img src="@/images/save.svg">-->
+                    Save
                 </div>
 
                 <div class="navbar-item share" v-show="showShortify" title="Make short link">
@@ -37,6 +38,8 @@
     </nav>
 </template>
 <script>
+    import {mapGetters} from 'vuex';
+
     export default {
         data(){
             return {
@@ -44,14 +47,17 @@
             }
         },
         computed:{
+            ...mapGetters(['isCurrentStored','currentShipListEmpty']),
             showSave(){
-                return this.$route.name === 'ShipList' && !this.$store.getters.isCurrentStored;
+                return this.$route.name === 'ShipList'
+                    && !this.currentShipListEmpty
+                    && !this.isCurrentStored;
             },
             showShortify(){
-                return this.$route.name === 'ShipList' && true;
+                return this.$route.name === 'ShipList' && false;
             },
             showShortLink(){
-                return this.$route.name === 'ShipList' && true;
+                return this.$route.name === 'ShipList' && false;
             }
         }
     }

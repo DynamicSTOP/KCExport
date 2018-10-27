@@ -181,6 +181,7 @@ class datapacker_v1 {
      * @returns {string}
      */
     packShips(shipsArray) {
+        shipsArray.sort((a, b) => a[0] - b[0]);
         let s = `${this.version};;`;
         s += shipsArray.map((s) => this._packShip(s)).join(`,`);
         return s;
@@ -196,7 +197,7 @@ class datapacker_v1 {
         if (v !== this.version)
             throw new Error(`Baka! This was packed with different version! ${v}. This object can parse only ${this.version}`);
 
-        return arr[0].split(",").map((s) => this._unpackShip(s));
+        return arr[0].split(",").map((s) => this._unpackShip(s)).sort((a, b) => a[0] - b[0]);
     }
 
     _test(shipsArray) {

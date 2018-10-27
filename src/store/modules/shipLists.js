@@ -27,10 +27,19 @@ class ShipList {
          * @type {Array}
          */
         this.groups = options.groups || [];
+
+        this.array = options.array || [];
+    }
+
+    async restoreFromRaw(){
+        if (this.raw && this.raw.length){
+            this.array = await dataPacker.unpackShips(this.raw);
+            this.groups = ShipParser.groupsFromRawArray(this.array);
+        }
     }
 
     stringify() {
-        return JSON.stringify({list: this.listId, raw: this.raw, ships: this.ships, comment: this.comment});
+        return JSON.stringify({list: this.listId, raw: this.raw, comment: this.comment});
     }
 }
 
@@ -47,6 +56,7 @@ const state = {
 
 const getters = {
     currentShipList: state => state.currentShipList,
+    currentShipListEmpty: state => !(state.currentShipList.raw && state.currentShipList.raw.length > 0),
     storedShipLists: state => state.storedShipLists,
     isCurrentStored: function (state) {
         if ( typeof state.currentShipList.raw === "undefined" || state.currentShipList.raw.length === 0) return false;
@@ -138,10 +148,10 @@ const mutations = {
                 return {
                     comment: l.comment,
                     listId: l.listId,
-                    array: ShipParser.arrayFromGroups(l.groups)
+                    raw: l.raw
                 };
             });
-            localStorage.setItem('kce_storedShipList', JSON.stringify(listsToStore));
+            localStorage.setItem('kce_storedShipLists', JSON.stringify(listsToStore));
         } catch (e) {
             console.error(e);
         }
@@ -193,12 +203,11 @@ const actions = {
         }
         ships = ships.sort((a, b) => a.id - b.id);
 
-        const newList = {
-            groups: ShipParser.groupsFromShipsObjects(ships),
-            listId: null,
+        const newList = new ShipList({
             comment: `${(new Date()).toDateString()} ${(new Date()).toLocaleTimeString()}`,
             raw: await dataPacker.packShips(ShipParser.arrayFromShips(ships))
-        };
+        });
+        await newList.restoreFromRaw();
         context.commit('setCurrentShipList', newList);
     },
     async saveCurrentShipList(context) {
@@ -210,13 +219,12 @@ const actions = {
         context.commit('saveCurrentShipList');
     },
     shortifyShipList: async function (context, index) {
-        if (context.state.storedShipLists.length <= index || context.state.storedShipLists[index].ships.length === 0)
+        if (context.state.storedShipLists.length <= index || context.state.storedShipLists[index].array.length === 0)
             return;
         const stored = context.state.storedShipLists[index];
 
         if (stored.listId !== null) return;
-        console.log(stored.ships);
-        const dataPack = await dataPacker.packShips(stored.ships);
+        const dataPack = await dataPacker.packShips(stored.array);
         let data;
         try {
             data = await Vue.http.put(
@@ -241,7 +249,7 @@ const actions = {
         }
     },
     removeShipList: function (context, index) {
-        if (context.state.storedShipLists.length <= index || context.state.storedShipLists[index].ships.length === 0)
+        if (context.state.storedShipLists.length <= index || context.state.storedShipLists[index].raw.length === 0)
             return;
         context.commit('removeShipsList', context.state.storedShipLists[index]);
     },
@@ -285,15 +293,17 @@ const actions = {
     },
 
     async loadFromLocalStorage(context) {
-        if (localStorage.getItem('kce_storedShipList')) {
+        if (localStorage.getItem('kce_storedShipLists')) {
             try {
-                let storedShipList = JSON.parse(localStorage.getItem('kce_storedShipList')) || [];
-                if (storedShipList.length) {
-                    for (let i = 0; i < storedShipList.length; i++) {
-                        storedShipList[i].raw = await dataPacker.packShips(storedShipList[i].array);
-                        storedShipList[i].groups = ShipParser.groupsFromRawArray(storedShipList[i].array);
+                let storedShipLists = JSON.parse(localStorage.getItem('kce_storedShipLists')) || [];
+                const shipLists = [];
+                if (storedShipLists.length) {
+                    for (let i = 0; i < storedShipLists.length; i++) {
+                        const list = new ShipList(storedShipLists[i]);
+                        await list.restoreFromRaw();
+                        shipLists.push(list);
                     }
-                    context.commit('setStoredShipList', storedShipList);
+                    context.commit('setStoredShipList', shipLists);
                 }
             } catch (e) {
                 console.error(e);
@@ -301,12 +311,15 @@ const actions = {
         }
     },
 
-    loadLastShips(context) {
+    async loadLastShips(context) {
         if (localStorage.getItem('kce_currentShipList')) {
             try {
                 let currentShipList = JSON.parse(localStorage.getItem('kce_currentShipList')) || [];
-                if (currentShipList.array && currentShipList.array.length)
-                    context.commit('setCurrentShipList', currentShipList);
+                if (currentShipList.raw && currentShipList.raw.length){
+                    const list = new ShipList(currentShipList);
+                    await list.restoreFromRaw();
+                    context.commit('setCurrentShipList', list);
+                }
             } catch (e) {
                 console.error(e);
             }
