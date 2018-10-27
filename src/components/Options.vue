@@ -1,19 +1,32 @@
 <template>
-    <div>
-        This is options page. Hello!
+    <div class="section kce-options">
+        <div class="title is-3">Welcome to options page!</div>
+        <options-block v-for="m in modes" :modeName="m" key="m"></options-block>
     </div>
 </template>
 
 <script>
+    import {mapGetters} from 'vuex';
+    import OptionsBlock from '@/components/OptionsBlock.vue';
+
     export default {
         name: "Options",
-        data(){
+        data() {
             return {}
         },
-        methods: {
-            helloWorld(){
-                console.log("hi!");
+        components: {OptionsBlock},
+        computed: {
+            ...mapGetters(['optionsModes']),
+            modes() {
+                let m = [];
+                for (let i in this.optionsModes) {
+                    if (!this.optionsModes.hasOwnProperty(i)) continue;
+                    m.push(i);
+                }
+                m.sort((a, b) => a.localeCompare(b));
+                return m;
             }
-        }
+        },
+        methods: {}
     }
 </script>
