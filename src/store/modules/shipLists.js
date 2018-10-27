@@ -192,10 +192,10 @@ const actions = {
         ships = ships.sort((a, b) => a.id - b.id);
 
         const newList = {
-            groups: ShipParser.buildFromShipsObjects(ships),
+            groups: ShipParser.groupsFromShipsObjects(ships),
             listId: null,
             comment: `${(new Date()).toDateString()} ${(new Date()).toLocaleTimeString()}`,
-            raw: await dataPacker.packShips(ShipParser.makeShipsArrays(ships))
+            raw: await dataPacker.packShips(ShipParser.arrayFromShips(ships))
         };
         context.commit('setCurrentShipList', newList);
     },
@@ -288,7 +288,7 @@ const actions = {
                 let storedShipList = JSON.parse(localStorage.getItem('storedShipList')) || [];
                 if (storedShipList.length) {
                     for (let i = 0; i < storedShipList.length; i++) {
-                        storedShipList[i].raw = await dataPacker.packShips(storedShipList[i].ships);
+                        storedShipList[i].raw = await dataPacker.packShips(ShipParser.arrayFromGroups(storedShipList[i].groups));
                     }
                     context.commit('updateStoredShipList', storedShipList);
                 }

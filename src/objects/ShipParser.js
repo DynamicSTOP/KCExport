@@ -1,5 +1,14 @@
 import WCTFships from './../generated/ships';
 
+/**
+ *
+ * Groups -> array of ships split by type
+ * Raw -> that long long share link
+ * Array -> encoded array of ships.
+ * Ships -> array of ships elements
+ *
+ */
+
 class ShipParser {
     constructor() {
         this.stype = ["", "DE", "DD", "CL", "CLT",
@@ -9,13 +18,13 @@ class ShipParser {
         ];
     }
 
-    makeShipsArrays(shipObjects){
+    arrayFromShips(shipObjects){
         return shipObjects.map((s)=>[
             s.id,
             s.masterId,
-            s.level,
-            s.sally,
-            s.extra_slot,
+            s.lvl,
+            s.sally?s.sally:0,
+            s.extra_slot?1:0,
             s.as,
             s.aa,
             s.fp,
@@ -24,6 +33,10 @@ class ShipParser {
             s.lk,
             s.hp
         ]);
+    }
+
+    arrayFromGroups(groups = []){
+        return this.arrayFromShips(([].concat(...groups.map(g => g.ships))).sort((a, b) => a.id - b.id))
     }
 
     buildShipObjectsFromRawArray(ships = []) {
@@ -107,7 +120,10 @@ class ShipParser {
         return tempShipsData;
     }
 
-    buildFromShipsObjects(ships = []) {
+
+
+
+    groupsFromShipsObjects(ships = []) {
         let tempShipsData = this.stype.map((t) => Object.assign({}, {name: t, ships: []}));
         ships.map((s) => {
                 const master = WCTFships[s.masterId];
@@ -186,6 +202,10 @@ class ShipParser {
             }
         );
         return tempShipsData;
+    }
+
+    groupsToArray(groups=[]){
+
     }
 
     getSType(){
