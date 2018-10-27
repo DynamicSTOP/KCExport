@@ -15,7 +15,7 @@ const mutations = {
         if (shipIconBaseUrl) {
             state.assetsUrl = shipIconBaseUrl;
             try {
-                localStorage.setItem('assetsUrl', shipIconBaseUrl);
+                localStorage.setItem('kce_assetsUrl', shipIconBaseUrl);
             } catch (e) {
                 console.error(e);
             }
@@ -29,8 +29,8 @@ const actions = {
     },
 
     loadStoredUrl(context){
-        if (localStorage.getItem('assetsUrl')) {
-            const assetsUrl = localStorage.getItem('assetsUrl');
+        if (localStorage.getItem('kce_assetsUrl')) {
+            const assetsUrl = localStorage.getItem('kce_assetsUrl');
             if (assetsUrl.length > 0) {
                 context.commit('updateAssetsUrl', assetsUrl);
             }

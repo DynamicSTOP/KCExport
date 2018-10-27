@@ -78,7 +78,7 @@ const mutations = {
         }
         state.currentShipList = new ShipList({ships: ships});
         try {
-            localStorage.setItem('currentShipList', JSON.stringify(state.currentShipList));
+            localStorage.setItem('kce_currentShipList', JSON.stringify(state.currentShipList));
         } catch (e) {
             console.error(e);
         }
@@ -137,10 +137,10 @@ const mutations = {
                 return {
                     comment: l.comment,
                     listId: l.listId,
-                    groups: l.groups
+                    array: ShipParser.arrayFromGroups(l.groups)
                 };
             });
-            localStorage.setItem('storedShipList', JSON.stringify(listsToStore));
+            localStorage.setItem('kce_storedShipList', JSON.stringify(listsToStore));
         } catch (e) {
             console.error(e);
         }
@@ -152,7 +152,7 @@ const mutations = {
     clearCurrentShipList(state) {
         state.currentShipList = {};
         try {
-            localStorage.removeItem('currentShipList');
+            localStorage.removeItem('kce_currentShipList');
         } catch (e) {
             console.error(e);
         }
@@ -284,12 +284,12 @@ const actions = {
     },
 
     async loadFromLocalStorage(context) {
-        if (localStorage.getItem('storedShipList')) {
+        if (localStorage.getItem('kce_storedShipList')) {
             try {
-                let storedShipList = JSON.parse(localStorage.getItem('storedShipList')) || [];
+                let storedShipList = JSON.parse(localStorage.getItem('kce_storedShipList')) || [];
                 if (storedShipList.length) {
                     for (let i = 0; i < storedShipList.length; i++) {
-                        storedShipList[i].raw = await dataPacker.packShips(ShipParser.arrayFromGroups(storedShipList[i].groups));
+                        storedShipList[i].raw = await dataPacker.packShips(storedShipList[i].array);
                     }
                     context.commit('setStoredShipList', storedShipList);
                 }
@@ -300,9 +300,9 @@ const actions = {
     },
 
     loadLastShips(context) {
-        if (localStorage.getItem('currentShipList')) {
+        if (localStorage.getItem('kce_currentShipList')) {
             try {
-                let currentShipList = JSON.parse(localStorage.getItem('currentShipList')) || [];
+                let currentShipList = JSON.parse(localStorage.getItem('kce_currentShipList')) || [];
                 if (currentShipList.length)
                     context.commit('updateCurrentShipList', currentShipList);
             } catch (e) {
