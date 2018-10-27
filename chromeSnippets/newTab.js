@@ -87,7 +87,7 @@
 
             shipData.push(extra_slot);
 
-            arr.splice(0, 0, ...new Array(2*8 - arr.length).fill("0"));
+            arr.splice(0, 0, ...new Array(2*7 - arr.length).fill("0"));
 
             arr.join("").match(/.{2}/g).map((d) => shipData.push(this._from79(d)));
 
@@ -95,6 +95,7 @@
         }
 
         packShips(shipsArray) {
+            shipsArray.sort((a, b) => a[0] - b[0]);
             let s = `${this.version};;`;
             s += shipsArray.map((s) => this._packShip(s)).join(`,`);
             return s;
@@ -106,7 +107,7 @@
             if (v !== this.version)
                 throw new Error(`Baka! This was packed with different version! ${v}. This object can parse only ${this.version}`);
 
-            return arr[0].split(",").map((s) => this._unpackShip(s));
+            return arr[0].split(",").map((s) => this._unpackShip(s)).sort((a, b) => a[0] - b[0]);
         }
 
         _test(shipsArray) {
@@ -161,17 +162,26 @@
             ship.ex_item!==0?1:0// extra slot open
         ];
 
-        shipData.push(ship.as[0]);
-        shipData.push(ship.aa[0]);
-        shipData.push(ship.fp[0]);
-        shipData.push(ship.tp[0]);
-        shipData.push(ship.ar[0]);
+        shipData.push(ship.as[0]);//5
+        shipData.push(ship.aa[0]);//6
+        shipData.push(ship.fp[0]);//7
+        shipData.push(ship.tp[0]);//8
+        shipData.push(ship.ar[0]);//9
         shipData.push(ship.lk[0]);
         shipData.push(ship.hp[0]);
 
         ships.push(shipData);
         //console.log(ship, shipData, dp._packShip(shipData));
         shipsP.push(dp._packShip(shipData));
+        // if(JSON.stringify(shipData)!==JSON.stringify(dp._unpackShip(dp._packShip(shipData)))){
+        //     console.log(JSON.stringify(shipData)!==JSON.stringify(dp._unpackShip(dp._packShip(shipData))));
+        //     console.log(shipData);
+        //     console.log(dp._unpackShip(dp._packShip(shipData)));
+        //     console.log(dp._packShip(shipData));
+        // }
+
+
+
     }
 
     if(JSON.stringify(ships)!==JSON.stringify(dp.unpackShips(dp.version+";;"+shipsP.join(","))))

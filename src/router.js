@@ -31,7 +31,7 @@ export default new Router({
             component: ShipList,
             beforeEnter(to,from,next){
                 //it's not parsing by default as expected
-                to.params.raw = decodeURIComponent(to.fullPath).replace(/\s/g,"+").substr('/ship-list-raw/'.length);
+                to.params.raw = window.location.hash.substr('#/ship-list-raw/'.length);
                 next();
             }
         },

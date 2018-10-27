@@ -34,7 +34,7 @@
         components: {kcShipListBlock},
         async mounted() {
             if (this.$route.params && this.$route.params.raw) {
-                this.$store.dispatch('updateCurrentShipList', await dataPacker.unpackShips(this.$route.params.raw));
+                this.$store.dispatch('updateCurrentShipListByRawLink', await this.$route.params.raw);
                 this.$router.push({name: "ShipList"});
             }
             if (this.$route.params && this.$route.params.short) {

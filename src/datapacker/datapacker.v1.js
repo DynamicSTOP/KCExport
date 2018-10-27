@@ -165,10 +165,10 @@ class datapacker_v1 {
 
         /**
          * what remains is
-         * ["as", "aa", "tp", "ar", "fp", "aa", "lk", "hp"]
+         * ship_as_mod, ship_aa, ship_tp, ship_ar, ship_fp, ship_lk, ship_hp
          * but since capped is dropped we need to read them.
          */
-        arr.splice(0, 0, ...new Array(2*8 - arr.length).fill("0"));
+        arr.splice(0, 0, ...new Array(2*7 - arr.length).fill("0"));
 
         arr.join("").match(/.{2}/g).map((d) => shipData.push(this._from79(d)));
 

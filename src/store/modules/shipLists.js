@@ -3,7 +3,7 @@ import ShipParser from '@/objects/ShipParser'
 import dataPacker from '@/datapacker/datapacker'
 
 class ShipList {
-    constructor(options={}) {
+    constructor(options = {}) {
         /**
          * tiny hash from remote storage
          * @type {String|null}
@@ -31,8 +31,8 @@ class ShipList {
         this.array = options.array || [];
     }
 
-    async restoreFromRaw(){
-        if (this.raw && this.raw.length){
+    async restoreFromRaw() {
+        if (this.raw && this.raw.length) {
             this.array = await dataPacker.unpackShips(this.raw);
             this.groups = ShipParser.groupsFromRawArray(this.array);
         }
@@ -59,14 +59,14 @@ const getters = {
     currentShipListEmpty: state => !(state.currentShipList.raw && state.currentShipList.raw.length > 0),
     storedShipLists: state => state.storedShipLists,
     isCurrentStored: function (state) {
-        if ( typeof state.currentShipList.raw === "undefined" || state.currentShipList.raw.length === 0) return false;
+        if (typeof state.currentShipList.raw === "undefined" || state.currentShipList.raw.length === 0) return false;
         return state.storedShipLists.filter((storedList) => storedList.raw === state.currentShipList.raw).length > 0;
     }
 };
 
 //async aren't allowed here
 const mutations = {
-    setCurrentShipList(state,list){
+    setCurrentShipList(state, list) {
         state.currentShipList = list;
         localStorage.setItem('kce_currentShipList', JSON.stringify(state.currentShipList));
     },
@@ -110,7 +110,7 @@ const mutations = {
      * @param newList
      */
     saveCurrentShipList(state) {
-        if(!getters.isCurrentStored(state)){
+        if (!getters.isCurrentStored(state)) {
             state.storedShipLists.push(state.currentShipList);
             this.commit('saveShipsToLocalStorage');
         }
@@ -193,12 +193,23 @@ const actions = {
         context.commit('clearCurrentShipList');
         context.commit('updateCurrentShipList', ships);
     },
+    async updateCurrentShipListByRawLink(context, raw) {
+        context.commit('clearCurrentShipList');
+        let stored = getters.storedShipLists(context.state);
+        let instore = stored.filter(s => s.raw === raw);
+        if (instore.length > 0) {
+            return context.commit('setCurrentShipList', instore[0]);
+        }
+        let list = new ShipList({raw: raw});
+        await list.restoreFromRaw();
+        return context.commit('setCurrentShipList', list);
+    },
     async updateCurrentShipListFromMessageChannel(context, ships) {
         // don't confuse people by previous state
         context.commit('clearCurrentShipList');
-        try{
+        try {
             ships = JSON.parse(ships);
-        }catch (e) {
+        } catch (e) {
             return;
         }
         ships = ships.sort((a, b) => a.id - b.id);
@@ -315,7 +326,7 @@ const actions = {
         if (localStorage.getItem('kce_currentShipList')) {
             try {
                 let currentShipList = JSON.parse(localStorage.getItem('kce_currentShipList')) || [];
-                if (currentShipList.raw && currentShipList.raw.length){
+                if (currentShipList.raw && currentShipList.raw.length) {
                     const list = new ShipList(currentShipList);
                     await list.restoreFromRaw();
                     context.commit('setCurrentShipList', list);
