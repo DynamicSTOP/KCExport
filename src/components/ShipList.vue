@@ -1,5 +1,5 @@
 <template>
-    <div class="section">
+    <div class="section" :class="{smallBlocks:smallBlocks}">
         <kcShipListBlock :shipsBlock="shipsBlock" v-for="shipsBlock in shipListFiltred"
                          :key="shipsBlock.name"></kcShipListBlock>
     </div>
@@ -21,13 +21,19 @@
         },
         name: "ShipList",
         computed: {
-            ...mapGetters(['currentShipList']),
+            ...mapGetters(['currentShipList','optionsShip']),
             shipListFiltred() {
                 /**
                  * TODO check initializers
                  */
                 if(this.currentShipList.groups)
                 return this.currentShipList.groups.filter((g) => g.ships.length).sort((a, b) => this.order.indexOf(a.name) - this.order.indexOf(b.name));
+            },
+
+            smallBlocks() {
+                let stats = ['fp', 'tp', 'ar', 'aa', 'as', 'lk', 'hp'];
+                stats = stats.filter((s) => this.optionsShip[s]);
+                return stats.length === 0;
             }
         },
         components: {kcShipListBlock},

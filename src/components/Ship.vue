@@ -1,5 +1,5 @@
 <template>
-    <li class="kce-ship-element kce-ship ">
+    <li class="kce-ship-element kce-ship" :class="extraClasses">
         <div class="kce-ship-icon" :class="avatarClass"></div>
         <div class="kce-ship-lock " title=""></div>
         <div class="kce-ship-details">
@@ -17,19 +17,22 @@
 </template>
 
 <script>
+    import {mapGetters} from 'vuex';
     import '@/sass/ship_sprites.scss'
 
     export default {
         name: "Ship",
         computed: {
+            ...mapGetters(['optionsShip','highlightMasterShips']),
+
             avatarClass() {
                 return `ship${this.ship.masterId}`;
             },
-            mainStatsMaxed(){
-                return this.ship.tp===this.ship.tp_max
-                    && this.ship.fp===this.ship.fp_max
-                    && this.ship.aa===this.ship.aa_max
-                    && this.ship.ar===this.ship.ar_max;
+            mainStatsMaxed() {
+                return this.ship.tp === this.ship.tp_max
+                    && this.ship.fp === this.ship.fp_max
+                    && this.ship.aa === this.ship.aa_max
+                    && this.ship.ar === this.ship.ar_max;
             },
             lvlClass() {
                 if (this.ship.lvl >= 100) {
@@ -41,14 +44,21 @@
                 }
                 return "";
             },
-            name(){
-                return `${this.ship.name} ${this.ship.suffix?this.ship.suffix:""}`.trim();
+            name() {
+                return `${this.ship.name} ${this.ship.suffix ? this.ship.suffix : ""}`.trim();
             },
-            availableStats(){
-                if(this.ship.as_max>0)
-                    return ["as","lk","hp"];
-                else
-                    return ["lk","hp"];
+            availableStats() {
+                let stats = this.stats.slice();
+                if (this.ship.as_max <= 0) stats.shift();
+                stats = stats.filter((s) => this.optionsShip[s]);
+                return stats;
+            },
+            extraClasses(){
+                let extra_classes= "";
+                if(this.highlightMasterShips.indexOf(this.ship.masterId)!==-1){
+                    extra_classes+=" highlightMasterShips";
+                }
+                return extra_classes;
             }
         },
         props: {
@@ -56,7 +66,7 @@
             stats: {
                 type: Array,
                 default() {
-                    return ['lk', 'hp', 'as'];
+                    return ['as', 'lk', 'hp'];
                 }
             }
         },
@@ -68,9 +78,9 @@
                 return this.ship[name] >= this.ship[`${name}_max`] ? "max" : "";
             },
             generateStat(name) {
-                if(name==="lk"){
-                    if(this.ship.lk>=50) return `kce-ship-${name} max`;
-                    else if (this.ship.lk>=40) return `kce-ship-${name} half`;
+                if (name === "lk") {
+                    if (this.ship.lk >= 50) return `kce-ship-${name} max`;
+                    else if (this.ship.lk >= 40) return `kce-ship-${name} half`;
                 }
                 return `kce-ship-${name}`;
             }

@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import VueResource from 'vue-resource'
 import shipLists from '@/store/modules/shipLists'
 import assetsUrl from '@/store/modules/assetsUrl'
+import options from '@/store/modules/options'
 
 Vue.use(VueResource);
 Vue.use(Vuex);
@@ -30,6 +31,7 @@ export default new Vuex.Store({
     },
     modules: {
         shipLists,
-        assetsUrl
+        assetsUrl,
+        options
     }
 })

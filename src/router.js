@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import ShipList from '@/components/ShipList.vue'
+import Options from '@/components/Options.vue'
 import NewTab from '@/components/NewTab.vue'
 import Home from '@/components/Home.vue'
 import ListStorage from '@/components/ListStorage.vue'
@@ -44,6 +45,11 @@ export default new Router({
             path: '/newTab',
             name: 'NewTab',
             component: NewTab
+        },
+        {
+            path: '/options',
+            name: 'Options',
+            component: Options
         },
         {
             path: '*',

@@ -15,6 +15,7 @@
         components: {appHeader},
         created() {
             this.$store.dispatch('loadStored');
+            this.$store.dispatch('loadOptions');
             //TODO this is not the right place for it... right...
             if (this.$route.name !== "NewTab" && this.$route.name !=="ShipListRaw" && this.$route.name !=="ShipListShort") {
                 this.$store.dispatch('loadLast');

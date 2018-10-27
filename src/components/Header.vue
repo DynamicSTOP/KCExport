@@ -14,8 +14,9 @@
             <div class="navbar-start">
                 <router-link class="navbar-item" :to="{name:'Home'}" tag="div">Home</router-link>
                 <router-link class="navbar-item" :to="{name:'ShipList'}" tag="div">ShipList</router-link>
+                <router-link class="navbar-item" :to="{name:'Options'}" tag="div">Options</router-link>
                 <router-link class="navbar-item" :to="{name:'Storage'}" tag="div">Storage</router-link>
-
+                <div class="navbar-item senpoi" :class="{active:isSenpoiMode}" @click="$store.commit('toggleSenpoi')" title="Helper mode">Senpoi</div>
                 <div class="navbar-item share" title="Raw link" v-show="false">
                     <img src="@/images/raw.svg">
                 </div>
@@ -47,7 +48,7 @@
             }
         },
         computed:{
-            ...mapGetters(['isCurrentStored','currentShipListEmpty']),
+            ...mapGetters(['isCurrentStored','currentShipListEmpty','isSenpoiMode']),
             showSave(){
                 return this.$route.name === 'ShipList'
                     && !this.currentShipListEmpty
@@ -79,6 +80,9 @@
             height:50px;
             max-height:50px;
         }
+    }
+    .navbar-item.active{
+        background: rgb(0, 100, 0);
     }
 
     .navbar-item.save{

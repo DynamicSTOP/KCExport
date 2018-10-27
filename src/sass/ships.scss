@@ -14,28 +14,43 @@
   -moz-column-fill:balance;
   column-fill: balance;
 
-  .kce-ship-element.kce-title-bar{
-    font-size: calc( var(--ship-element-height) / 2 );
+  .kce-ship-element{
+    &.kce-title-bar{
+      font-size: calc( var(--ship-element-height) / 2 );
 
-    .kce-ship-count{
-      float:left;
-      margin-left:12px;
-      height:var(--ship-element-height);
-      line-height:var(--ship-element-height);
-      color: #42abf1;
-      font-weight:800;
+
+      .kce-ship-count{
+        float:left;
+        margin-left:12px;
+        height:var(--ship-element-height);
+        line-height:var(--ship-element-height);
+        color: #42abf1;
+        font-weight:800;
+      }
+    }
+    &.highlightMasterShips{
+      background: #3c2700;
     }
   }
 
-}
-
-.kce-ship-list.kce-select-mode {
-  .kce-ship{
-    .kce-right-icon{
-      display:block;
-    }
-    .kce-ship-text{
-      width: calc( var(--ship-element-width) - 8px - var(--ship-element-height) * 4 );
+  &.kce-select-mode {
+    .kce-ship{
+      .kce-right-icon{
+        display:block;
+      }
+      .kce-ship-text{
+        width: calc( var(--ship-element-width) - 8px - var(--ship-element-height) * 4 );
+      }
     }
   }
 }
+.smallBlocks .kce-ship-list{
+  --ship-element-width: 200px;
+  .kce-ship-element{
+    margin:0 10px;
+    &.kce-ship .kce-ship-name{
+      width: calc(var(--ship-element-width) - var(--ship-element-height) * 1);
+    }
+  }
+}
+
