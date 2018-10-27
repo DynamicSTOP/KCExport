@@ -41,7 +41,7 @@
                 <li>contact <strong>DynamicSTOP#6314</strong> in <a href="https://discord.gg/QP6N8QQ" target="_blank">KC3discord</a>
                 </li>
                 <li>or open a new issue on <a href="https://github.com/DynamicSTOP/kcexport/issues"
-                                                     target="_blank">github</a>
+                                              target="_blank">github</a>
                 </li>
             </ul>
 
@@ -54,6 +54,29 @@
             <p>And you should probably guess that i have no idea how long data would be alive in db.</p>
 
             <div class="title is-3">Have fun!</div>
+
+            <p>
+                P.S. boring stuff regarding "legal stuff" for EU etc. This site uses browser <a
+                    href="https://www.w3schools.com/html/html5_webstorage.asp">localstorage</a> to store ship lists and
+                settings. Besides stuff that you've personally chose to share via raw links or short links
+                (api.kc-db.info) nothing goes outside. Theoretically, since part of the shared data is ship ids,
+                it may be use as uniq fingerprint to identify you. For now api.kc-db.info remembers only hash (i.e. list
+                id)
+                raw link and timestamp when it was added. There are amazon logs that can contain you browser header as
+                well as ip,
+                but they aren't parsed (for now) in any way. We might add google analytics later to understand what
+                features of site
+                are useless and what should probably be improved. We aren't planning to use that data for commercial
+                purposes.
+                We aren't planning to add any way of ads. If you see those, better check that you are using <strong>HTTPS</strong>
+                protocol and your antivirus software is up to date and doing it's job. Yes it's free. If you want to support KC3 team check <a
+                    href="https://www.patreon.com/kc3kai">Patreon</a>. We are not responsible for how any of your
+                browser extensions
+                deal with our site and(or) any 3rd party link shortification services that you chose instead deal with
+                privacy etc. Though we might take steps to fix compatibility issues.
+                We would only wipe your data by request from your side if you would be able to proof that it was submitted by you and only you
+                (i.e. that's impossible). Just wait a bit, i bet in 1 year it will be gone.
+            </p>
         </div>
 
     </div>
@@ -62,7 +85,9 @@
     .section {
         padding-top: 0;
     }
-
+    strong {
+        color: #fff;
+    }
     .title {
         margin-top: 30px;
         color: #fff;
