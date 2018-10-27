@@ -14,7 +14,7 @@
         ships.push({
             id: ship.rosterId,
             masterId: ship.masterId,
-            level: ship.level,
+            lvl: ship.level,
             sally: ship.sally,
             extra_slot: ship.ex_item !== 0 ? 1 : 0,
             fp: ship.fp[0],
@@ -29,7 +29,13 @@
 
     //console.log(ships);
 
-    const trustedDomain="http://localhost:3000";
+    //uncomment to debug next line
+    //console.log(JSON.stringify(ships));
+
+    //const trustedDomain="http://localhost:3000";
+
+    //const trustedDomain="http://192.168.1.115:3000";
+    const trustedDomain="https://export.kc-db.info";
     window.addEventListener("message",(m)=>{
         if(m.origin!==trustedDomain)
             return false;
