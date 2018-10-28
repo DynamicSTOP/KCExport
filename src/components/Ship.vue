@@ -7,7 +7,7 @@
                 <div class="kce-ship-level" :class="lvlClass">LVL {{ship.lvl}}</div>
                 <div class="kce-ship-stats-box">
                     <div v-for="(stat) in availableStats" :class="generateStat(stat)" :title="statTitle(stat)"
-                         :key="(stat)"></div>
+                         :key="(stat)" class="stat"></div>
                 </div>
                 <!-- bottom line: space for bp, max stats, daihatsu icon, etc-->
             </div>

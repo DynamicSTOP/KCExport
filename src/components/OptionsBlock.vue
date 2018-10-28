@@ -5,26 +5,28 @@
             Ship names
             <div class="control">
                 <label class="radio">
-                    <input type="radio" :name="'shipLang_'+modeName" @change="updateLang" value="ja" :checked="shipNameLanguage==='ja'">
+                    <input type="radio" :name="'shipLang_'+modeName" @change="updateLang" value="ja"
+                           :checked="shipNameLanguage==='ja'">
                     Original
                 </label>
                 <label class="radio">
-                    <input type="radio" :name="'shipLang_'+modeName" @change="updateLang" value="en" :checked="shipNameLanguage==='en'">
+                    <input type="radio" :name="'shipLang_'+modeName" @change="updateLang" value="en"
+                           :checked="shipNameLanguage==='en'">
                     Romanized
                 </label>
             </div>
         </div>
         <div class="shipStats">
             <p>Ship stats to display</p>
-            <p>
-                <label class="checkbox" v-for="name in displayStats" :key="modeName+'_'+name">
-                    <input type="checkbox" @change="updateStat(name,$event)" :checked="mode.display.ship[name]">
-                    {{name}}
-                </label>
-            </p>
+            <div>
+                <div v-for="name in displayStats" @click="updateStat(name)"
+                     :class="getStatsBoxClass(name)" class="stat" :title="name"
+                     :key="modeName+'_'+name"></div>
+            </div>
             <p>
                 <label class="checkbox regular-size">
-                    <input type="checkbox" @change="toggleHideMaxedMainStats" :checked="mode.display.hideMaxedMainStats">
+                    <input type="checkbox" @change="toggleHideMaxedMainStats"
+                           :checked="mode.display.hideMaxedMainStats">
                     Hide max main stats (FP TP AR AA) if they are at max.
                 </label>
             </p>
@@ -73,7 +75,8 @@
             return {
                 suggestions: [],
                 shipsArray: [],
-                suggestionsValue: ""
+                suggestionsValue: "",
+                displayStats:['fp','tp','ar','aa','as','hp','lk']
             }
         },
         computed: {
@@ -81,7 +84,7 @@
             mode() {
                 return this.optionsModes[this.modeName];
             },
-            shipNameLanguage(){
+            shipNameLanguage() {
                 return this.mode.shipNameLanguage;
             },
             minLuckValue() {
@@ -89,15 +92,6 @@
             },
             shipsToHighlight() {
                 return this.mode.highlightMasterId;
-            },
-            displayStats() {
-                let stats = [];
-                for (let i in this.mode.display.ship) {
-                    if (!this.mode.display.ship.hasOwnProperty(i)) continue;
-                    stats.push(i);
-                }
-                stats.sort((a, b) => a.localeCompare(b));
-                return stats;
             },
             suggestedShips() {
                 let suggestions = [];
@@ -121,6 +115,9 @@
             }
         },
         methods: {
+            getStatsBoxClass(name){
+                return `kce-ship-${name} ${this.mode.display.ship[name]?'max':''}`.trim()
+            },
             makeIconTitle(masterId) {
                 let title = masterId + ":";
                 if (WCTFships[masterId].name && WCTFships[masterId].name.ja_jp) {
@@ -143,10 +140,10 @@
                 this.$store.commit('updateOptionsDisplayStat', {
                     modeName: this.modeName,
                     statName,
-                    value: event.target.checked
+                    value: !this.mode.display.ship[statName]
                 });
             },
-            updateLang(event){
+            updateLang(event) {
                 if (!event.target.checked) return;
                 this.$store.commit('setModeOptionTo', {
                     modeName: this.modeName,
@@ -181,7 +178,7 @@
                     value: value.length ? parseInt(value) : 0
                 });
             },
-            toggleHideMaxedMainStats(event){
+            toggleHideMaxedMainStats(event) {
                 this.$store.commit('toggleHideMaxedMainStats', {
                     modeName: this.modeName,
                     value: event.target.checked

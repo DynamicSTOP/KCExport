@@ -187,51 +187,9 @@ $shipelement-padding: 20px;
       display: inline-block;
       height: calc(var(--ship-element-height) / 2);
       float: right;
-
-      > div {
-        content: " ";
-        display: inline-block;
-        width: calc(var(--ship-element-height) / 2);
-        height: calc(var(--ship-element-height) / 2);
-        background-size: contain;
-        border-radius: 50%;
-        margin-right: 5px;
-        opacity: 0.2;
-        vertical-align: top;
-        &.half {
-          opacity: 0.6;
-        }
-        &.max {
-          opacity: 1;
-        }
-      }
-
-      .kce-ship-hp {
-        background-image: url("./../images/mod/mod_hp.png");
-      }
-      .kce-ship-as {
-        background-image: url("./../images/mod/mod_as.png");
-      }
-      .kce-ship-lk {
-        background-image: url("./../images/mod/mod_lk.png");
-      }
-      .kce-ship-ar {
-        background-image: url("./../images/mod/mod_ar.png");
-      }
-      .kce-ship-aa {
-        background-image: url("./../images/mod/mod_aa.png");
-      }
-      .kce-ship-tp {
-        background-image: url("./../images/mod/mod_tp.png");
-      }
-      .kce-ship-fp {
-        background-image: url("./../images/mod/mod_fp.png");
-      }
-      .hidden{
-        height:0;
-      }
+      --stats-size: calc(var(--ship-element-height) / 2);
+      @import "stats";
     }
-
   }
 }
 
@@ -257,6 +215,17 @@ $shipelement-padding: 20px;
       }
       &:nth-child(2n+1):not(.title){
         background: rgba(255,255,255,0.05);
+      }
+    }
+
+    .shipStats{
+      --stats-size:24px;
+      @import "stats";
+      .stat{
+        cursor:pointer;
+      }
+      > div {
+        margin:5px;
       }
     }
 
