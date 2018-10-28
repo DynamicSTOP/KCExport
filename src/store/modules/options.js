@@ -11,7 +11,8 @@ const basemode = {
             as: false,
             hp: false
         },
-        hideMaxedMainStats: false
+        hideMaxedMainStats: false,
+        compact: false
     },
     highlightMasterId: [],
     filterMasterIds: [],
@@ -37,7 +38,9 @@ const state = {
                 },
                 // for stats fp tp ar aa
                 // if it's >= max then it wouldn't be shown
-                hideMaxedMainStats: true
+                hideMaxedMainStats: true,
+                // throw everything into single <ul>
+                compact: true
             },
             // very usefull ships ids will go here
             // akashi is an example. everyone needs at least 1 akashi, right?
@@ -67,6 +70,7 @@ Object.assign(state.modes.regular, basemode);
 const getters = {
     optionsShip: state => state.modes[state.currentMode].display.ship,
     optionsHideMaxStat: state => state.modes[state.currentMode].display.hideMaxedMainStats,
+    optionsCompactMode: state => state.modes[state.currentMode].display.compact,
     optionMinLuck: state => state.modes[state.currentMode].minLuck,
     optionShipNameLanguage: state => state.modes[state.currentMode].shipNameLanguage,
     highlightMasterShips: state => state.modes[state.currentMode].highlightMasterId,
@@ -108,6 +112,10 @@ const mutations = {
         state.modes[modeName][optionName] = value;
         mutations.saveOptions(state);
     },
+    setModeDisplayOptionTo(state, {modeName, optionName, value}) {
+        state.modes[modeName].display[optionName] = value;
+        mutations.saveOptions(state);
+    },
     addToHighlights(state, {modeName, value}) {
         state.modes[modeName].highlightMasterId.push(value);
         mutations.saveOptions(state);
@@ -124,7 +132,7 @@ const mutations = {
         state.modes[modeName].filterMasterIds = state.modes[modeName].filterMasterIds.filter((v) => v !== value);
         mutations.saveOptions(state);
     },
-    toggleHideMaxedMainStats(state,{modeName, value}) {
+    toggleHideMaxedMainStats(state, {modeName, value}) {
         state.modes[modeName].display.hideMaxedMainStats = value;
         mutations.saveOptions(state);
     }

@@ -1,24 +1,29 @@
 <template>
     <li class="kce-ship-element kce-ship" :class="extraClasses">
-        <div class="kce-ship-icon" :class="avatarClass"></div>
-        <div class="kce-ship-lock " title=""></div>
-        <div class="kce-ship-details">
-            <div class="kce-ship-top-line">
-                <div class="kce-ship-level" :class="lvlClass">LVL {{ship.lvl}}</div>
-                <div class="kce-ship-stats-box">
-                    <div v-for="(stat) in availableStats" :class="generateStat(stat)" :title="statTitle(stat)"
-                         :key="(stat)" class="stat"></div>
+        <div v-if="ship.header">
+            <div class="kce-ship-grouptitle">{{ship.name}}</div>
+        </div>
+        <div v-else>
+            <div class="kce-ship-icon" :class="avatarClass"></div>
+            <div class="kce-ship-lock " title=""></div>
+            <div class="kce-ship-details">
+                <div class="kce-ship-top-line">
+                    <div class="kce-ship-level" :class="lvlClass">LVL {{ship.lvl}}</div>
+                    <div class="kce-ship-stats-box">
+                        <div v-for="(stat) in availableStats" :class="generateStat(stat)" :title="statTitle(stat)"
+                             :key="(stat)" class="stat"></div>
+                    </div>
+                    <!-- bottom line: space for bp, max stats, daihatsu icon, etc-->
                 </div>
-                <!-- bottom line: space for bp, max stats, daihatsu icon, etc-->
-            </div>
-            <div class="kce-ship-bottom-line">
-                <div class="kce-ship-name kce-ship-name8" :title="name">{{name}}</div>
-                <div class="kce-ship-stats-box">
-                    <div v-for="(stat) in availableMainStats" :class="generateStat(stat)" :title="statTitle(stat)"
-                         :key="(stat)"></div>
+                <div class="kce-ship-bottom-line">
+                    <div class="kce-ship-name kce-ship-name8" :title="name">{{name}}</div>
+                    <div class="kce-ship-stats-box">
+                        <div v-for="(stat) in availableMainStats" :class="generateStat(stat)" :title="statTitle(stat)"
+                             :key="(stat)"></div>
+                    </div>
                 </div>
-            </div>
 
+            </div>
         </div>
     </li>
 </template>
@@ -27,6 +32,7 @@
     import {mapGetters} from 'vuex';
     import '@/sass/ship_sprites.scss'
 
+    const mainStats = ['fp', 'tp', 'ar', 'aa'];
     export default {
         name: "Ship",
         computed: {
@@ -65,7 +71,7 @@
                 return stats;
             },
             availableMainStats() {
-                let stats = this.mainStats.slice();
+                let stats = mainStats.slice();
                 if (this.ship.tp_max <= 0) stats = stats.filter((s) => s !== 'tp');
                 stats = stats.filter((s) => this.optionsShip[s]);
                 return stats;
@@ -85,12 +91,6 @@
                 default() {
                     return ['as', 'lk', 'hp'];
                 }
-            },
-            mainStats: {
-                type: Array,
-                default() {
-                    return ['fp', 'tp', 'ar', 'aa'];
-                }
             }
         },
         methods: {
@@ -107,7 +107,7 @@
                     if (this.ship.lk >= 50) classes+=`max`;
                     else if (this.ship.lk >= 40) classes+=`half`;
                 } else {
-                    if(this.mainStats.indexOf(name)!==-1)
+                    if(mainStats.indexOf(name)!==-1)
                         classes += this.maxed(name) ? 'hidden ' : '';
                     classes += this.maxed(name) ? 'max ' : '';
                 }

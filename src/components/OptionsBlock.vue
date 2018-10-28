@@ -16,6 +16,21 @@
                 </label>
             </div>
         </div>
+        <div>
+            Ship display mode
+            <div class="control">
+                <label class="radio">
+                    <input type="radio" :name="'compact_'+modeName" @change="updateCompact" value="1"
+                           :checked="compactMode">
+                    Compact
+                </label>
+                <label class="radio">
+                    <input type="radio" :name="'compact_'+modeName" @change="updateCompact" value="0"
+                           :checked="!compactMode">
+                    Big
+                </label>
+            </div>
+        </div>
         <div class="shipStats">
             <p>Ship stats to display (click on icons).</p>
             <div>
@@ -108,6 +123,9 @@
             shipsToFilter() {
                 return this.mode.filterMasterIds;
             },
+            compactMode() {
+                return this.mode.display.compact;
+            },
             suggestedShips() {
                 let suggestions = [];
                 if (this.suggestionsValue.length === 0)
@@ -175,6 +193,14 @@
                     modeName: this.modeName,
                     optionName: "shipNameLanguage",
                     value: event.target.value
+                });
+            },
+            updateCompact(event) {
+                if (!event.target.checked) return;
+                this.$store.commit('setModeDisplayOptionTo', {
+                    modeName: this.modeName,
+                    optionName: "compact",
+                    value: event.target.value === "1"
                 });
             },
             filterSuggestions(event) {
