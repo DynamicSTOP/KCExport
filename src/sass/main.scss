@@ -238,15 +238,18 @@ $shipelement-padding: 20px;
       }
     }
 
+    label {
+      &:hover {
+        color: #fff;
+      }
+    }
+
     .shipStats {
       label {
         margin-right: 15px;
         text-transform: uppercase;
         &:last-child {
           margin-right: initial;
-        }
-        &:hover {
-          color: #fff;
         }
       }
     }

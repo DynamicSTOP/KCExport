@@ -1,4 +1,5 @@
-//new custom modes would be based on this one
+// new custom modes would be based on this one
+// see "senpoi" mode for details about each field
 const basemode = {
     display: {
         ship: {
@@ -12,8 +13,9 @@ const basemode = {
         },
     },
     highlightMasterId: [],
-    minLuck: 40,
-    showInHeader: true
+    minLuck: 0,
+    showInHeader: true,
+    shipNameLanguage: "en"
 };
 
 const state = {
@@ -21,6 +23,7 @@ const state = {
         regular: {/* build from basemode */},
         senpoi: {
             display: {
+                // if stat is set as true it should be shown in ship box
                 ship: {
                     fp: true,
                     tp: true,
@@ -31,9 +34,21 @@ const state = {
                     lk: true
                 }
             },
-            highlightMasterId: [182, 187],
+            // very usefull ships ids will go here
+            // akashi is an example. everyone needs at least 1 akashi, right?
+            highlightMasterId: [
+                182, 187 //akashi ids
+            ],
+            // min required luck that will trigger luck icon show
             minLuck: 30,
-            showInHeader: true
+            // Doing nothing right now.
+            // But later on we can show bar in header with mode names,
+            // so user will be able to fast switch between them
+            showInHeader: true,
+            // basically it wat it says. language that would be used for ship names
+            // see navigator.language
+            // and loadOptions() bellow
+            shipNameLanguage: "en"
         }
     },
     currentMode: "regular"
@@ -44,6 +59,7 @@ Object.assign(state.modes.regular, basemode);
 const getters = {
     optionsShip: state => state.modes[state.currentMode].display.ship,
     optionMinLuck: state => state.modes[state.currentMode].minLuck,
+    optionShipNameLanguage: state => state.modes[state.currentMode].shipNameLanguage,
     highlightMasterShips: state => state.modes[state.currentMode].highlightMasterId,
     isSenpoiMode: state => state.currentMode === "senpoi",
     optionsModes: state => state.modes
@@ -64,6 +80,10 @@ const mutations = {
     },
     loadOptions(state) {
         try {
+            if (navigator.language !== "en" && (navigator.language === "ja" || navigator.languages && navigator.languages.indexOf('ja') !== -1)) {
+                state.modes.regular.shipNameLanguage = "ja";
+                state.modes.senpoi.shipNameLanguage = "ja";
+            }
             let kce_options = JSON.parse(localStorage.getItem("kce_options"));
             Object.assign(state, kce_options);
         } catch (e) {

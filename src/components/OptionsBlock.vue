@@ -1,6 +1,19 @@
 <template>
     <div class="kce-options-block">
         <div class="title is-5">{{modeName}}</div>
+        <div>
+            Ship names
+            <div class="control">
+                <label class="radio">
+                    <input type="radio" :name="'shipLang_'+modeName" @change="updateLang" value="ja" :checked="shipNameLanguage==='ja'">
+                    Original
+                </label>
+                <label class="radio">
+                    <input type="radio" :name="'shipLang_'+modeName" @change="updateLang" value="en" :checked="shipNameLanguage==='en'">
+                    Romanized
+                </label>
+            </div>
+        </div>
         <div class="shipStats">
             <p>Ship stats to display</p>
             <label class="checkbox" v-for="name in displayStats" :key="modeName+'_'+name">
@@ -58,6 +71,9 @@
             ...mapGetters(['optionsModes']),
             mode() {
                 return this.optionsModes[this.modeName];
+            },
+            shipNameLanguage(){
+                return this.mode.shipNameLanguage;
             },
             minLuckValue() {
                 return this.mode.minLuck;
@@ -119,6 +135,14 @@
                     modeName: this.modeName,
                     statName,
                     value: event.target.checked
+                });
+            },
+            updateLang(event){
+                if (!event.target.checked) return;
+                this.$store.commit('setModeOptionTo', {
+                    modeName: this.modeName,
+                    optionName: "shipNameLanguage",
+                    value: event.target.value
                 });
             },
             updateSuggestions(event) {

@@ -59,6 +59,7 @@ class ShipParser {
                         hp: [s[11], s[11], s[11]],
                         as: [s[5], s[5], s[5]],
                         name: "New Face",
+                        nameJp: "",
                         speed: 5,
                         suffix: "",
                         stype: 0,
@@ -93,8 +94,10 @@ class ShipParser {
                     as: s[5],
                     as_def: master.stat.asw,
                     as_max: master.stat.asw_max,
-                    name: master.name.ja_romaji !== "" ? master.name.ja_romaji : master.name.ja_jp,
-                    suffix: master.name.suffix_rj || null,
+                    nameEn: master.name.ja_romaji && master.name.ja_romaji !== "" ? master.name.ja_romaji : null,
+                    nameJp: master.name.ja_jp && master.name.ja_jp !== "" ? master.name.ja_jp : null,
+                    suffixEn: master.name.suffix_rj || null,
+                    suffixJp: master.name.suffix_jp || null,
                     stype: master.stype,
                     sortno: master.no
                 });

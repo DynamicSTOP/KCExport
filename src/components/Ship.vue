@@ -23,7 +23,7 @@
     export default {
         name: "Ship",
         computed: {
-            ...mapGetters(['optionsShip', 'highlightMasterShips', 'optionMinLuck']),
+            ...mapGetters(['optionsShip', 'highlightMasterShips', 'optionMinLuck', 'optionShipNameLanguage']),
 
             avatarClass() {
                 return `ship${this.ship.masterId}`;
@@ -45,7 +45,11 @@
                 return "";
             },
             name() {
-                return `${this.ship.name} ${this.ship.suffix ? this.ship.suffix : ""}`.trim();
+                if (this.optionShipNameLanguage === 'en' && (this.ship.nameEn || !this.ship.nameJp)) {
+                    return `${this.ship.nameEn} ${this.ship.suffixEn ? this.ship.suffixEn : ""}`.trim();
+                } else {
+                    return `${this.ship.nameJp} ${this.ship.suffixJp ? this.ship.suffixJp : ""}`.trim();
+                }
             },
             availableStats() {
                 let stats = this.stats.slice();
