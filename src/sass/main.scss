@@ -9,9 +9,7 @@ $gap: 0 !default;
 $app-bg-color: #1a2627;
 
 $navbar-background-color: #222 !default;
-$navbar-item-color: findColorInvert(#222) !default
-
-@import "~bulma";
+$navbar-item-color: findColorInvert(#222) !default@import "~bulma";
 @import "~buefy/src/scss/buefy";
 
 /**
@@ -24,6 +22,7 @@ html {
 body {
 
 }
+
 body {
   background-color: $app-bg-color;
   color: #e6e6e6;
@@ -35,20 +34,21 @@ body {
   --ship-element-width: 320px;
   --ship-element-height: 48px;
   min-width: calc(var(--ship-element-width) * 1.1);
+  --highlightMasterShipsColor: #3c2700;
 }
 
-$shipelement-padding:20px;
+$shipelement-padding: 20px;
 
-.kce-list-header{
+.kce-list-header {
   background-color: rgba(0, 0, 0, 0.6);
   box-shadow: 2px 2px 2px #000;
   vertical-align: middle;
 
   text-align: left;
-  padding-left:30px;
-  font-size:30px;
+  padding-left: 30px;
+  font-size: 30px;
   font-weight: 600;
-  margin-bottom:10px;
+  margin-bottom: 10px;
 
   border-radius: calc(var(--ship-element-height) / 10);
   line-height: var(--ship-element-height);
@@ -56,14 +56,14 @@ $shipelement-padding:20px;
   min-width: calc(var(--ship-element-width) + #{$shipelement-padding} * 2);
 
   position: relative;
-  background-image:linear-gradient(#484e55, #3a3f44 60%, #313539);
-  color:#bfedf9;
+  background-image: linear-gradient(#484e55, #3a3f44 60%, #313539);
+  color: #bfedf9;
 
 }
 
-.kce-ship-list{
-  min-height:200px;
-  padding:$shipelement-padding;
+.kce-ship-list {
+  min-height: 200px;
+  padding: $shipelement-padding;
   text-align: center;
 
   .kce-ship-element.kce-ship {
@@ -131,7 +131,7 @@ $shipelement-padding:20px;
       white-space: nowrap;
       overflow: hidden;
     }
-    .kce-ship-name{
+    .kce-ship-name {
       font-weight: 800;
       font-family: 'Roboto', sans-serif;
     }
@@ -168,7 +168,7 @@ $shipelement-padding:20px;
     .kce-ship-stats-box {
       display: inline-block;
       height: calc(var(--ship-element-height) / 2);
-      float:right;
+      float: right;
 
       .kce-ship-hp, .kce-ship-as, .kce-ship-lk {
         content: " ";
@@ -199,7 +199,7 @@ $shipelement-padding:20px;
         opacity: 1;
       }
     }
-    .kce-main-stats{
+    .kce-main-stats {
       float: right;
       display: inline-block;
       position: absolute;
@@ -209,41 +209,66 @@ $shipelement-padding:20px;
   }
 }
 
-.kce-options{
-  &.section{
-    padding-top:1rem;
+.kce-options {
+  &.section {
+    padding-top: 1rem;
   }
-  .title{
-    color:#fff;
+  .title {
+    color: #fff;
   }
-  .kce-options-block{
-    .title{
+  .kce-options-block {
+    .title {
       text-transform: capitalize;
     }
-    border-top: 2px solid #fff;
-    margin-top:30px;
-    padding-top:5px;
-    > div{
-      margin-top:20px;
-      &:first-child{
-        margin-top:5px;
+    border-top: 2px solid #FF0;
+    margin-top: 2rem;
+    padding-top: 5px;
+    > div {
+      margin-top: 20px;
+      &:first-child {
+        margin-top: 5px;
       }
     }
-    input[type='text']{
-      max-width:50%;
-    }
-    .shipStats{
-      label{
-        margin-right:15px;
+
+    .shipStats {
+      label {
+        margin-right: 15px;
         text-transform: uppercase;
-        &:last-child{
+        &:last-child {
           margin-right: initial;
         }
-        &:hover{
+        &:hover {
           color: #fff;
         }
       }
     }
+    input[type='text'] {
+      max-width: 25%;
+    }
+    .highlightSuggestions{
+      min-height: var(--ship-element-height);
+      min-width:1px;
+      display: inline-block;
+      padding:5px;
+    }
+    .highlightedMasterShips {
+      display: inline-block;
+      padding:5px;
+      background: var(--highlightMasterShipsColor);
+      min-height: var(--ship-element-height);
+      &.min {
+        width: var(--ship-element-height);
+      }
+    }
+    .kce-ship-icon {
+      width: var(--ship-element-height);
+      height: var(--ship-element-height);
+      float: left;
+      border-radius: var(--ship-element-height);
+      box-shadow: 2px 2px 2px #000;
+      margin-left: 2px;
+    }
+
   }
 }
 

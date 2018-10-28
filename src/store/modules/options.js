@@ -71,8 +71,12 @@ const mutations = {
         state.modes[modeName].display.ship[statName] = value;
         mutations.saveOptions(state);
     },
-    updateShipHighlight(state,{modeName, value}){
-        state.modes[modeName].highlightMasterId = value;
+    addToHighlights(state, {modeName, value}) {
+        state.modes[modeName].highlightMasterId.push(value);
+        mutations.saveOptions(state);
+    },
+    removeFromHighlights(state, {modeName, value}) {
+        state.modes[modeName].highlightMasterId = state.modes[modeName].highlightMasterId.filter((v) => v !== value);
         mutations.saveOptions(state);
     }
 };

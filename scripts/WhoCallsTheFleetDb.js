@@ -53,6 +53,7 @@ check("https://raw.githubusercontent.com/TeamFleet/WhoCallsTheFleet/master/app-d
     let obj = {};
     rawShips.split("\n").map((master)=>{
         master = JSON.parse(master);
+        if (master.no === 0) return;
         let ship = {
             id:master.id,
             no:master.no,
@@ -85,6 +86,9 @@ check("https://raw.githubusercontent.com/TeamFleet/WhoCallsTheFleet/master/app-d
         }
         if(master.name.suffix!==null){
             ship.name.suffix_rj = suff[`s${master.name.suffix}`].ja_romaji.split(" ").map((s)=>s.charAt(0).toUpperCase() + s.slice(1)).join(" ");
+        }
+        if (master.name.suffix !== null) {
+            ship.name.suffix_jp = suff[`s${master.name.suffix}`].ja_jp;
         }
 
         obj[ship.id]=ship;
