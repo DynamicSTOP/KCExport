@@ -10,7 +10,8 @@
         </div>
         <div>
             <p>Minimum luck amount to display. This will not overwrite hidden luck status from checkboxes above.</p>
-            <p><input class="input luck-input" type="text" placeholder="30" @keyup="updateMinLuck" @change="updateMinLuck"></p>
+            <p><input class="input luck-input" type="text" placeholder="30" :value="minLuckValue" @keyup="updateMinLuck"
+                      @change="updateMinLuck"></p>
         </div>
         <div>
             <p>Ship highlighting. Start typing in ship master id or name to see suggestions. Click on suggestion icon
@@ -18,7 +19,7 @@
                 add.
             </p>
             <p><input class="input" type="text" @keyup="updateSuggestions" @change="updateSuggestions"
-                        placeholder="182 or Akashi"></p>
+                      placeholder="182 or Akashi"></p>
             <div class="highlightSuggestions">
                 <div class="kce-ship-icon" v-for="ship in suggestedShips" :class="'ship'+ship.id"
                      :key="'m'+ship.id" :title="makeIconTitle(ship.id)" @click="addToHighlights(ship.id)"></div>
@@ -50,13 +51,16 @@
             return {
                 suggestions: [],
                 shipsArray: [],
-                suggestionsValue:""
+                suggestionsValue: ""
             }
         },
         computed: {
             ...mapGetters(['optionsModes']),
             mode() {
                 return this.optionsModes[this.modeName];
+            },
+            minLuckValue() {
+                return this.mode.minLuck;
             },
             shipsToHighlight() {
                 return this.mode.highlightMasterId;
@@ -70,9 +74,9 @@
                 stats.sort((a, b) => a.localeCompare(b));
                 return stats;
             },
-            suggestedShips(){
+            suggestedShips() {
                 let suggestions = [];
-                if(this.suggestionsValue.length===0)
+                if (this.suggestionsValue.length === 0)
                     return suggestions;
                 if (this.suggestionsValue.match(/^[\d]+$/)) {
                     //it's master id
@@ -136,11 +140,12 @@
                     value: masterId
                 });
             },
-            updateMinLuck(event){
+            updateMinLuck(event) {
+                let value = event.target.value.replace(/[^\d]+/g, '').trim();
                 this.$store.commit('setModeOptionTo', {
                     modeName: this.modeName,
                     optionName: "minLuck",
-                    value: parseInt(event.target.value.replace(/[^\d]/g, '').trim())
+                    value: value.length ? parseInt(value) : 0
                 });
             }
         }
