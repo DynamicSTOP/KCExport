@@ -23,7 +23,7 @@
     export default {
         name: "Ship",
         computed: {
-            ...mapGetters(['optionsShip','highlightMasterShips']),
+            ...mapGetters(['optionsShip', 'highlightMasterShips', 'optionMinLuck']),
 
             avatarClass() {
                 return `ship${this.ship.masterId}`;
@@ -49,7 +49,7 @@
             },
             availableStats() {
                 let stats = this.stats.slice();
-                if (this.ship.as_max <= 0) stats.shift();
+                if (this.ship.as_max <= 0) stats = stats.filter((s) => s !== 'as');
                 stats = stats.filter((s) => this.optionsShip[s]);
                 return stats;
             },
@@ -79,6 +79,7 @@
             },
             generateStat(name) {
                 if (name === "lk") {
+                    if (this.ship.lk < this.optionMinLuck) return `kce-ship-${name} hidden`;
                     if (this.ship.lk >= 50) return `kce-ship-${name} max`;
                     else if (this.ship.lk >= 40) return `kce-ship-${name} half`;
                 }

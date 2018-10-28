@@ -192,6 +192,10 @@ $shipelement-padding: 20px;
         background-image: url("./../images/mod/mod_lk.png");
       }
 
+      .hidden{
+        height:0;
+      }
+      
       .kce-ship-lk.half {
         opacity: 0.6;
       }
@@ -244,6 +248,9 @@ $shipelement-padding: 20px;
     }
     input[type='text'] {
       max-width: 25%;
+    }
+    .luck-input{
+      width:50px;
     }
     .highlightSuggestions{
       min-height: var(--ship-element-height);

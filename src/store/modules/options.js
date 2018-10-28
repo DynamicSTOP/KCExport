@@ -12,6 +12,7 @@ const basemode = {
         },
     },
     highlightMasterId: [],
+    minLuck: 40,
     showInHeader: true
 };
 
@@ -31,6 +32,7 @@ const state = {
                 }
             },
             highlightMasterId: [182, 187],
+            minLuck: 30,
             showInHeader: true
         }
     },
@@ -41,6 +43,7 @@ Object.assign(state.modes.regular, basemode);
 
 const getters = {
     optionsShip: state => state.modes[state.currentMode].display.ship,
+    optionMinLuck: state => state.modes[state.currentMode].minLuck,
     highlightMasterShips: state => state.modes[state.currentMode].highlightMasterId,
     isSenpoiMode: state => state.currentMode === "senpoi",
     optionsModes: state => state.modes
@@ -69,6 +72,10 @@ const mutations = {
     },
     updateOptionsDisplayStat(state, {modeName, statName, value}) {
         state.modes[modeName].display.ship[statName] = value;
+        mutations.saveOptions(state);
+    },
+    setModeOptionTo(state, {modeName, optionName, value}) {
+        state.modes[modeName][optionName] = value;
         mutations.saveOptions(state);
     },
     addToHighlights(state, {modeName, value}) {

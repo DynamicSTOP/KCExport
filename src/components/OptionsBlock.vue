@@ -2,24 +2,28 @@
     <div class="kce-options-block">
         <div class="title is-5">{{modeName}}</div>
         <div class="shipStats">
-            <div>Ship stats to display</div>
+            <p>Ship stats to display</p>
             <label class="checkbox" v-for="name in displayStats" :key="modeName+'_'+name">
                 <input type="checkbox" @change="updateStat(name,$event)" :checked="mode.display.ship[name]">
                 {{name}}
             </label>
         </div>
         <div>
-            <div>Ship highlighting. Start typing in ship master id or name to see suggestions. Click on suggestion icon
+            <p>Minimum luck amount to display. This will not overwrite hidden luck status from checkboxes above.</p>
+            <p><input class="input luck-input" type="text" placeholder="30" @keyup="updateMinLuck" @change="updateMinLuck"></p>
+        </div>
+        <div>
+            <p>Ship highlighting. Start typing in ship master id or name to see suggestions. Click on suggestion icon
                 to
                 add.
-            </div>
-            <div><input class="input" type="text" @keyup="updateSuggestions"
-                        placeholder="182 or Akashi"></div>
+            </p>
+            <p><input class="input" type="text" @keyup="updateSuggestions" @change="updateSuggestions"
+                        placeholder="182 or Akashi"></p>
             <div class="highlightSuggestions">
                 <div class="kce-ship-icon" v-for="ship in suggestedShips" :class="'ship'+ship.id"
                      :key="'m'+ship.id" :title="makeIconTitle(ship.id)" @click="addToHighlights(ship.id)"></div>
             </div>
-            <div>Highlighted ships. Click on icon to remove.</div>
+            <p>Highlighted ships. Click on icon to remove.</p>
             <div class="highlightedMasterShips" :class="{min:shipsToHighlight.length===0}">
                 <div class="kce-ship-icon" v-for="masterId in shipsToHighlight" :class="'ship'+masterId"
                      :key="'m'+masterId" :title="makeIconTitle(masterId)" @click="removeFromHighlights(masterId)"></div>
@@ -130,6 +134,13 @@
                 this.$store.commit('removeFromHighlights', {
                     modeName: this.modeName,
                     value: masterId
+                });
+            },
+            updateMinLuck(event){
+                this.$store.commit('setModeOptionTo', {
+                    modeName: this.modeName,
+                    optionName: "minLuck",
+                    value: parseInt(event.target.value.replace(/[^\d]/g, '').trim())
                 });
             }
         }
