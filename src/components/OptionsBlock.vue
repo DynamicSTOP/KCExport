@@ -118,7 +118,7 @@
                 });
             },
             updateSuggestions(event) {
-                let value = event.target.value.trim().replace(/[^\d\w\s]/g, '');
+                let value = event.target.value.trim().replace(/[^\d\w\s一-龯]/g, '');
                 if (value.length === 0) {
                     return this.suggestionsValue = "";
                 }

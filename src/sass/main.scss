@@ -195,7 +195,7 @@ $shipelement-padding: 20px;
       .hidden{
         height:0;
       }
-      
+
       .kce-ship-lk.half {
         opacity: 0.6;
       }
@@ -229,8 +229,12 @@ $shipelement-padding: 20px;
     padding-top: 5px;
     > div {
       margin-top: 20px;
+      padding:5px;
       &:first-child {
         margin-top: 5px;
+      }
+      &:nth-child(2n+1):not(.title){
+        background: rgba(255,255,255,0.05);
       }
     }
 
