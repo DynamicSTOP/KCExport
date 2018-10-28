@@ -19,7 +19,7 @@
                     <div class="kce-ship-name kce-ship-name8" :title="name">{{name}}</div>
                     <div class="kce-ship-stats-box">
                         <div v-for="(stat) in availableMainStats" :class="generateStat(stat)" :title="statTitle(stat)"
-                             :key="(stat)"></div>
+                             :key="(stat)" class="stat"></div>
                     </div>
                 </div>
 
@@ -107,7 +107,7 @@
                     if (this.ship.lk >= 50) classes+=`max`;
                     else if (this.ship.lk >= 40) classes+=`half`;
                 } else {
-                    if(mainStats.indexOf(name)!==-1)
+                    if(this.optionsHideMaxStat && mainStats.indexOf(name)!==-1 )
                         classes += this.maxed(name) ? 'hidden ' : '';
                     classes += this.maxed(name) ? 'max ' : '';
                 }
