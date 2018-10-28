@@ -30,7 +30,7 @@
     export default {
         name: "Ship",
         computed: {
-            ...mapGetters(['optionsShip', 'highlightMasterShips', 'optionMinLuck', 'optionShipNameLanguage']),
+            ...mapGetters(['optionsShip', 'optionsHideMaxStat', 'highlightMasterShips', 'optionMinLuck', 'optionShipNameLanguage']),
 
             avatarClass() {
                 return `ship${this.ship.masterId}`;
@@ -98,7 +98,7 @@
                 return `${name.toUpperCase()} ${this.ship[name]}/${this.ship[`${name}_max`]}`;
             },
             maxed(name) {
-                return this.ship[name] >= this.ship[`${name}_max`] ? "max" : "";
+                return this.ship[name] >= this.ship[`${name}_max`];
             },
             generateStat(name) {
                 let classes = `kce-ship-${name} `;
@@ -107,7 +107,9 @@
                     if (this.ship.lk >= 50) classes+=`max`;
                     else if (this.ship.lk >= 40) classes+=`half`;
                 } else {
-                    classes+=this.maxed(name);
+                    if(this.mainStats.indexOf(name)!==-1)
+                        classes += this.maxed(name) ? 'hidden ' : '';
+                    classes += this.maxed(name) ? 'max ' : '';
                 }
                 return classes.trim();
             }

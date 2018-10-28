@@ -16,11 +16,20 @@
         </div>
         <div class="shipStats">
             <p>Ship stats to display</p>
-            <label class="checkbox" v-for="name in displayStats" :key="modeName+'_'+name">
-                <input type="checkbox" @change="updateStat(name,$event)" :checked="mode.display.ship[name]">
-                {{name}}
-            </label>
+            <p>
+                <label class="checkbox" v-for="name in displayStats" :key="modeName+'_'+name">
+                    <input type="checkbox" @change="updateStat(name,$event)" :checked="mode.display.ship[name]">
+                    {{name}}
+                </label>
+            </p>
+            <p>
+                <label class="checkbox regular-size">
+                    <input type="checkbox" @change="toggleHideMaxedMainStats" :checked="mode.display.hideMaxedMainStats">
+                    Hide max main stats (FP TP AR AA) if they are at max.
+                </label>
+            </p>
         </div>
+
         <div>
             <p>Minimum luck amount to display. This will not overwrite hidden luck status from checkboxes above.</p>
             <p><input class="input luck-input" type="text" placeholder="30" :value="minLuckValue" @keyup="updateMinLuck"
@@ -170,6 +179,12 @@
                     modeName: this.modeName,
                     optionName: "minLuck",
                     value: value.length ? parseInt(value) : 0
+                });
+            },
+            toggleHideMaxedMainStats(){
+                this.$store.commit('toggleHideMaxedMainStats', {
+                    modeName: this.modeName,
+                    value: value.checked
                 });
             }
         }

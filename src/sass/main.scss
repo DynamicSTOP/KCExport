@@ -273,6 +273,9 @@ $shipelement-padding: 20px;
         &:last-child {
           margin-right: initial;
         }
+        &.regular-size{
+          text-transform: none;
+        }
       }
     }
     input[type='text'] {

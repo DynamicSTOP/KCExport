@@ -11,6 +11,7 @@ const basemode = {
             as: false,
             hp: false
         },
+        hideMaxedMainStats: false
     },
     highlightMasterId: [],
     minLuck: 0,
@@ -29,10 +30,13 @@ const state = {
                     tp: true,
                     ar: true,
                     aa: true,
-                    as: true,
-                    hp: true,
+                    as: false,
+                    hp: false,
                     lk: true
-                }
+                },
+                // for stats fp tp ar aa
+                // if it's >= max then it wouldn't be shown
+                hideMaxedMainStats: true
             },
             // very usefull ships ids will go here
             // akashi is an example. everyone needs at least 1 akashi, right?
@@ -58,6 +62,7 @@ Object.assign(state.modes.regular, basemode);
 
 const getters = {
     optionsShip: state => state.modes[state.currentMode].display.ship,
+    optionsHideMaxStat: state => state.modes[state.currentMode].display.hideMaxedMainStats,
     optionMinLuck: state => state.modes[state.currentMode].minLuck,
     optionShipNameLanguage: state => state.modes[state.currentMode].shipNameLanguage,
     highlightMasterShips: state => state.modes[state.currentMode].highlightMasterId,
@@ -104,6 +109,10 @@ const mutations = {
     },
     removeFromHighlights(state, {modeName, value}) {
         state.modes[modeName].highlightMasterId = state.modes[modeName].highlightMasterId.filter((v) => v !== value);
+        mutations.saveOptions(state);
+    },
+    toggleHideMaxedMainStats(state,{modeName, value}) {
+        state.modes[modeName].display.hideMaxedMainStats = value;
         mutations.saveOptions(state);
     }
 };
