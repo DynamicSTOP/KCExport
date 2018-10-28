@@ -14,6 +14,7 @@ const basemode = {
         hideMaxedMainStats: false
     },
     highlightMasterId: [],
+    filterMasterIds: [],
     minLuck: 0,
     showInHeader: true,
     shipNameLanguage: "en"
@@ -43,6 +44,9 @@ const state = {
             highlightMasterId: [
                 182, 187 //akashi ids
             ],
+            // if not empty, only those ships that matches master ids would be shown
+            // it can be usefull in case of some historical lists for events
+            filterMasterIds: [],
             // min required luck that will trigger luck icon show
             minLuck: 30,
             // Doing nothing right now.
@@ -66,6 +70,7 @@ const getters = {
     optionMinLuck: state => state.modes[state.currentMode].minLuck,
     optionShipNameLanguage: state => state.modes[state.currentMode].shipNameLanguage,
     highlightMasterShips: state => state.modes[state.currentMode].highlightMasterId,
+    filterMasterShips: state => state.modes[state.currentMode].filterMasterIds,
     isSenpoiMode: state => state.currentMode === "senpoi",
     optionsModes: state => state.modes
 };
@@ -109,6 +114,14 @@ const mutations = {
     },
     removeFromHighlights(state, {modeName, value}) {
         state.modes[modeName].highlightMasterId = state.modes[modeName].highlightMasterId.filter((v) => v !== value);
+        mutations.saveOptions(state);
+    },
+    addToFiltered(state, {modeName, value}) {
+        state.modes[modeName].filterMasterIds.push(value);
+        mutations.saveOptions(state);
+    },
+    removeFromFiltered(state, {modeName, value}) {
+        state.modes[modeName].filterMasterIds = state.modes[modeName].filterMasterIds.filter((v) => v !== value);
         mutations.saveOptions(state);
     },
     toggleHideMaxedMainStats(state,{modeName, value}) {

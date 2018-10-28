@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="shipStats">
-            <p>Ship stats to display</p>
+            <p>Ship stats to display (click on icons).</p>
             <div>
                 <div v-for="name in displayStats" @click="updateStat(name)"
                      :class="getStatsBoxClass(name)" class="stat" :title="name"
@@ -30,18 +30,13 @@
                     Hide max main stats (FP TP AR AA) if they are at max.
                 </label>
             </p>
-        </div>
-
-        <div>
             <p>Minimum luck amount to display. This will not overwrite hidden luck status from checkboxes above.</p>
             <p><input class="input luck-input" type="text" placeholder="30" :value="minLuckValue" @keyup="updateMinLuck"
                       @change="updateMinLuck"></p>
         </div>
         <div>
-            <p>Ship highlighting. Start typing in ship master id or name to see suggestions. Click on suggestion icon
-                to
-                add.
-            </p>
+            <p>Ship highlighting.</p>
+            <p>Start typing in ship master id or name to see suggestions. Click on suggestion icon to add.</p>
             <p><input class="input" type="text" @keyup="updateSuggestions" @change="updateSuggestions"
                       placeholder="182 or Akashi"></p>
             <div class="highlightSuggestions">
@@ -52,6 +47,22 @@
             <div class="highlightedMasterShips" :class="{min:shipsToHighlight.length===0}">
                 <div class="kce-ship-icon" v-for="masterId in shipsToHighlight" :class="'ship'+masterId"
                      :key="'m'+masterId" :title="makeIconTitle(masterId)" @click="removeFromHighlights(masterId)"></div>
+            </div>
+        </div>
+
+        <div>
+            <p>Ship strict filter. If it's not empty, only those from here would be shown.</p>
+            <p>Start typing in ship master id or name to see suggestions. Click on suggestion icon to add.</p>
+            <p><input class="input" type="text" @keyup="filterSuggestions" @change="filterSuggestions"
+                      placeholder="182 or Akashi"></p>
+            <div class="filterSuggestions">
+                <div class="kce-ship-icon" v-for="ship in suggestedFilteredShips" :class="'ship'+ship.id"
+                     :key="'m'+ship.id" :title="makeIconTitle(ship.id)" @click="addToFiltred(ship.id)"></div>
+            </div>
+            <p>Currently filtered ships. Click on icon to remove.</p>
+            <div class="filteredShips" :class="{min:shipsToFilter.length===0}">
+                <div class="kce-ship-icon" v-for="masterId in shipsToFilter" :class="'ship'+masterId"
+                     :key="'m'+masterId" :title="makeIconTitle(masterId)" @click="removeFromFiltered(masterId)"></div>
             </div>
         </div>
 
@@ -76,7 +87,8 @@
                 suggestions: [],
                 shipsArray: [],
                 suggestionsValue: "",
-                displayStats:['fp','tp','ar','aa','as','hp','lk']
+                filterValue: "",
+                displayStats: ['fp', 'tp', 'ar', 'aa', 'as', 'hp', 'lk']
             }
         },
         computed: {
@@ -93,30 +105,44 @@
             shipsToHighlight() {
                 return this.mode.highlightMasterId;
             },
+            shipsToFilter() {
+                return this.mode.filterMasterIds;
+            },
             suggestedShips() {
                 let suggestions = [];
                 if (this.suggestionsValue.length === 0)
                     return suggestions;
-                if (this.suggestionsValue.match(/^[\d]+$/)) {
-                    //it's master id
-                    suggestions = shipsArray
-                        .filter((ship) => ship.id.toString().indexOf(this.suggestionsValue) !== -1)
-                        .filter((s) => this.shipsToHighlight.indexOf(s.id) === -1)
-                } else {
-                    suggestions = shipsArray
-                        .filter((ship) =>
-                            ship.id.toString().indexOf(this.suggestionsValue) !== -1
-                            || ship.name.ja_jp && ship.name.ja_jp.toLowerCase().indexOf(this.suggestionsValue) !== -1
-                            || ship.name.ja_romaji && ship.name.ja_romaji.toLowerCase().indexOf(this.suggestionsValue) !== -1)
-                        .filter((s) => this.shipsToHighlight.indexOf(s.id) === -1)
-                }
+                suggestions = this.getMastersSuggestions(this.suggestionsValue);
+                suggestions = suggestions.filter((s) => this.shipsToHighlight.indexOf(s.id) === -1);
+                suggestions.sort((a, b) => a - b);
+                return suggestions;
+            },
+            suggestedFilteredShips() {
+                let suggestions = [];
+                if (this.filterValue.length === 0)
+                    return suggestions;
+                suggestions = this.getMastersSuggestions(this.filterValue);
+                suggestions = suggestions.filter((s) => this.shipsToFilter.indexOf(s.id) === -1);
                 suggestions.sort((a, b) => a - b);
                 return suggestions;
             }
         },
         methods: {
-            getStatsBoxClass(name){
-                return `kce-ship-${name} ${this.mode.display.ship[name]?'max':''}`.trim()
+            getMastersSuggestions(value) {
+                let suggestions = [];
+                if (value.match(/^[\d]+$/)) {
+                    suggestions = shipsArray.filter((ship) => ship.id.toString().indexOf(value) !== -1)
+                } else {
+                    suggestions = shipsArray
+                        .filter((ship) =>
+                            ship.id.toString().indexOf(value) !== -1
+                            || ship.name.ja_jp && ship.name.ja_jp.toLowerCase().indexOf(value) !== -1
+                            || ship.name.ja_romaji && ship.name.ja_romaji.toLowerCase().indexOf(value) !== -1)
+                }
+                return suggestions;
+            },
+            getStatsBoxClass(name) {
+                return `kce-ship-${name} ${this.mode.display.ship[name] ? 'max' : ''}`.trim()
             },
             makeIconTitle(masterId) {
                 let title = masterId + ":";
@@ -136,7 +162,7 @@
                 }
                 return title;
             },
-            updateStat(statName, event) {
+            updateStat(statName) {
                 this.$store.commit('updateOptionsDisplayStat', {
                     modeName: this.modeName,
                     statName,
@@ -150,6 +176,13 @@
                     optionName: "shipNameLanguage",
                     value: event.target.value
                 });
+            },
+            filterSuggestions(event) {
+                let value = event.target.value.trim().replace(/[^\d\w\s一-龯]/g, '');
+                if (value.length === 0) {
+                    return this.filterValue = "";
+                }
+                this.filterValue = value.toLowerCase();
             },
             updateSuggestions(event) {
                 let value = event.target.value.trim().replace(/[^\d\w\s一-龯]/g, '');
@@ -166,6 +199,18 @@
             },
             removeFromHighlights(masterId) {
                 this.$store.commit('removeFromHighlights', {
+                    modeName: this.modeName,
+                    value: masterId
+                });
+            },
+            addToFiltred(masterId) {
+                this.$store.commit('addToFiltered', {
+                    modeName: this.modeName,
+                    value: masterId
+                });
+            },
+            removeFromFiltered(masterId) {
+                this.$store.commit('removeFromFiltered', {
                     modeName: this.modeName,
                     value: masterId
                 });
