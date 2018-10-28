@@ -181,10 +181,10 @@
                     value: value.length ? parseInt(value) : 0
                 });
             },
-            toggleHideMaxedMainStats(){
+            toggleHideMaxedMainStats(event){
                 this.$store.commit('toggleHideMaxedMainStats', {
                     modeName: this.modeName,
-                    value: value.checked
+                    value: event.target.checked
                 });
             }
         }
