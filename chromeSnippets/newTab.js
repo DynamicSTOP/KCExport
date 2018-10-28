@@ -162,11 +162,13 @@
             ship.ex_item!==0?1:0// extra slot open
         ];
 
-        shipData.push(ship.as[0]);//5
-        shipData.push(ship.aa[0]);//6
-        shipData.push(ship.fp[0]);//7
-        shipData.push(ship.tp[0]);//8
-        shipData.push(ship.ar[0]);//9
+        let MasterShip = ship.master();
+
+        shipData.push(ship.nakedAsw());//5
+        shipData.push(MasterShip.api_tyku[0] +ship.mod[2]);//6
+        shipData.push(MasterShip.api_raig[0] +ship.mod[1]);//7
+        shipData.push(MasterShip.api_souk[0] +ship.mod[3]);//8
+        shipData.push(MasterShip.api_houg[0] +ship.mod[0]);//9
         shipData.push(ship.lk[0]);
         shipData.push(ship.hp[0]);
 
@@ -180,8 +182,6 @@
         //     console.log(dp._packShip(shipData));
         // }
 
-
-
     }
 
     if(JSON.stringify(ships)!==JSON.stringify(dp.unpackShips(dp.version+";;"+shipsP.join(","))))
@@ -193,6 +193,9 @@
     if(!dp._validate(dp.packShips(ships)))
         throw "mismatch 3";
 
-    console.log("http://localhost:3000/#/ship-list-raw/"+dp.packShips(ships));
-    return window.open("http://localhost:3000/#/ship-list-raw/"+dp.packShips(ships));
+    //const trustedDomain="http://localhost:3000";
+    const trustedDomain="https://export.kc-db.info";
+    //const trustedDomain="http://192.168.1.115:3000";
+    console.log(trustedDomain+"/#/ship-list-raw/"+dp.packShips(ships));
+    return window.open(trustedDomain+"/#/ship-list-raw/"+dp.packShips(ships));
 })();

@@ -20,18 +20,18 @@ class ShipParser {
 
     arrayFromShips(shipObjects) {
         return shipObjects.map((s) => [
-            s.id,
-            s.masterId,
-            s.lvl,
-            s.sally ? s.sally : 0,
-            s.extra_slot ? 1 : 0,
-            s.as,
-            s.aa,
-            s.fp,
-            s.tp,
-            s.ar,
-            s.lk,
-            s.hp
+            s.id, //0
+            s.masterId, //1
+            s.lvl, //2
+            s.sally ? s.sally : 0,//3
+            s.extra_slot ? 1 : 0, //4
+            s.as, //5
+            s.aa, //6
+            s.tp, //7
+            s.ar, //8
+            s.fp, //9
+            s.lk, //10
+            s.hp  //11
         ]);
     }
 

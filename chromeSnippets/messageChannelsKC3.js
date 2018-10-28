@@ -10,6 +10,7 @@
         //console.log(i,ship);
 
         if(ship.lock!=1) continue;
+        let MasterShip = ship.master();
 
         ships.push({
             id: ship.rosterId,
@@ -17,13 +18,13 @@
             lvl: ship.level,
             sally: ship.sally,
             extra_slot: ship.ex_item !== 0 ? 1 : 0,
-            fp: ship.fp[0],
-            tp: ship.tp[0],
-            aa: ship.aa[0],
-            ar: ship.ar[0],
+            fp: MasterShip.api_houg[0] +ship.mod[0],
+            tp: MasterShip.api_raig[0] +ship.mod[1],
+            aa: MasterShip.api_tyku[0] +ship.mod[2],
+            ar: MasterShip.api_souk[0] +ship.mod[3],
             lk: ship.lk[0],
             hp: ship.hp[0],
-            as: ship.as[0]
+            as: ship.nakedAsw()
         });
     }
 
@@ -33,7 +34,6 @@
     //console.log(JSON.stringify(ships));
 
     //const trustedDomain="http://localhost:3000";
-
     //const trustedDomain="http://192.168.1.115:3000";
     const trustedDomain="https://export.kc-db.info";
     window.addEventListener("message",(m)=>{

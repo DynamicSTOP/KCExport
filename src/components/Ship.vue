@@ -11,7 +11,14 @@
                 </div>
                 <!-- bottom line: space for bp, max stats, daihatsu icon, etc-->
             </div>
-            <div class="kce-ship-name kce-ship-name8" :title="name">{{name}}</div>
+            <div class="kce-ship-bottom-line">
+                <div class="kce-ship-name kce-ship-name8" :title="name">{{name}}</div>
+                <div class="kce-ship-stats-box">
+                    <div v-for="(stat) in availableMainStats" :class="generateStat(stat)" :title="statTitle(stat)"
+                         :key="(stat)"></div>
+                </div>
+            </div>
+
         </div>
     </li>
 </template>
@@ -57,10 +64,16 @@
                 stats = stats.filter((s) => this.optionsShip[s]);
                 return stats;
             },
-            extraClasses(){
-                let extra_classes= "";
-                if(this.highlightMasterShips.indexOf(this.ship.masterId)!==-1){
-                    extra_classes+=" highlightMasterShips";
+            availableMainStats() {
+                let stats = this.mainStats.slice();
+                if (this.ship.tp_max <= 0) stats = stats.filter((s) => s !== 'tp');
+                stats = stats.filter((s) => this.optionsShip[s]);
+                return stats;
+            },
+            extraClasses() {
+                let extra_classes = "";
+                if (this.highlightMasterShips.indexOf(this.ship.masterId) !== -1) {
+                    extra_classes += " highlightMasterShips";
                 }
                 return extra_classes;
             }
@@ -72,6 +85,12 @@
                 default() {
                     return ['as', 'lk', 'hp'];
                 }
+            },
+            mainStats: {
+                type: Array,
+                default() {
+                    return ['fp', 'tp', 'ar', 'aa'];
+                }
             }
         },
         methods: {
@@ -82,12 +101,15 @@
                 return this.ship[name] >= this.ship[`${name}_max`] ? "max" : "";
             },
             generateStat(name) {
+                let classes = `kce-ship-${name} `;
                 if (name === "lk") {
-                    if (this.ship.lk < this.optionMinLuck) return `kce-ship-${name} hidden`;
-                    if (this.ship.lk >= 50) return `kce-ship-${name} max`;
-                    else if (this.ship.lk >= 40) return `kce-ship-${name} half`;
+                    if (this.ship.lk < this.optionMinLuck) classes+=`hidden`;
+                    if (this.ship.lk >= 50) classes+=`max`;
+                    else if (this.ship.lk >= 40) classes+=`half`;
+                } else {
+                    classes+=this.maxed(name);
                 }
-                return `kce-ship-${name}`;
+                return classes.trim();
             }
         }
     }
