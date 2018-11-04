@@ -306,13 +306,20 @@ $shipelement-padding: 20px;
     display: table;
     margin: 0 auto;
     .shipRow{
+      white-space: nowrap;
+      >div{
+        vertical-align: middle;
+        white-space: nowrap;
+      }
       display: table-row;
       &.hidden{
         display: none;
       }
       .ship-icon{
-        height:25px;
-        width:25px;
+        >div {
+          height:25px;
+          width:25px;
+        }
       }
       &.odd{
         cursor:default;
@@ -322,6 +329,24 @@ $shipelement-padding: 20px;
       &:not(.header):hover, &.header > div:not(.noHover):hover{
         cursor:pointer;
         background: rgba(255,255,255,0.4);
+      }
+
+      .slots {
+        .slot,.extra{
+          border-radius: 50%;
+          background: #ccc;
+          width: 20px;
+          height: 20px;
+          line-height:20px;
+          float:left;
+          display: inline-block;
+          color:#000;
+          font-size:12px;
+          text-align: center;
+        }
+        .extra{
+          background: #299c13;
+        }
       }
 
       > div {

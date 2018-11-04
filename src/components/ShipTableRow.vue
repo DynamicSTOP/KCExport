@@ -1,7 +1,8 @@
 <template>
     <div class="shipRow">
+        <div class="num">{{num||""}}</div>
         <div class="id">{{ship.id}}</div>
-        <div class="ship-icon" :class="avatarClass"></div>
+        <div class="ship-icon"><div :class="avatarClass"></div></div>
         <div class="name">{{ship.name}}</div>
         <div class="group">{{ship.group}}</div>
         <div class="lvl" :class="lvlClass">{{ship.lvl}}</div>
@@ -15,7 +16,12 @@
         <div class="los">{{ship.los || ""}}</div>
         <div class="lk">{{ship.lk}}</div>
         <div class="night">{{ship.night}}</div>
-        <div class="slots">slots</div>
+        <div class="slots">
+            <span class="slot" v-for="(slot, i) in ship.slots" :key="`s${ship.id}_s${i}`">{{slot||''}}</span>
+        </div>
+        <div class="slots">
+            <span class="slot extra" v-if="ship.extraSlot"></span>
+        </div>
     </div>
 </template>
 
@@ -24,7 +30,7 @@
     import {mapGetters} from 'vuex'
 
     export default {
-        props: ['ship'],
+        props: ['ship','num'],
         data() {
             return {}
         },
@@ -43,7 +49,7 @@
                     return "kce-ship-level-b";
                 }
                 return "";
-            },
+            }
         },
         methods: {}
     }

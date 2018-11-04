@@ -63,6 +63,8 @@ class ShipParser {
                         speed: 5,
                         suffix: "",
                         stype: 0,
+                        slots:[],
+                        daihatsu: false,
                         sortno: 9999
                     });
                     return true;
@@ -99,6 +101,8 @@ class ShipParser {
                     suffixEn: master.name.suffix_rj || null,
                     suffixJp: master.name.suffix_jp || null,
                     stype: master.stype,
+                    slots: master.slot,
+                    daihatsu: !!(master.daihatsu),
                     sortno: master.no
                 });
                 return true;
@@ -147,6 +151,8 @@ class ShipParser {
                         speed: 5,
                         suffix: "",
                         stype: 0,
+                        slots:[],
+                        daihatsu: false,
                         sortno: 9999
                     });
                     return true;
@@ -181,6 +187,8 @@ class ShipParser {
                     name: master.name.ja_romaji !== "" ? master.name.ja_romaji : master.name.ja_jp,
                     suffix: master.name.suffix_rj || null,
                     stype: master.stype,
+                    slots: master.slot,
+                    daihatsu: !!(master.daihatsu),
                     sortno: master.no
                 });
                 return true;
