@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import ShipList from '@/components/ShipList.vue'
+import ShipTable from '@/components/ShipTable.vue'
+import Options from '@/components/Options.vue'
 import NewTab from '@/components/NewTab.vue'
 import Home from '@/components/Home.vue'
 import ListStorage from '@/components/ListStorage.vue'
@@ -31,7 +33,7 @@ export default new Router({
             component: ShipList,
             beforeEnter(to,from,next){
                 //it's not parsing by default as expected
-                to.params.raw = decodeURIComponent(to.fullPath).replace(/\s/g,"+").substr('/ship-list-raw/'.length);
+                to.params.raw = window.location.hash.substr('#/ship-list-raw/'.length);
                 next();
             }
         },
@@ -41,9 +43,19 @@ export default new Router({
             component: ShipList
         },
         {
+            path: '/ship-table',
+            name: 'ShipTable',
+            component: ShipTable
+        },
+        {
             path: '/newTab',
             name: 'NewTab',
             component: NewTab
+        },
+        {
+            path: '/options',
+            name: 'Options',
+            component: Options
         },
         {
             path: '*',

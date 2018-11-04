@@ -165,10 +165,10 @@ class datapacker_v1 {
 
         /**
          * what remains is
-         * ["as", "aa", "tp", "ar", "fp", "aa", "lk", "hp"]
+         * ship_as_mod, ship_aa, ship_tp, ship_ar, ship_fp, ship_lk, ship_hp
          * but since capped is dropped we need to read them.
          */
-        arr.splice(0, 0, ...new Array(14 - arr.length).fill("0"));
+        arr.splice(0, 0, ...new Array(2*7 - arr.length).fill("0"));
 
         arr.join("").match(/.{2}/g).map((d) => shipData.push(this._from79(d)));
 
@@ -181,6 +181,7 @@ class datapacker_v1 {
      * @returns {string}
      */
     packShips(shipsArray) {
+        shipsArray.sort((a, b) => a[0] - b[0]);
         let s = `${this.version};;`;
         s += shipsArray.map((s) => this._packShip(s)).join(`,`);
         return s;
@@ -196,7 +197,7 @@ class datapacker_v1 {
         if (v !== this.version)
             throw new Error(`Baka! This was packed with different version! ${v}. This object can parse only ${this.version}`);
 
-        return arr[0].split(",").map((s) => this._unpackShip(s));
+        return arr[0].split(",").map((s) => this._unpackShip(s)).sort((a, b) => a[0] - b[0]);
     }
 
     _test(shipsArray) {

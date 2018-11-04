@@ -1,0 +1,42 @@
+.stat {
+  content: " ";
+  display: inline-block;
+  width: var(--stats-size);
+  height: var(--stats-size);
+  background-size: contain;
+  border-radius: 50%;
+  margin-right: 5px;
+  opacity: 0.2;
+  vertical-align: top;
+  &.half {
+    opacity: 0.6;
+  }
+  &.max {
+    opacity: 1;
+  }
+}
+
+.kce-ship-hp {
+  background-image: url("./../images/mod/mod_hp.png");
+}
+.kce-ship-as {
+  background-image: url("./../images/mod/mod_as.png");
+}
+.kce-ship-lk {
+  background-image: url("./../images/mod/mod_lk.png");
+}
+.kce-ship-ar {
+  background-image: url("./../images/mod/mod_ar.png");
+}
+.kce-ship-aa {
+  background-image: url("./../images/mod/mod_aa.png");
+}
+.kce-ship-tp {
+  background-image: url("./../images/mod/mod_tp.png");
+}
+.kce-ship-fp {
+  background-image: url("./../images/mod/mod_fp.png");
+}
+.hidden{
+  height:0;
+}

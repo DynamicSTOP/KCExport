@@ -25,8 +25,8 @@ let check = async(url,path) =>{
     })
 };
 
-
 check("https://raw.githubusercontent.com/TeamFleet/WhoCallsTheFleet/master/app-db/ships.nedb",__dirname + '/../external/ships.nedb')
+.then(()=>check("https://raw.githubusercontent.com/TeamFleet/WhoCallsTheFleet/master/app-db/item_types.nedb",__dirname + '/../external/item_types.nedb'))
 .then(()=>check("https://raw.githubusercontent.com/TeamFleet/WhoCallsTheFleet/master/app-db/ship_types.nedb",__dirname + '/../external/ship_types.nedb'))
 .then(()=>check("https://raw.githubusercontent.com/TeamFleet/WhoCallsTheFleet/master/app-db/ship_namesuffix.nedb",__dirname + '/../external/ship_namesuffix.nedb'))
 .then(()=>{
@@ -39,6 +39,7 @@ check("https://raw.githubusercontent.com/TeamFleet/WhoCallsTheFleet/master/app-d
     });
     stypes[`s7`]="FBB";
     stypes[`s11`]="CVB";
+    stypes[`s34`]="CL";
 
     let suff={};
     const rawSuff = fs.readFileSync(__dirname + '/../external/ship_namesuffix.nedb', 'utf8');
@@ -48,10 +49,21 @@ check("https://raw.githubusercontent.com/TeamFleet/WhoCallsTheFleet/master/app-d
     });
 
 
+    let itemTypes = {};
+    const rawItemTypes = fs.readFileSync(__dirname + '/../external/item_types.nedb', 'utf8');
+    rawItemTypes.split("\n").map((raw_ItemTypes)=>{
+        raw_ItemTypes = JSON.parse(raw_ItemTypes);
+        itemTypes[`t${raw_ItemTypes.id}`] = raw_ItemTypes;
+    });
+    dlc_ships = itemTypes[`t38`].equipable_on_type;
+
+
+
     const rawShips = fs.readFileSync(__dirname + '/../external/ships.nedb', 'utf8');
     let obj = {};
     rawShips.split("\n").map((master)=>{
         master = JSON.parse(master);
+        if (master.no === 0) return;
         let ship = {
             id:master.id,
             no:master.no,
@@ -73,17 +85,29 @@ check("https://raw.githubusercontent.com/TeamFleet/WhoCallsTheFleet/master/app-d
                 armor: master.stat.armor,
                 armor_max: master.stat.armor_max,
                 luck: master.stat.luck,
-                luck_max: master.stat.luck_max
+                luck_max: master.stat.luck_max,
             },
+            slot: master.slot,
             api_typen:stypes[`s${master.type}`].toUpperCase(),
-
-
         };
+        if(master.additional_item_types && master.additional_item_types.length>0){
+            ship.daihatsu = master.additional_item_types.indexOf(38) !== -1;
+        }
+        if (dlc_ships.indexOf(master.type) !== -1) {
+            ship.daihatsu = true;
+        }
+        if(master.additional_disable_item_types && master.additional_disable_item_types.length>0){
+            ship.daihatsu = master.additional_disable_item_types.indexOf(38) !== -1;
+        }
+
         if (typeof master.name.ja_romaji !== "undefined"){
             ship.name.ja_romaji = master.name.ja_romaji.split(" ").map((s)=>s.charAt(0).toUpperCase() + s.slice(1)).join(" ");
         }
         if(master.name.suffix!==null){
             ship.name.suffix_rj = suff[`s${master.name.suffix}`].ja_romaji.split(" ").map((s)=>s.charAt(0).toUpperCase() + s.slice(1)).join(" ");
+        }
+        if (master.name.suffix !== null) {
+            ship.name.suffix_jp = suff[`s${master.name.suffix}`].ja_jp;
         }
 
         obj[ship.id]=ship;

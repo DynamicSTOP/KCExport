@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/DynamicSTOP/kcexport.svg?branch=master)](https://travis-ci.org/DynamicSTOP/kcexport)
 
-**Website** [https://export.kc-db.info](https://export.kc-db.info). Ship list [example](https://export.kc-db.info/#/ship-list-short/6d5d085470f1)  
+**Website** [https://export.kc-db.info](https://export.kc-db.info). Ship list [example](https://export.kc-db.info/#/ship-list-short/b07429decb38)  
 
 Made for easy sharing **digital** version of ship lists. Equip lists are planned feature.
  

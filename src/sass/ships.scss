@@ -1,4 +1,4 @@
-.kce-ship-list{
+.kce-ship-list {
   list-style: none;
   --ship-element-width: 320px;
   --ship-element-height: 48px;
@@ -8,34 +8,68 @@
   column-width: var(--ship-element-width);
 
   -webkit-column-gap: 0;
-  -moz-column-gap:0;
+  -moz-column-gap: 0;
   column-gap: 0;
 
-  -moz-column-fill:balance;
+  -moz-column-fill: balance;
   column-fill: balance;
 
-  .kce-ship-element.kce-title-bar{
-    font-size: calc( var(--ship-element-height) / 2 );
+  .kce-ship-element {
+    .kce-ship-grouptitle {
+      background-color: rgba(0, 0, 0, 0.6);
+      box-shadow: 2px 2px 2px #000;
+      vertical-align: middle;
 
-    .kce-ship-count{
-      float:left;
-      margin-left:12px;
-      height:var(--ship-element-height);
-      line-height:var(--ship-element-height);
-      color: #42abf1;
-      font-weight:800;
+      text-align: left;
+      padding-left: 30px;
+      font-size: 30px;
+      font-weight: 600;
+      margin-bottom: 10px;
+
+      border-radius: calc(var(--ship-element-height) / 10);
+      line-height: var(--ship-element-height);
+
+      position: relative;
+      background-image: linear-gradient(#484e55, #3a3f44 60%, #313539);
+      color: #bfedf9;
+    }
+
+    &.kce-title-bar, .kce-ship-grouptitle {
+      font-size: calc(var(--ship-element-height) / 2);
+
+      .kce-ship-count {
+        float: left;
+        margin-left: 12px;
+        height: var(--ship-element-height);
+        line-height: var(--ship-element-height);
+        color: #42abf1;
+        font-weight: 800;
+      }
+    }
+    &.highlightMasterShips {
+      background: var(--highlightMasterShipsColor);
     }
   }
 
-}
-
-.kce-ship-list.kce-select-mode {
-  .kce-ship{
-    .kce-right-icon{
-      display:block;
-    }
-    .kce-ship-text{
-      width: calc( var(--ship-element-width) - 8px - var(--ship-element-height) * 4 );
+  &.kce-select-mode {
+    .kce-ship {
+      .kce-right-icon {
+        display: block;
+      }
+      .kce-ship-text {
+        width: calc(var(--ship-element-width) - 8px - var(--ship-element-height) * 4);
+      }
     }
   }
 }
+
+.smallBlocks .kce-ship-list {
+  --ship-element-width: 200px;
+  .kce-ship-element {
+    margin: 0 10px;
+    &.kce-ship .kce-ship-name {
+      width: calc(var(--ship-element-width) - var(--ship-element-height) * 1);
+    }
+  }
+}
+
