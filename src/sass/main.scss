@@ -305,6 +305,7 @@ $shipelement-padding: 20px;
   .shipTable{
     display: table;
     margin: 0 auto;
+    border-spacing: 2px;
     .shipRow{
       &.header{
         .active{
@@ -353,6 +354,30 @@ $shipelement-padding: 20px;
           background: #299c13;
         }
       }
+
+      .half.lk{
+        background:rgba(17, 99, 17, 0.42);
+      }
+
+      .max{
+        &.fp{
+          background: #833232;
+        }
+        &.ar{
+          background: #947600;
+        }
+        &.aa{
+          background: #935b07;
+        }
+        &.tp{
+          background: #073e78;
+        }
+        &.lk{
+          background: #116311;
+        }
+      }
+
+
 
       > div {
         display: table-cell;
