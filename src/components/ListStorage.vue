@@ -60,21 +60,22 @@
 <style lang="scss">
     .listStorage {
         margin: 30px 20px;
-    }
-
-    .exportImport {
-        margin-bottom: 20px;
-    }
-
-    .shipTable{
-        > :nth-child(2n+1), > .noHover:hover{
-            cursor:default;
-            background: rgba(0, 0, 0, 0.2);
+        .exportImport {
+            margin-bottom: 20px;
         }
 
-        > :hover{
-            cursor:pointer;
-            background: rgba(255,255,255,0.4);
+        .shipTable{
+            > :nth-child(2n+1), > .noHover:hover{
+                cursor:default;
+                background: rgba(0, 0, 0, 0.2);
+            }
+
+            > :hover{
+                cursor:pointer;
+                background: rgba(255,255,255,0.4);
+            }
         }
     }
+
+
 </style>

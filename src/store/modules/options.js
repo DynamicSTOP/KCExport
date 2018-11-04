@@ -22,6 +22,8 @@ const basemode = {
 };
 
 const state = {
+    //please don't forget to update options version if you add something
+    optionsVersion: 1,
     modes: {
         regular: {/* build from basemode */},
         senpoi: {
@@ -79,6 +81,20 @@ const getters = {
     optionsModes: state => state.modes
 };
 
+function deepAssign(target, source) {
+    for (let i in source) {
+        if (!source.hasOwnProperty(i)) continue;
+        if (typeof source[i] === "string" || typeof source[i] === "number" || typeof source[i] === "boolean")
+            target[i] = source[i];
+        else if (source[i] instanceof Array)
+            target[i] = source[i].slice();
+        else if (typeof source[i] === "object"){
+            if (typeof target[i] === "undefined") target[i] = {};
+            deepAssign(target[i], source[i]);
+        }else console.error(`Baka Baka - load options ${i}`);
+    }
+}
+
 
 const mutations = {
     toggleSenpoi(state) {
@@ -99,7 +115,9 @@ const mutations = {
                 state.modes.senpoi.shipNameLanguage = "ja";
             }
             let kce_options = JSON.parse(localStorage.getItem("kce_options"));
-            Object.assign(state, kce_options);
+            if (typeof kce_options.optionsVersion !== "undefined") {
+                deepAssign(state, kce_options);
+            }
         } catch (e) {
             console.error(e);
         }

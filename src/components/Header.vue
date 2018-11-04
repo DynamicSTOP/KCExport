@@ -13,7 +13,8 @@
         <div class="navbar-menu" :class="{'is-active':menuShown}">
             <div class="navbar-start">
                 <router-link class="navbar-item" :to="{name:'Home'}" tag="div">Home</router-link>
-                <router-link class="navbar-item" :to="{name:'ShipList'}" tag="div">ShipList</router-link>
+                <router-link class="navbar-item" :to="{name:'ShipList'}" tag="div" v-show="!currentShipListEmpty">ShipList</router-link>
+                <router-link class="navbar-item" :to="{name:'ShipTable'}" tag="div" v-show="!currentShipListEmpty">ShipTable</router-link>
                 <router-link class="navbar-item" :to="{name:'Options'}" tag="div">Options</router-link>
                 <router-link class="navbar-item" :to="{name:'Storage'}" tag="div">Storage</router-link>
                 <div class="navbar-item senpoi" :class="{active:isSenpoiMode}" @click="$store.commit('toggleSenpoi')" title="Helper mode">Senpoi</div>
