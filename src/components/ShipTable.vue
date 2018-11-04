@@ -83,10 +83,12 @@
                         if (a[this.sortBy] === "undefined") return 1 * this.sortByInverse;
                         if (b[this.sortBy] === "undefined") return -1 * this.sortByInverse;
                         if (this.sortBy === "slots") {
-                            if (a.slots[0] !== b.slots[0]) {
-                                return (a.slots[0] - b.slots[0]) * this.sortByInverse;
-                            }
-                            return (a.slots.length - b.slots.length) * this.sortByInverse;
+                            if (a.slots.length > 0 && b.slots.length === 0) return -1 * this.sortByInverse;
+                            if (a.slots.length <= 0 && b.slots.length > 0) return 1 * this.sortByInverse;
+                            if (a.slots[0] > 0 && b.slots[0] <= 0) return -1 * this.sortByInverse;
+                            if (a.slots[0] <= 0 && b.slots[0] > 0) return 1 * this.sortByInverse;
+                            if (a.slots[0] !== b.slots[0]) return (b.slots[0] - a.slots[0]) * this.sortByInverse;
+                            if (a.slots.length !== b.slots.length) return (b.slots.length - a.slots.length) * this.sortByInverse;
                         } else {
                             if (typeof a[this.sortBy] === "string" && a[this.sortBy].localeCompare(b[this.sortBy]) !== 0) {
                                 return a[this.sortBy].localeCompare(b[this.sortBy]) * this.sortByInverse;
