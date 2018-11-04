@@ -13,24 +13,9 @@
         </div>
         <div class="shipTable">
             <div class="shipRow header">
-                <div class="num">#</div>
-                <div class="id" @click="setSort('id')">ID</div>
-                <div class="noHover ship-icon" @click="setSort('masterId')"></div>
-                <div class="name" @click="setSort('name')">Name</div>
-                <div class="group" @click="setSort('group')">Type</div>
-                <div class="lvl" @click="setSort('lvl')">LVL</div>
-                <div class="hp" @click="setSort('hp')">HP</div>
-                <div class="fp" @click="setSort('fp')">FP</div>
-                <div class="tp" @click="setSort('tp')">TP</div>
-                <div class="aa" @click="setSort('aa')">AA</div>
-                <div class="ar" @click="setSort('ar')">AR</div>
-                <div class="as" @click="setSort('as')">AS</div>
-                <div class="ev" @click="setSort('ev')">EV</div>
-                <div class="los" @click="setSort('los')">LoS</div>
-                <div class="lk" @click="setSort('lk')">LK</div>
-                <div class="night" @click="setSort('night')">Night</div>
-                <div class="slots" @click="setSort('slots')">Slots</div>
-                <div class="slots" @click="setSort('extraSlot')">Extra</div>
+                <div v-for="(column,i) in columns"
+                     :class="[column.class,{active:column.sortBy===sortBy}]"
+                     @click="setSort(column.sortBy)" :key="'ch_'+i">{{column.text || ''}}</div>
             </div>
             <ship-table-row v-for="ship in finilShipList" :class="{hidden:!ship.show,odd:ship.odd}" :num="ship.num"
                             :ship="ship" :key="`s`+ship.id"></ship-table-row>
@@ -54,7 +39,27 @@
                 typeSelected: shipTypes.slice(),
                 sortBy: 'lvl',
                 sortByInverse: -1,
-                dlcFilter: false
+                dlcFilter: false,
+                columns: [
+                    {class: 'num', text: '#'},
+                    {class: 'id', text: 'ID', sortBy: 'id'},
+                    {class: 'noHover ship-icon', sortBy: 'masterId'},
+                    {class: 'name', sortBy: 'name', text: 'Name'},
+                    {class: 'group', sortBy: 'group', text: 'Type'},
+                    {class: 'lvl', sortBy: 'lvl', text: 'LvL'},
+                    {class: 'hp', sortBy: 'hp', text: 'HP'},
+                    {class: 'fp', sortBy: 'fp', text: 'FP'},
+                    {class: 'tp', sortBy: 'tp', text: 'TP'},
+                    {class: 'aa', sortBy: 'aa', text: 'AA'},
+                    {class: 'ar', sortBy: 'ar', text: 'AR'},
+                    {class: 'as', sortBy: 'as', text: 'AS'},
+                    {class: 'ev', sortBy: 'ev', text: 'EV'},
+                    {class: 'los', sortBy: 'los', text: 'LoS'},
+                    {class: 'lk', sortBy: 'lk', text: 'LK'},
+                    {class: 'night', sortBy: 'night', text: 'Night'},
+                    {class: 'slots', sortBy: 'slots', text: 'Slots'},
+                    {class: 'slots', sortBy: 'extraSlot', text: 'Extra'}
+                ]
             }
         },
         name: "ShipTable",
@@ -83,11 +88,15 @@
                         if (a[this.sortBy] === "undefined") return 1 * this.sortByInverse;
                         if (b[this.sortBy] === "undefined") return -1 * this.sortByInverse;
                         if (this.sortBy === "slots") {
+                            // can equip anything
                             if (a.slots.length > 0 && b.slots.length === 0) return -1 * this.sortByInverse;
                             if (a.slots.length <= 0 && b.slots.length > 0) return 1 * this.sortByInverse;
+                            // can equip planes
                             if (a.slots[0] > 0 && b.slots[0] <= 0) return -1 * this.sortByInverse;
                             if (a.slots[0] <= 0 && b.slots[0] > 0) return 1 * this.sortByInverse;
+                            // amount of planes if the first slot
                             if (a.slots[0] !== b.slots[0]) return (b.slots[0] - a.slots[0]) * this.sortByInverse;
+                            // slots amount
                             if (a.slots.length !== b.slots.length) return (b.slots.length - a.slots.length) * this.sortByInverse;
                         } else {
                             if (typeof a[this.sortBy] === "string" && a[this.sortBy].localeCompare(b[this.sortBy]) !== 0) {
@@ -134,6 +143,7 @@
                 this.typeSelected = this.order.slice();
             },
             setSort(type) {
+                if (typeof type === "undefined") return;
                 if (this.sortBy === type) {
                     this.sortByInverse *= -1;
                 } else {

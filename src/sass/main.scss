@@ -290,7 +290,7 @@ $shipelement-padding: 20px;
     user-select: none;
     display: table;
     margin: 0 auto;
-    .type{
+    div{
       span{
         cursor: pointer;
         padding:3px;
@@ -306,6 +306,11 @@ $shipelement-padding: 20px;
     display: table;
     margin: 0 auto;
     .shipRow{
+      &.header{
+        .active{
+          background: #333;
+        }
+      }
       white-space: nowrap;
       >div{
         vertical-align: middle;
