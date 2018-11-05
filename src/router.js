@@ -5,6 +5,7 @@ import ShipTable from '@/components/ShipTable.vue'
 import Options from '@/components/Options.vue'
 import NewTab from '@/components/NewTab.vue'
 import Home from '@/components/Home.vue'
+import Help from '@/components/Help.vue'
 import ListStorage from '@/components/ListStorage.vue'
 
 Vue.use(Router);
@@ -56,6 +57,11 @@ export default new Router({
             path: '/options',
             name: 'Options',
             component: Options
+        },
+        {
+            path: '/help',
+            name: 'Help',
+            component: Help
         },
         {
             path: '*',
