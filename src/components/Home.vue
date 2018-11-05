@@ -1,5 +1,5 @@
 <template>
-    <div class="section">
+    <div class="section padding">
         <div class="title is-2">Welcome!</div>
         <div>
             <p>This site was made so you could easily exchange ship lists (and potentially equip lists in future)
