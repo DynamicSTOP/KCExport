@@ -12,7 +12,7 @@
 
         <div class="navbar-menu" :class="{'is-active':menuShown}">
             <div class="navbar-start">
-                <router-link class="navbar-item" :to="{name:'Home'}" tag="div">Home</router-link>
+                <router-link class="navbar-item" :to="{name:'Help'}" tag="div">Help</router-link>
                 <router-link class="navbar-item" :to="{name:'ShipList'}" tag="div" v-show="!currentShipListEmpty">ShipList</router-link>
                 <router-link class="navbar-item" :to="{name:'ShipTable'}" tag="div" v-show="!currentShipListEmpty">ShipTable</router-link>
                 <router-link class="navbar-item" :to="{name:'Options'}" tag="div">Options</router-link>
