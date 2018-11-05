@@ -38,6 +38,24 @@ body {
   --filterMasterShipsColor: #0d383c;
 }
 
+body > .section > .first {
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  text-align:center;
+  line-height: 20px;
+  font-size: 20px;
+  background: #fff;
+  padding:20px;
+  color:#000;
+  span{
+    margin-left:20px;
+    cursor:pointer;
+    color: #22F;
+  }
+}
+
 $shipelement-padding: 20px;
 
 .kce-list-header {
@@ -284,29 +302,109 @@ $shipelement-padding: 20px;
   }
 }
 
+.section{
+  padding:0;
+}
 
 .kce-ship-table{
+  --ship-table-width: 932px;
+  min-width: var(--ship-table-width);
+
   .filters{
     user-select: none;
     display: table;
     margin: 0 auto;
-    div{
-      span{
-        cursor: pointer;
+    .filter.top.type{
+      display: none;
+    }
+    .filter{
+      >div{
+        &:not(.noPointer){
+          cursor: pointer;
+        }
         padding:3px;
         color:#5f5f5f;
         &.selected{
           font-weight: 600;
           color: #ccc;
         }
+        display: inline-block;
       }
     }
   }
+
+  @media only screen and (min-width: 1200px){
+    position:relative;
+    .shipTable{
+      float:left;
+    }
+    .filters{
+      position:fixed;
+      right:0;
+      @media only screen and (min-width: 1700px){
+        width:720px;
+        right: calc( 100vw - 1700px);
+        border-top-right-radius: 15px;
+        border-bottom-right-radius: 15px;
+      }
+      margin: initial;
+      display: block;
+      background: rgba(255,255,255,0.1);
+      border-top-left-radius: 15px;
+      border-bottom-left-radius: 15px;
+      width: calc( 98vw - var(--ship-table-width) );
+      padding:5px;
+      .filter{
+        margin:20px 0;
+      }
+      .filter.type.bottom{
+        display: none;
+      }
+      .filter.type.top {
+        display: block;
+      }
+    }
+  }
+
   .shipTable{
+    .num, .ship-icon,
+    .lvl, .hp, .fp, .ar, .aa, .as,.los,.ev,.lk,.tp{
+      width:36px;
+    }
+    .id{
+      width:56px;
+    }
+    .name{
+      width:170px;
+    }
+    .group{
+      width:44px;
+    }
+    .night{
+      width:50px;
+    }
+    .num{
+      width:36px;
+    }
+    .num{
+      width:36px;
+    }
+    .slots{
+      width:104px;
+    }
+    .slots.extra{
+      width: 38px;
+      text-align: center;
+    }
+
     display: table;
     margin: 0 auto;
+    width: var(--ship-table-width);
+    border-spacing: 2px;
     .shipRow{
       &.header{
+        user-select: none;
+        background: rgba(255,255,255,0.1);
         .active{
           background: #333;
         }
@@ -324,6 +422,7 @@ $shipelement-padding: 20px;
         >div {
           height:25px;
           width:25px;
+          vertical-align: middle;
         }
       }
       &.odd{
@@ -354,9 +453,34 @@ $shipelement-padding: 20px;
         }
       }
 
+      .half.lk{
+        background:rgba(17, 99, 17, 0.42);
+      }
+
+      .max{
+        &.fp{
+          background: #833232;
+        }
+        &.ar{
+          background: #947600;
+        }
+        &.aa{
+          background: #935b07;
+        }
+        &.tp{
+          background: #073e78;
+        }
+        &.lk{
+          background: #116311;
+        }
+      }
+      :not(.num):not(.id):not(.name):not(.group):not(.slots){
+        text-align: center;
+      }
+
       > div {
         display: table-cell;
-        padding: 1px 5px;
+        padding: 1px;
         &.lvl{
           &.kce-ship-level-x {
             text-shadow: 2px 2px 10px #ad3997;

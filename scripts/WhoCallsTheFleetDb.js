@@ -72,6 +72,8 @@ check("https://raw.githubusercontent.com/TeamFleet/WhoCallsTheFleet/master/app-d
                 ja_jp: master.name.ja_jp.split(" ").map((s)=>s.charAt(0).toUpperCase() + s.slice(1)).join(" ")
             },
             stat:{
+                fast: Number(master.stat.speed) === 10,
+                range: master.stat.range,
                 fire: master.stat.fire,
                 fire_max: master.stat.fire_max,
                 torpedo: master.stat.torpedo,
@@ -86,6 +88,10 @@ check("https://raw.githubusercontent.com/TeamFleet/WhoCallsTheFleet/master/app-d
                 armor_max: master.stat.armor_max,
                 luck: master.stat.luck,
                 luck_max: master.stat.luck_max,
+                los: master.stat.los,
+                los_max: master.stat.los_max,
+                evasion: master.stat.evasion,
+                evasion_max: master.stat.evasion_max,
             },
             slot: master.slot,
             api_typen:stypes[`s${master.type}`].toUpperCase(),
