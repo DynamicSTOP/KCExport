@@ -7,9 +7,25 @@
                       :class="{selected:typeSelected.indexOf(f)!==-1}">{{f}}</div>
                 <div class="selected" @click="resetTypeFilter">reset</div>
             </div>
-            <div class="filter items">
-                <div class="selected noPointer">Can equip:</div>
-                <div class="dlc" :class="{selected:dlcFilter}" @click="toggleDLCFilter">Daihatsu</div>
+            <div class="filter">
+                <div class="selected noPointer">Daihatsu:</div>
+                <div :class="{selected:dlcFilter===null}" @click="dlcFilter=null">All</div>
+                <div :class="{selected:dlcFilter===true}" @click="dlcFilter=true">Can</div>
+                <div :class="{selected:dlcFilter===false}" @click="dlcFilter=false">Can't</div>
+            </div>
+            <div class="filter">
+                <div class="selected noPointer">Speed:</div>
+                <div :class="{selected:speedFilter===null}" @click="speedFilter=null">All</div>
+                <div :class="{selected:speedFilter===false}" @click="speedFilter=false">Slow</div>
+                <div :class="{selected:speedFilter===true}" @click="speedFilter=true">Fast</div>
+            </div>
+            <div class="filter">
+                <div class="selected noPointer">Range:</div>
+                <div :class="{selected:rangeFilter===null}" @click="rangeFilter=null">All</div>
+                <div :class="{selected:rangeFilter===1}" @click="rangeFilter=1">Short</div>
+                <div :class="{selected:rangeFilter===2}" @click="rangeFilter=2">Medium</div>
+                <div :class="{selected:rangeFilter===3}" @click="rangeFilter=3">Long</div>
+                <div :class="{selected:rangeFilter===4}" @click="rangeFilter=4">Very Long</div>
             </div>
             <div class="filter type bottom">
                 <div class="selected" @click="toggleAllTypeFilter">By type:</div>
@@ -46,7 +62,9 @@
                 typeSelected: shipTypes.slice(),
                 sortBy: 'lvl',
                 sortByInverse: -1,
-                dlcFilter: false,
+                dlcFilter: null,
+                speedFilter: null,
+                rangeFilter: null,
                 columns: [
                     {class: 'num', text: '#'},
                     {class: 'id', text: 'ID', sortBy: 'id'},
@@ -83,8 +101,14 @@
                     }
                     s.night = s.fp + s.tp;
                     s.show = this.typeSelected.indexOf(s.group) !== -1;
-                    if (this.dlcFilter) {
-                        s.show = s.show && s.daihatsu;
+                    if (this.dlcFilter !== null) {
+                        s.show = s.show && (s.daihatsu === this.dlcFilter);
+                    }
+                    if (this.speedFilter !== null) {
+                        s.show = s.show && (s.fast === this.speedFilter);
+                    }
+                    if (this.rangeFilter !== null) {
+                        s.show = s.show && (s.range === this.rangeFilter);
                     }
                     return s;
                 })));
@@ -159,9 +183,6 @@
                     else this.sortByInverse = 1;
                 }
 
-            },
-            toggleDLCFilter() {
-                this.dlcFilter = !this.dlcFilter;
             }
         }
     }

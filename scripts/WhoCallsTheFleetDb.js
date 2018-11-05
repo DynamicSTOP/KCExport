@@ -72,6 +72,8 @@ check("https://raw.githubusercontent.com/TeamFleet/WhoCallsTheFleet/master/app-d
                 ja_jp: master.name.ja_jp.split(" ").map((s)=>s.charAt(0).toUpperCase() + s.slice(1)).join(" ")
             },
             stat:{
+                fast: Number(master.stat.speed) === 10,
+                range: master.stat.range,
                 fire: master.stat.fire,
                 fire_max: master.stat.fire_max,
                 torpedo: master.stat.torpedo,
