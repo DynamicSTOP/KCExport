@@ -38,6 +38,24 @@ body {
   --filterMasterShipsColor: #0d383c;
 }
 
+body > .section > .first {
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  text-align:center;
+  line-height: 20px;
+  font-size: 20px;
+  background: #fff;
+  padding:20px;
+  color:#000;
+  span{
+    margin-left:20px;
+    cursor:pointer;
+    color: #22F;
+  }
+}
+
 $shipelement-padding: 20px;
 
 .kce-list-header {

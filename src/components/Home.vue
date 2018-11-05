@@ -5,9 +5,12 @@
             <p>This site was made so you could easily exchange ship lists (and potentially equip lists in future)
                 without posting stuff to imgur and other image exchange sites.</p>
             <p>Actually you still can, but can you do Ctrl+F in those? Hmmmmm?</p>
+            <p>Also since it alpha, some features may be removed and <span title="equip lists!">new one</span> added.</p>
 
             <div class="title is-4">How do i import my ship list?</div>
-            <p>While this site is still in <em>"alpha"</em> you can run
+            <p>If you are using kc3 you should see new option in strategy room showcase export options. If not check how
+                it's done manually bellow.</p>
+            <p>While this site is still in <em>"early alpha"</em> you can run
                 <a href="https://github.com/DynamicSTOP/kcexport/blob/dev/chromeSnippets/messageChannelsKC3.js"
                    target="_blank">this script</a>
                 in your KC3 Strategy room. Just open devtools and paste it into console.</p>
@@ -53,29 +56,28 @@
                         target="_blank">here</a></p>
             <p>And you should probably guess that i have no idea how long data would be alive in db.</p>
 
+            <div class="title is-4"></div>
+            <p>
+                Oh and if you feel generous enough and want to support KC3 team check <a
+                    href="https://www.patreon.com/kc3kai">Patreon</a>.
+            </p>
             <div class="title is-3">Have fun!</div>
+
 
             <p>
                 P.S. boring stuff regarding "legal stuff" for EU etc. This site uses browser <a
                     href="https://www.w3schools.com/html/html5_webstorage.asp">localstorage</a> to store ship lists and
                 settings. Besides stuff that you've personally chose to share via raw links or short links
                 (api.kc-db.info) nothing goes outside. Theoretically, since part of the shared data is ship ids,
-                it may be use as uniq fingerprint to identify you. For now api.kc-db.info remembers only hash (i.e. list
-                id)
+                it may be use as uniq fingerprint to identify you, but other then ship ids we aren't storing anything that
+                can directly identify you.
+                For now api.kc-db.info remembers only hash (i.e. list id)
                 raw link and timestamp when it was added. There are amazon logs that can contain you browser header as
                 well as ip,
                 but they aren't parsed (for now) in any way. We might add google analytics later to understand what
                 features of site
                 are useless and what should probably be improved. We aren't planning to use that data for commercial
                 purposes.
-                We aren't planning to add any way of ads. If you see those, better check that you are using <strong>HTTPS</strong>
-                protocol and your antivirus software is up to date and doing it's job. Yes it's free. If you want to support KC3 team check <a
-                    href="https://www.patreon.com/kc3kai">Patreon</a>. We are not responsible for how any of your
-                browser extensions
-                deal with our site and(or) any 3rd party link shortification services that you chose instead deal with
-                privacy etc. Though we might take steps to fix compatibility issues.
-                We would only wipe your data by request from your side if you would be able to proof that it was submitted by you and only you
-                (i.e. that's impossible). Just wait a bit, i bet in 1 year it will be gone.
             </p>
         </div>
 
@@ -85,9 +87,11 @@
     .section {
         padding-top: 0;
     }
+
     strong {
         color: #fff;
     }
+
     .title {
         margin-top: 30px;
         color: #fff;
