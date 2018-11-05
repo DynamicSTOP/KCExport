@@ -1,14 +1,21 @@
 <template>
     <div class="section kce-ship-table">
         <div class="filters">
+            <div class="filter type top">
+                <div class="selected" @click="toggleAllTypeFilter">By type:</div>
+                <div v-for="f in order" :key="'filter_'+f" @click="toggleTypeFilter(f)"
+                      :class="{selected:typeSelected.indexOf(f)!==-1}">{{f}}</div>
+                <div class="selected" @click="resetTypeFilter">reset</div>
+            </div>
             <div class="filter items">
-                <span class="selected">Can equip:</span>
-                <span class="dlc" :class="{selected:dlcFilter}" @click="toggleDLCFilter">Daihatsu</span></div>
-            <div class="filter type">
-                <span class="selected" @click="toggleAllTypeFilter">By type:</span>
-                <span v-for="f in order" :key="'filter_'+f" @click="toggleTypeFilter(f)"
-                      :class="{selected:typeSelected.indexOf(f)!==-1}">{{f}}</span>
-                <span class="selected" @click="resetTypeFilter">reset</span>
+                <div class="selected noPointer">Can equip:</div>
+                <div class="dlc" :class="{selected:dlcFilter}" @click="toggleDLCFilter">Daihatsu</div>
+            </div>
+            <div class="filter type bottom">
+                <div class="selected" @click="toggleAllTypeFilter">By type:</div>
+                <div v-for="f in order" :key="'filter_'+f" @click="toggleTypeFilter(f)"
+                     :class="{selected:typeSelected.indexOf(f)!==-1}">{{f}}</div>
+                <div class="selected" @click="resetTypeFilter">reset</div>
             </div>
         </div>
         <div class="shipTable">
@@ -58,7 +65,7 @@
                     {class: 'lk', sortBy: 'lk', text: 'LK'},
                     {class: 'night', sortBy: 'night', text: 'Night'},
                     {class: 'slots', sortBy: 'slots', text: 'Slots'},
-                    {class: 'slots', sortBy: 'extraSlot', text: 'Extra'}
+                    {class: 'slots extra', sortBy: 'extraSlot', text: 'Extra'}
                 ]
             }
         },

@@ -21,7 +21,7 @@
         <div class="slots">
             <span class="slot" v-for="(slot, i) in ship.slots" :key="`s${ship.id}_s${i}`">{{slot||''}}</span>
         </div>
-        <div class="slots">
+        <div class="slots extra">
             <span class="slot extra" v-if="ship.extraSlot"></span>
         </div>
     </div>
