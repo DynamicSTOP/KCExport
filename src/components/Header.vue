@@ -23,21 +23,20 @@
                 <router-link class="navbar-item" :to="{name:'Options'}" tag="div">Options</router-link>
                 <router-link class="navbar-item" :to="{name:'Storage'}" tag="div">Storage</router-link>
                 <div class="navbar-item senpoi" :class="{active:isSenpoiMode}" @click="$store.commit('toggleSenpoi')"
-                     title="Helper mode">Senpoi
+                     v-show="$route.name === 'ShipList'" title="Helper mode">Senpoi
                 </div>
-                <div class="navbar-item share" title="Raw link" v-show="false">
-                    <img src="@/images/raw.svg">
-                </div>
-
                 <div class="navbar-item save" @click="$store.dispatch('saveCurrentShipList')" v-show="showSave"
-                     title="Save into storage">Save</div>
-
+                     title="Save into storage">Save
+                </div>
                 <div class="navbar-item share" v-show="showShortify && !shorting"
-                     title="Save into storage and Make short link" @click="shortifyCurrent">Shortify</div>
+                     title="Save into storage and Make short link" @click="shortifyCurrent">Shortify
+                </div>
                 <div class="navbar-item share shorting" v-show="showShortify && shorting"
-                     title="Wait a sec, elves are working!">Shorting...</div>
-                <div class="navbar-item share shorten" v-show="isCurrentShortified" title="Short Link">
-                    <router-link :to="{name:'ShipListShort',params:{'short':currentShipList.listId}}">Short Link</router-link>
+                     title="Wait a sec, elves are working!">Shorting...
+                </div>
+                <div class="navbar-item share shorten" v-show="showShortLink" title="Short Link">
+                    <router-link :to="{name:'ShipListShort',params:{'short':currentShipList.listId}}">Short Link
+                    </router-link>
                 </div>
             </div>
         </div>
@@ -55,23 +54,24 @@
             }
         },
         computed: {
-            ...mapGetters(['isCurrentStored','currentShipList', 'currentShipListEmpty', 'isSenpoiMode', 'isCurrentShortified']),
+            ...mapGetters(['isCurrentStored', 'currentShipList', 'currentShipListEmpty', 'isSenpoiMode', 'isCurrentShortified']),
             showSave() {
-                return this.$route.name === 'ShipList'
+                return (this.$route.name === 'ShipList' || this.$route.name === 'ShipTable')
                     && !this.currentShipListEmpty
                     && !this.isCurrentStored;
             },
             showShortify() {
-                return this.$route.name === 'ShipList'
+                return (this.$route.name === 'ShipList' || this.$route.name === 'ShipTable')
                     && !this.currentShipListEmpty
                     && !this.isCurrentShortified;
             },
             showShortLink() {
-                return this.$route.name === 'ShipList' && false;
+                return (this.$route.name === 'ShipList' || this.$route.name === 'ShipTable')
+                    && this.isCurrentShortified;
             }
         },
-        methods:{
-            shortifyCurrent(){
+        methods: {
+            shortifyCurrent() {
                 this.shorting = true;
                 this.$store.dispatch('shortifyCurrentShipList');
             }
@@ -97,13 +97,15 @@
         background: #492b5f;
     }
 
-    .navbar-item.save, .navbar-item.share{
+    .navbar-item.save, .navbar-item.share {
         background: rgba(255, 255, 255, 0.1);
     }
-    .navbar-item.share.shorting{
+
+    .navbar-item.share.shorting {
         background: rgba(226, 255, 0, 0.24);
     }
-    .navbar-item.share.shorten{
+
+    .navbar-item.share.shorten {
         background: rgba(102, 255, 85, 0.6);
     }
 
@@ -115,7 +117,8 @@
     .navbar-item:hover {
         background: rgba(255, 255, 255, 0.6);
     }
-    .navbar-item a{
+
+    .navbar-item a {
         text-decoration: none;
         color: #fff;
     }
