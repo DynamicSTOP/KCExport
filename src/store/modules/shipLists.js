@@ -61,7 +61,8 @@ const getters = {
     isCurrentStored: function (state) {
         if (typeof state.currentShipList.raw === "undefined" || state.currentShipList.raw.length === 0) return false;
         return state.storedShipLists.filter((storedList) => storedList.raw === state.currentShipList.raw).length > 0;
-    }
+    },
+    isCurrentShortified: state => state.currentShipList.listId && state.currentShipList.listId.length > 0,
 };
 
 //async aren't allowed here
@@ -229,7 +230,7 @@ const actions = {
 
         context.commit('saveCurrentShipList');
     },
-    shortifyShipList: async function (context, index) {
+    async shortifyShipList(context, index) {
         if (context.state.storedShipLists.length <= index || context.state.storedShipLists[index].array.length === 0)
             return;
         const stored = context.state.storedShipLists[index];
@@ -259,12 +260,17 @@ const actions = {
             console.error(`shortify error`, answer);
         }
     },
-    removeShipList: function (context, index) {
+    async shortifyCurrentShipList(context){
+        if (typeof context.state.currentShipList.raw === "undefined" || context.state.currentShipList.raw.length === 0) return false;
+        await actions.saveCurrentShipList(context);
+        await actions.shortifyShipList(context, context.state.storedShipLists.length - 1);
+    },
+    removeShipList(context, index) {
         if (context.state.storedShipLists.length <= index || context.state.storedShipLists[index].raw.length === 0)
             return;
         context.commit('removeShipsList', context.state.storedShipLists[index]);
     },
-    loadShipListByLink: async function (context, listId) {
+    async loadShipListByLink(context, listId) {
         // don't confuse people by previous state
         context.commit('clearCurrentShipList');
 
