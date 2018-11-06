@@ -3,7 +3,8 @@
         <div class="num">{{num||""}}</div>
         <div class="id">{{ship.id}}</div>
         <div class="ship-icon">
-            <div :class="avatarClass"></div>
+            <img :src="assetsUrl+ship.masterId+'.png'" v-if="isKC3AssetsAvailable">
+            <div :class="avatarClass" v-else></div>
         </div>
         <div class="name">{{ship.name}}</div>
         <div class="group">{{ship.group}}</div>
@@ -38,7 +39,7 @@
         },
         name: "ShipTableRow",
         computed: {
-            ...mapGetters(['currentShipList', 'optionsShip', 'optionsCompactMode', 'filterMasterShips', 'optionShipNameLanguage']),
+            ...mapGetters(['currentShipList', 'optionsShip', 'optionsCompactMode', 'filterMasterShips', 'optionShipNameLanguage','isKC3AssetsAvailable','assetsUrl']),
             avatarClass() {
                 return `ship${this.ship.masterId}`;
             },
