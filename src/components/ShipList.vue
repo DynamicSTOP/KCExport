@@ -37,6 +37,8 @@
                  */
                 if (this.currentShipList.groups)
                     return this.currentShipList.groups.filter((g) => g.ships.length).sort((a, b) => this.order.indexOf(a.name) - this.order.indexOf(b.name));
+                else 
+                    return [];
             },
             smallBlocks() {
                 let stats = ['fp', 'tp', 'ar', 'aa', 'as', 'lk', 'hp'];
