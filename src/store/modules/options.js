@@ -12,6 +12,7 @@ const basemode = {
             hp: false
         },
         hideMaxedMainStats: false,
+        addToHiglighted: false,
         compact: false
     },
     highlightMasterId: [],
@@ -49,6 +50,9 @@ const state = {
             highlightMasterId: [
                 182, 187 //akashi ids
             ],
+            // if set to true, click on ship in ship lists tab
+            // will add it to highlighted array above
+            addToHiglighted: false,
             // if not empty, only those ships that matches master ids would be shown
             // it can be usefull in case of some historical lists for events
             filterMasterIds: [],
@@ -77,6 +81,7 @@ const getters = {
     optionShipNameLanguage: state => state.modes[state.currentMode].shipNameLanguage,
     highlightMasterShips: state => state.modes[state.currentMode].highlightMasterId,
     filterMasterShips: state => state.modes[state.currentMode].filterMasterIds,
+    isAddToHighlightedEnabled: state => state.modes[state.currentMode].addToHighlighted,
     isSenpoiMode: state => state.currentMode === "senpoi",
     optionsModes: state => state.modes
 };
@@ -88,10 +93,10 @@ function deepAssign(target, source) {
             target[i] = source[i];
         else if (source[i] instanceof Array)
             target[i] = source[i].slice();
-        else if (typeof source[i] === "object"){
+        else if (typeof source[i] === "object") {
             if (typeof target[i] === "undefined") target[i] = {};
             deepAssign(target[i], source[i]);
-        }else console.error(`Baka Baka - load options ${i}`);
+        } else console.error(`Baka Baka - load options ${i}`);
     }
 }
 
@@ -153,7 +158,34 @@ const mutations = {
     toggleHideMaxedMainStats(state, {modeName, value}) {
         state.modes[modeName].display.hideMaxedMainStats = value;
         mutations.saveOptions(state);
+    },
+    toggleAddToHighlighted(state, {modeName, value}) {
+        state.modes[modeName].addToHighlighted = value;
+        mutations.saveOptions(state);
+    },
+    toggleMasterHighlight(state, {masterId}) {
+        if (state.modes[state.currentMode].highlightMasterId.indexOf(masterId) !== -1) {
+            state.modes[state.currentMode].highlightMasterId
+                = state.modes[state.currentMode].highlightMasterId.filter((v) => v !== masterId);
+        } else {
+            state.modes[state.currentMode].highlightMasterId.push(masterId);
+        }
+        mutations.saveOptions(state);
+    },
+    clearHighlightedIds(state, {modeName}) {
+        state.modes[modeName].highlightMasterId = [];
+        mutations.saveOptions(state);
+    },
+    clearFilteredIds(state, {modeName}) {
+        state.modes[modeName].filterMasterIds = [];
+        mutations.saveOptions(state);
+    },
+    addHighlightedToFiltered(state, {modeName}) {
+        state.modes[modeName].filterMasterIds.push(...state.modes[modeName].highlightMasterId);
+        state.modes[modeName].filterMasterIds = state.modes[modeName].filterMasterIds.filter((el, pos, arr) => arr.indexOf(el) === pos);
+        mutations.saveOptions(state);
     }
+
 };
 
 const actions = {

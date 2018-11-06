@@ -1,5 +1,5 @@
 <template>
-    <li class="kce-ship-element kce-ship" :class="extraClasses">
+    <li class="kce-ship-element kce-ship" :class="extraClasses" @click="toggleHighlighted">
         <div v-if="ship.header">
             <div class="kce-ship-grouptitle">{{ship.name}}</div>
         </div>
@@ -39,7 +39,10 @@
     export default {
         name: "Ship",
         computed: {
-            ...mapGetters(['optionsShip', 'optionsHideMaxStat', 'highlightMasterShips', 'optionMinLuck', 'optionShipNameLanguage','isKC3AssetsAvailable','assetsUrl']),
+            ...mapGetters(['optionsShip', 'optionsHideMaxStat', 'highlightMasterShips',
+                'optionMinLuck', 'optionShipNameLanguage','isKC3AssetsAvailable','assetsUrl',
+                'isAddToHighlightedEnabled'
+            ]),
 
             avatarClass() {
                 return `ship${this.ship.masterId}`;
@@ -84,6 +87,9 @@
                 if (this.highlightMasterShips.indexOf(this.ship.masterId) !== -1) {
                     extra_classes += " highlightMasterShips";
                 }
+                if (this.isAddToHighlightedEnabled){
+                    extra_classes += " pointer";
+                }
                 return extra_classes;
             }
         },
@@ -115,6 +121,12 @@
                     classes += this.maxed(name) ? 'max ' : '';
                 }
                 return classes.trim();
+            },
+            toggleHighlighted(){
+                if(this.isAddToHighlightedEnabled)
+                    this.$store.commit('toggleMasterHighlight', {
+                        masterId:this.ship.masterId
+                    });
             }
         }
     }

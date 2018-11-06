@@ -52,16 +52,28 @@
         <div>
             <p>Ship highlighting.</p>
             <p>Start typing in ship master id or name to see suggestions. Click on suggestion icon to add.</p>
+            <p><input type="checkbox" :id="'check_tath_'+modeName" @change="toggleAddToHighlighted" :checked="mode.addToHighlightedOnClick">
+                <label :for="'check_tath_'+modeName">Click on ship in <router-link :to="{name:'ShipList'}" tag="a">ShipList</router-link> to add or remove it from highlighted list.</label></p>
             <p><input class="input" type="text" @keyup="updateSuggestions" @change="updateSuggestions"
                       placeholder="182 or Akashi"></p>
             <div class="highlightSuggestions">
-                <div class="kce-ship-icon" v-for="ship in suggestedShips" :class="'ship'+ship.id"
-                     :key="'m'+ship.id" :title="makeIconTitle(ship.id)" @click="addToHighlights(ship.id)"></div>
+                <img v-if="isKC3AssetsAvailable" class="kce-ship-icon" v-for="ship in suggestedShips"
+                     :key="'ms'+ship.id" :title="makeIconTitle(ship.id)" :src="assetsUrl+ship.id+'.png'"
+                     @click="addToHighlights(ship.id)">
+                <div v-else class="kce-ship-icon" v-for="ship in suggestedShips" :class="'ship'+ship.id"
+                     :key="'ms'+ship.id" :title="makeIconTitle(ship.id)" @click="addToHighlights(ship.id)"></div>
             </div>
             <p>Highlighted ships. Click on icon to remove.</p>
             <div class="highlightedMasterShips" :class="{min:shipsToHighlight.length===0}">
-                <div class="kce-ship-icon" v-for="masterId in shipsToHighlight" :class="'ship'+masterId"
+                <img v-if="isKC3AssetsAvailable" class="kce-ship-icon" v-for="masterId in shipsToHighlight"
+                     :key="'m'+masterId" :title="makeIconTitle(masterId)" :src="assetsUrl+masterId+'.png'"
+                     @click="removeFromHighlights(masterId)">
+                <div v-else class="kce-ship-icon" v-for="masterId in shipsToHighlight" :class="'ship'+masterId"
                      :key="'m'+masterId" :title="makeIconTitle(masterId)" @click="removeFromHighlights(masterId)"></div>
+            </div>
+            <div>
+                <button @click="claerHighlighted">Clear all</button>
+                <button @click="addHighlightedToFiltered">Add to Filtered</button>
             </div>
         </div>
 
@@ -71,13 +83,22 @@
             <p><input class="input" type="text" @keyup="filterSuggestions" @change="filterSuggestions"
                       placeholder="182 or Akashi"></p>
             <div class="filterSuggestions">
+                <img v-if="isKC3AssetsAvailable" class="kce-ship-icon" v-for="ship in suggestedFilteredShips"
+                     :key="'mfs'+ship.id" :title="makeIconTitle(ship.id)" :src="assetsUrl+ship.id+'.png'"
+                     @click="addToFiltred(ship.id)">
                 <div class="kce-ship-icon" v-for="ship in suggestedFilteredShips" :class="'ship'+ship.id"
-                     :key="'m'+ship.id" :title="makeIconTitle(ship.id)" @click="addToFiltred(ship.id)"></div>
+                     :key="'mfs'+ship.id" :title="makeIconTitle(ship.id)" @click="addToFiltred(ship.id)"></div>
             </div>
             <p>Currently filtered ships. Click on icon to remove.</p>
             <div class="filteredShips" :class="{min:shipsToFilter.length===0}">
-                <div class="kce-ship-icon" v-for="masterId in shipsToFilter" :class="'ship'+masterId"
-                     :key="'m'+masterId" :title="makeIconTitle(masterId)" @click="removeFromFiltered(masterId)"></div>
+                <img v-if="isKC3AssetsAvailable" class="kce-ship-icon" v-for="masterId in shipsToFilter"
+                     :key="'mf'+masterId" :title="makeIconTitle(masterId)" :src="assetsUrl+masterId+'.png'"
+                     @click="removeFromFiltered(masterId)">
+                <div v-else class="kce-ship-icon" v-for="masterId in shipsToFilter" :class="'ship'+masterId"
+                     :key="'mf'+masterId" :title="makeIconTitle(masterId)" @click="removeFromFiltered(masterId)"></div>
+            </div>
+            <div>
+                <button @click="clearFiltered">Clear all</button>
             </div>
         </div>
 
@@ -107,7 +128,7 @@
             }
         },
         computed: {
-            ...mapGetters(['optionsModes']),
+            ...mapGetters(['optionsModes','isKC3AssetsAvailable','assetsUrl']),
             mode() {
                 return this.optionsModes[this.modeName];
             },
@@ -253,6 +274,27 @@
                 this.$store.commit('toggleHideMaxedMainStats', {
                     modeName: this.modeName,
                     value: event.target.checked
+                });
+            },
+            toggleAddToHighlighted(event){
+                this.$store.commit('toggleAddToHighlighted', {
+                    modeName: this.modeName,
+                    value: event.target.checked
+                });
+            },
+            claerHighlighted(){
+                this.$store.commit('clearHighlightedIds', {
+                    modeName: this.modeName
+                });
+            },
+            addHighlightedToFiltered(){
+                this.$store.commit('addHighlightedToFiltered', {
+                    modeName: this.modeName
+                });
+            },
+            clearFiltered(){
+                this.$store.commit('clearFilteredIds', {
+                    modeName: this.modeName
                 });
             }
         }
