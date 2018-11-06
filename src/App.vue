@@ -8,7 +8,7 @@
             It's an early alpha version. Check
             <router-link :to="{name:'Help'}">help</router-link>
             for instructions about how to import lists etc.
-            If you have further questions or suggestions check our discord <a href="https://discord.gg/QP6N8QQ" target="_blank">KC3discord</a>.
+            If you have further questions or suggestions check our <a href="https://discord.gg/QP6N8QQ" target="_blank">KC3 discord</a>.
             <span @click="closeFirst">Close this message.</span>
         </div>
     </div>
