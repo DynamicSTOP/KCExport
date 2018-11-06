@@ -6,7 +6,8 @@ const state = {
 };
 
 const getters = {
-    assetsUrl: state => state.assetsUrl
+    assetsUrl: state => state.assetsUrl,
+    isKC3AssetsAvailable: state => state.assetsUrl !== false
 };
 
 

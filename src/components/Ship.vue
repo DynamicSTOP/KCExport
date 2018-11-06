@@ -4,7 +4,10 @@
             <div class="kce-ship-grouptitle">{{ship.name}}</div>
         </div>
         <div v-else>
-            <div class="kce-ship-icon" :class="avatarClass"></div>
+            <div class="kce-ship-icon" v-if="isKC3AssetsAvailable">
+                <img :src="assetsUrl+ship.masterId+'.png'">
+            </div>
+            <div class="kce-ship-icon" :class="avatarClass" v-else></div>
             <div class="kce-ship-lock " title=""></div>
             <div class="kce-ship-details">
                 <div class="kce-ship-top-line">
@@ -36,7 +39,7 @@
     export default {
         name: "Ship",
         computed: {
-            ...mapGetters(['optionsShip', 'optionsHideMaxStat', 'highlightMasterShips', 'optionMinLuck', 'optionShipNameLanguage']),
+            ...mapGetters(['optionsShip', 'optionsHideMaxStat', 'highlightMasterShips', 'optionMinLuck', 'optionShipNameLanguage','isKC3AssetsAvailable','assetsUrl']),
 
             avatarClass() {
                 return `ship${this.ship.masterId}`;
