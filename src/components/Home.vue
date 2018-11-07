@@ -38,13 +38,10 @@
                     href="https://www.w3schools.com/html/html5_webstorage.asp">localstorage</a> to store ship lists and
                 settings. Besides stuff that you've personally chose to share via raw links or short links
                 (api.kc-db.info) nothing goes outside. Theoretically, since part of the shared data is ship ids,
-                it may be use as uniq fingerprint to identify you, but other then ship ids we aren't storing anything
-                that
-                can directly identify you.
+                it may be use as uniq fingerprint to identify you. Besides that we use "kce_secretKey" that is stored in
+                your browser localstorage and <em>should</em> be uniq for every user.
                 For now api.kc-db.info remembers only hash (i.e. list id)
-                raw link and timestamp when it was added. There are amazon logs that can contain you browser header as
-                well as ip,
-                but they aren't parsed (for now) in any way. We might add google analytics later to understand what
+                raw link, secret and timestamp when it was added. We might add google analytics later to understand what
                 features of site are useless and what should probably be improved.
             </p>
         </div>
