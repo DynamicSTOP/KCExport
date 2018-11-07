@@ -136,6 +136,10 @@ const mutations = {
 
         state.storedShipLists[newIndex].listId = update.listId;
         this.commit('saveShipsToLocalStorage');
+        if(state.currentShipList.raw === state.storedShipLists[newIndex].raw){
+            state.currentShipList.listId = update.listId;
+            localStorage.setItem('kce_currentShipList', JSON.stringify(state.currentShipList));
+        }
     },
 
     /**
@@ -225,9 +229,6 @@ const actions = {
     async saveCurrentShipList(context) {
         // if no ships
         if (context.state.currentShipList.raw.length === 0) return;
-        //if already stored
-        if (getters.isCurrentStored(context.state)) return;
-
         context.commit('saveCurrentShipList');
     },
     async shortifyShipList(context, index) {
@@ -235,7 +236,15 @@ const actions = {
             return;
         const stored = context.state.storedShipLists[index];
 
-        if (stored.listId !== null) return;
+        if (stored.listId !== null){
+            if(context.state.currentShipList.raw === stored.raw
+                && context.state.currentShipList.listId === null){
+                //something went south and current list in local storage
+                //haven't receive the list id.
+                context.commit('setCurrentShipList', stored);
+            }
+            return;
+        }
         const dataPack = await dataPacker.packShips(stored.array);
         let data;
         try {
