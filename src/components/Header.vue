@@ -34,7 +34,7 @@
                 <div class="navbar-item share shorting" v-show="showShortify && shorting"
                      title="Wait a sec, elves are working!">Shorting...
                 </div>
-                <div class="navbar-item share shorten" v-show="showShortLink" title="Short Link">
+                <div class="navbar-item share shorten" v-if="showShortLink" title="Short Link">
                     <router-link :to="{name:'ShipListShort',params:{'short':currentShipList.listId}}">Short Link
                     </router-link>
                 </div>
