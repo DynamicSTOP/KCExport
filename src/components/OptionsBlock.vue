@@ -40,7 +40,7 @@
             </div>
             <p>
                 <label class="checkbox regular-size">
-                    <input type="checkbox" @change="toggleHideMaxedMainStats"
+                    <input type="checkbox" @change="commitToStore('toggleHideMaxedMainStats',$event.target.checked)"
                            :checked="mode.display.hideMaxedMainStats">
                     Hide max main stats (FP TP AR AA) if they are at max.
                 </label>
@@ -52,28 +52,34 @@
         <div>
             <p>Ship highlighting.</p>
             <p>Start typing in ship master id or name to see suggestions. Click on suggestion icon to add.</p>
-            <p><input type="checkbox" :id="'check_tath_'+modeName" @change="toggleAddToHighlighted" :checked="mode.addToHighlightedOnClick">
-                <label :for="'check_tath_'+modeName">Click on ship in <router-link :to="{name:'ShipList'}" tag="a">ShipList</router-link> to add or remove it from highlighted list.</label></p>
+            <p><input type="checkbox" :id="'check_tath_'+modeName"
+                      @change="commitToStore('toggleAddToHighlighted',$event.target.checked)"
+                      :checked="mode.addToHighlightedOnClick">
+                <label :for="'check_tath_'+modeName">Click on ship in
+                    <router-link :to="{name:'ShipList'}" tag="a">ShipList</router-link>
+                    to add or remove it from highlighted list.</label></p>
             <p><input class="input" type="text" @keyup="updateSuggestions" @change="updateSuggestions"
                       placeholder="182 or Akashi"></p>
             <div class="highlightSuggestions">
                 <img v-if="isKC3AssetsAvailable" class="kce-ship-icon" v-for="ship in suggestedShips"
                      :key="'ms'+ship.id" :title="makeIconTitle(ship.id)" :src="assetsUrl+ship.id+'.png'"
-                     @click="addToHighlights(ship.id)">
+                     @click="commitToStore('addToHighlights',ship.id)">
                 <div v-else class="kce-ship-icon" v-for="ship in suggestedShips" :class="'ship'+ship.id"
-                     :key="'ms'+ship.id" :title="makeIconTitle(ship.id)" @click="addToHighlights(ship.id)"></div>
+                     :key="'ms'+ship.id" :title="makeIconTitle(ship.id)"
+                     @click="commitToStore('addToHighlights',ship.id)"></div>
             </div>
             <p>Highlighted ships. Click on icon to remove.</p>
             <div class="highlightedMasterShips" :class="{min:shipsToHighlight.length===0}">
                 <img v-if="isKC3AssetsAvailable" class="kce-ship-icon" v-for="masterId in shipsToHighlight"
                      :key="'m'+masterId" :title="makeIconTitle(masterId)" :src="assetsUrl+masterId+'.png'"
-                     @click="removeFromHighlights(masterId)">
+                     @click="commitToStore('removeFromHighlights',masterId)">
                 <div v-else class="kce-ship-icon" v-for="masterId in shipsToHighlight" :class="'ship'+masterId"
-                     :key="'m'+masterId" :title="makeIconTitle(masterId)" @click="removeFromHighlights(masterId)"></div>
+                     :key="'m'+masterId" :title="makeIconTitle(masterId)"
+                     @click="commitToStore('removeFromHighlights',masterId)"></div>
             </div>
             <div>
-                <button @click="claerHighlighted">Clear all</button>
-                <button @click="addHighlightedToFiltered">Add to Filtered</button>
+                <button @click="commitToStore('clearHighlightedIds')">Clear all</button>
+                <button @click="commitToStore('addHighlightedToFiltered')">Add to Filtered</button>
             </div>
         </div>
 
@@ -85,20 +91,22 @@
             <div class="filterSuggestions">
                 <img v-if="isKC3AssetsAvailable" class="kce-ship-icon" v-for="ship in suggestedFilteredShips"
                      :key="'mfs'+ship.id" :title="makeIconTitle(ship.id)" :src="assetsUrl+ship.id+'.png'"
-                     @click="addToFiltred(ship.id)">
-                <div class="kce-ship-icon" v-for="ship in suggestedFilteredShips" :class="'ship'+ship.id"
-                     :key="'mfs'+ship.id" :title="makeIconTitle(ship.id)" @click="addToFiltred(ship.id)"></div>
+                     @click="commitToStore('addToFiltered',ship.id)">
+                <div v-else class="kce-ship-icon" v-for="ship in suggestedFilteredShips" :class="'ship'+ship.id"
+                     :key="'mfs'+ship.id" :title="makeIconTitle(ship.id)"
+                     @click="commitToStore('addToFiltered',ship.id)"></div>
             </div>
             <p>Currently filtered ships. Click on icon to remove.</p>
             <div class="filteredShips" :class="{min:shipsToFilter.length===0}">
                 <img v-if="isKC3AssetsAvailable" class="kce-ship-icon" v-for="masterId in shipsToFilter"
                      :key="'mf'+masterId" :title="makeIconTitle(masterId)" :src="assetsUrl+masterId+'.png'"
-                     @click="removeFromFiltered(masterId)">
+                     @click="commitToStore('removeFromFiltered',masterId)">
                 <div v-else class="kce-ship-icon" v-for="masterId in shipsToFilter" :class="'ship'+masterId"
-                     :key="'mf'+masterId" :title="makeIconTitle(masterId)" @click="removeFromFiltered(masterId)"></div>
+                     :key="'mf'+masterId" :title="makeIconTitle(masterId)"
+                     @click="commitToStore('removeFromFiltered',masterId)"></div>
             </div>
             <div>
-                <button @click="clearFiltered">Clear all</button>
+                <button @click="commitToStore('clearFilteredIds')">Clear all</button>
             </div>
         </div>
 
@@ -128,7 +136,7 @@
             }
         },
         computed: {
-            ...mapGetters(['optionsModes','isKC3AssetsAvailable','assetsUrl']),
+            ...mapGetters(['optionsModes', 'isKC3AssetsAvailable', 'assetsUrl']),
             mode() {
                 return this.optionsModes[this.modeName];
             },
@@ -224,6 +232,15 @@
                     value: event.target.value === "1"
                 });
             },
+            commitToStore(eventName = '', value = null) {
+                if (eventName) {
+                    let data = {modeName: this.modeName};
+                    if (value !== null)
+                        data.value = value;
+                    this.$store.commit(eventName, data);
+                }
+
+            },
             filterSuggestions(event) {
                 let value = event.target.value.trim().replace(/[^\d\w\s一-龯]/g, '');
                 if (value.length === 0) {
@@ -238,63 +255,12 @@
                 }
                 this.suggestionsValue = value.toLowerCase();
             },
-            addToHighlights(masterId) {
-                this.$store.commit('addToHighlights', {
-                    modeName: this.modeName,
-                    value: masterId
-                });
-            },
-            removeFromHighlights(masterId) {
-                this.$store.commit('removeFromHighlights', {
-                    modeName: this.modeName,
-                    value: masterId
-                });
-            },
-            addToFiltred(masterId) {
-                this.$store.commit('addToFiltered', {
-                    modeName: this.modeName,
-                    value: masterId
-                });
-            },
-            removeFromFiltered(masterId) {
-                this.$store.commit('removeFromFiltered', {
-                    modeName: this.modeName,
-                    value: masterId
-                });
-            },
             updateMinLuck(event) {
                 let value = event.target.value.replace(/[^\d]+/g, '').trim();
                 this.$store.commit('setModeOptionTo', {
                     modeName: this.modeName,
                     optionName: "minLuck",
                     value: value.length ? parseInt(value) : 0
-                });
-            },
-            toggleHideMaxedMainStats(event) {
-                this.$store.commit('toggleHideMaxedMainStats', {
-                    modeName: this.modeName,
-                    value: event.target.checked
-                });
-            },
-            toggleAddToHighlighted(event){
-                this.$store.commit('toggleAddToHighlighted', {
-                    modeName: this.modeName,
-                    value: event.target.checked
-                });
-            },
-            claerHighlighted(){
-                this.$store.commit('clearHighlightedIds', {
-                    modeName: this.modeName
-                });
-            },
-            addHighlightedToFiltered(){
-                this.$store.commit('addHighlightedToFiltered', {
-                    modeName: this.modeName
-                });
-            },
-            clearFiltered(){
-                this.$store.commit('clearFilteredIds', {
-                    modeName: this.modeName
                 });
             }
         }
