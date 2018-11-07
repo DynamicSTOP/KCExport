@@ -256,7 +256,8 @@ const actions = {
             data = await Vue.http.put(
                 "https://api.kc-db.info/v1/list/ships",
                 JSON.stringify({
-                    data: dataPack
+                    data: dataPack,
+                    secret: context.rootGetters.secretKey
                 }), {
                     headers: {
                         Accept: 'application/json',

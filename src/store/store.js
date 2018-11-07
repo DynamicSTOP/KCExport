@@ -4,6 +4,7 @@ import VueResource from 'vue-resource'
 import shipLists from '@/store/modules/shipLists'
 import assetsUrl from '@/store/modules/assetsUrl'
 import options from '@/store/modules/options'
+import secret from '@/store/modules/secret'
 
 Vue.use(VueResource);
 Vue.use(Vuex);
@@ -27,11 +28,13 @@ export default new Vuex.Store({
         async loadStored(context) {
             await context.dispatch('loadFromLocalStorage');
             context.dispatch('loadStoredUrl');
+            context.dispatch('loadSecretKey');
         }
     },
     modules: {
         shipLists,
         assetsUrl,
-        options
+        options,
+        secret
     }
 })
