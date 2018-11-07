@@ -66,7 +66,7 @@
                     && !this.isCurrentShortified;
             },
             showShortLink() {
-                return (this.$route.name === 'ShipList' || this.$route.name === 'ShipTable')
+                return (this.$route.name === 'ShipList' || this.$route.name === 'ShipListShort' || this.$route.name === 'ShipTable')
                     && this.isCurrentShortified;
             }
         },
