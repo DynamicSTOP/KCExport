@@ -136,7 +136,7 @@ const mutations = {
 
         state.storedShipLists[newIndex].listId = update.listId;
         this.commit('saveShipsToLocalStorage');
-        if(state.currentShipList.raw === state.storedShipLists[newIndex].raw){
+        if (state.currentShipList.raw === state.storedShipLists[newIndex].raw) {
             state.currentShipList.listId = update.listId;
             localStorage.setItem('kce_currentShipList', JSON.stringify(state.currentShipList));
         }
@@ -224,6 +224,11 @@ const actions = {
             raw: await dataPacker.packShips(ShipParser.arrayFromShips(ships))
         });
         await newList.restoreFromRaw();
+        //check if list already stored
+        if (context.state.storedShipLists.length) {
+            let matchedLists = context.state.storedShipLists.filter((s) => s.raw === newList.raw);
+            if (matchedLists.length) return context.commit('setCurrentShipList', matchedLists[0]);
+        }
         context.commit('setCurrentShipList', newList);
     },
     async saveCurrentShipList(context) {
@@ -236,9 +241,9 @@ const actions = {
             return;
         const stored = context.state.storedShipLists[index];
 
-        if (stored.listId !== null){
-            if(context.state.currentShipList.raw === stored.raw
-                && context.state.currentShipList.listId === null){
+        if (stored.listId !== null) {
+            if (context.state.currentShipList.raw === stored.raw
+                && context.state.currentShipList.listId === null) {
                 //something went south and current list in local storage
                 //haven't receive the list id.
                 context.commit('setCurrentShipList', stored);
@@ -269,7 +274,7 @@ const actions = {
             console.error(`shortify error`, answer);
         }
     },
-    async shortifyCurrentShipList(context){
+    async shortifyCurrentShipList(context) {
         if (typeof context.state.currentShipList.raw === "undefined" || context.state.currentShipList.raw.length === 0) return false;
         await actions.saveCurrentShipList(context);
         await actions.shortifyShipList(context, context.state.storedShipLists.length - 1);
@@ -307,7 +312,7 @@ const actions = {
 
         if (typeof answer.data !== "undefined" && answer.data.length > 0) {
             try {
-                const list = new ShipList({raw:answer.data,listId:listId});
+                const list = new ShipList({raw: answer.data, listId: listId});
                 await list.restoreFromRaw();
                 context.commit('setCurrentShipList', list);
             } catch (e) {
