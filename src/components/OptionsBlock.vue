@@ -61,21 +61,29 @@
             <p><input class="input" type="text" @keyup="updateSuggestions" @change="updateSuggestions"
                       placeholder="182 or Akashi"></p>
             <div class="highlightSuggestions">
-                <img v-if="isKC3AssetsAvailable" class="kce-ship-icon" v-for="ship in suggestedShips"
-                     :key="'ms'+ship.id" :title="makeIconTitle(ship.id)" :src="assetsUrl+ship.id+'.png'"
-                     @click="commitToStore('addToHighlights',ship.id)">
-                <div v-else class="kce-ship-icon" v-for="ship in suggestedShips" :class="'ship'+ship.id"
-                     :key="'ms'+ship.id" :title="makeIconTitle(ship.id)"
-                     @click="commitToStore('addToHighlights',ship.id)"></div>
+                <template v-if="isKC3AssetsAvailable">
+                    <img class="kce-ship-icon" v-for="ship in suggestedShips"
+                         :key="'ms'+ship.id" :title="makeIconTitle(ship.id)" :src="assetsUrl+ship.id+'.png'"
+                         @click="commitToStore('addToHighlights',ship.id)">
+                </template>
+                <template v-else>
+                    <div class="kce-ship-icon" v-for="ship in suggestedShips" :class="'ship'+ship.id"
+                         :key="'ms'+ship.id" :title="makeIconTitle(ship.id)"
+                         @click="commitToStore('addToHighlights',ship.id)"></div>
+                </template>
             </div>
             <p>Highlighted ships. Click on icon to remove.</p>
             <div class="highlightedMasterShips" :class="{min:shipsToHighlight.length===0}">
-                <img v-if="isKC3AssetsAvailable" class="kce-ship-icon" v-for="masterId in shipsToHighlight"
-                     :key="'m'+masterId" :title="makeIconTitle(masterId)" :src="assetsUrl+masterId+'.png'"
-                     @click="commitToStore('removeFromHighlights',masterId)">
-                <div v-else class="kce-ship-icon" v-for="masterId in shipsToHighlight" :class="'ship'+masterId"
-                     :key="'m'+masterId" :title="makeIconTitle(masterId)"
-                     @click="commitToStore('removeFromHighlights',masterId)"></div>
+                <template v-if="isKC3AssetsAvailable">
+                    <img class="kce-ship-icon" v-for="masterId in shipsToHighlight"
+                         :key="'m'+masterId" :title="makeIconTitle(masterId)" :src="assetsUrl+masterId+'.png'"
+                         @click="commitToStore('removeFromHighlights',masterId)">
+                </template>
+                <template v-else>
+                    <div class="kce-ship-icon" v-for="masterId in shipsToHighlight" :class="'ship'+masterId"
+                         :key="'m'+masterId" :title="makeIconTitle(masterId)"
+                         @click="commitToStore('removeFromHighlights',masterId)"></div>
+                </template>
             </div>
             <div>
                 <button @click="commitToStore('clearHighlightedIds')">Clear all</button>
@@ -89,21 +97,29 @@
             <p><input class="input" type="text" @keyup="filterSuggestions" @change="filterSuggestions"
                       placeholder="182 or Akashi"></p>
             <div class="filterSuggestions">
-                <img v-if="isKC3AssetsAvailable" class="kce-ship-icon" v-for="ship in suggestedFilteredShips"
-                     :key="'mfs'+ship.id" :title="makeIconTitle(ship.id)" :src="assetsUrl+ship.id+'.png'"
-                     @click="commitToStore('addToFiltered',ship.id)">
-                <div v-else class="kce-ship-icon" v-for="ship in suggestedFilteredShips" :class="'ship'+ship.id"
-                     :key="'mfs'+ship.id" :title="makeIconTitle(ship.id)"
-                     @click="commitToStore('addToFiltered',ship.id)"></div>
+                <template v-if="isKC3AssetsAvailable">
+                    <img class="kce-ship-icon" v-for="ship in suggestedFilteredShips"
+                         :key="'mfs'+ship.id" :title="makeIconTitle(ship.id)" :src="assetsUrl+ship.id+'.png'"
+                         @click="commitToStore('addToFiltered',ship.id)">
+                </template>
+                <template v-else>
+                    <div class="kce-ship-icon" v-for="ship in suggestedFilteredShips" :class="'ship'+ship.id"
+                         :key="'mfs'+ship.id" :title="makeIconTitle(ship.id)"
+                         @click="commitToStore('addToFiltered',ship.id)"></div>
+                </template>
             </div>
             <p>Currently filtered ships. Click on icon to remove.</p>
             <div class="filteredShips" :class="{min:shipsToFilter.length===0}">
-                <img v-if="isKC3AssetsAvailable" class="kce-ship-icon" v-for="masterId in shipsToFilter"
-                     :key="'mf'+masterId" :title="makeIconTitle(masterId)" :src="assetsUrl+masterId+'.png'"
-                     @click="commitToStore('removeFromFiltered',masterId)">
-                <div v-else class="kce-ship-icon" v-for="masterId in shipsToFilter" :class="'ship'+masterId"
-                     :key="'mf'+masterId" :title="makeIconTitle(masterId)"
-                     @click="commitToStore('removeFromFiltered',masterId)"></div>
+                <template v-if="isKC3AssetsAvailable">
+                    <img class="kce-ship-icon" v-for="masterId in shipsToFilter"
+                         :key="'mf'+masterId" :title="makeIconTitle(masterId)" :src="assetsUrl+masterId+'.png'"
+                         @click="commitToStore('removeFromFiltered',masterId)">
+                </template>
+                <template v-else>
+                    <div class="kce-ship-icon" v-for="masterId in shipsToFilter" :class="'ship'+masterId"
+                         :key="'mf'+masterId" :title="makeIconTitle(masterId)"
+                         @click="commitToStore('removeFromFiltered',masterId)"></div>
+                </template>
             </div>
             <div>
                 <button @click="commitToStore('clearFilteredIds')">Clear all</button>
