@@ -1,4 +1,4 @@
-const pkg = require('./package')
+const appConfig = require('./app.config')
 
 module.exports = {
   mode: 'universal',
@@ -7,11 +7,11 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: pkg.name,
+    title: appConfig.name,
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: pkg.description }
+      { hid: 'description', name: 'description', content: appConfig.description }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -20,15 +20,29 @@ module.exports = {
   },
 
   /*
-  ** Customize the progress-bar color
+  ** Customize the progress bar
   */
-  loading: { color: '#fff' },
+  loading: {
+    color: '#6b80ca',
+    failedColor: '#f04747',
+    height: '5px',
+    throttle: 0
+  },
+
+  /*
+  ** Customize the page transitions
+  */
+  transition: {
+    name: 'slide-y-reverse-transition',
+    duration: 50
+  },
 
   /*
   ** Global CSS
   */
   css: [
-    '~/assets/style/app.styl'
+    '~/assets/style/app.styl',
+    '~/assets/style/app.css'
   ],
 
   /*
@@ -45,6 +59,7 @@ module.exports = {
     // Doc: https://github.com/nuxt-community/axios-module#usage
     '@nuxtjs/axios'
   ],
+
   /*
   ** Axios module configuration
   */
@@ -71,4 +86,5 @@ module.exports = {
       }
     }
   }
+
 }
