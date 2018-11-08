@@ -1,5 +1,5 @@
-
 const Koa = require('koa')
+const KoaLogger = require('koa-logger')
 const consola = require('consola')
 const { Nuxt, Builder } = require('nuxt')
 
@@ -21,6 +21,12 @@ async function start() {
     await builder.build()
   }
 
+  // Koa additional middleware
+  if (config.dev) {
+    app.use(KoaLogger())
+  }
+
+  // Koa default middleware
   app.use(ctx => {
     ctx.status = 200 // koa defaults to 404 when it sees that status is unset
 
