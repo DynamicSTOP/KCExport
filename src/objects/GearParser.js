@@ -42,7 +42,7 @@ class ItemParser {
             return {
                 id: g.id,
                 name: master.name,
-                aa: master.stat.name,
+                aa: master.stat.aa,
                 ar: master.stat.ar,
                 tp: master.stat.tp,
                 fp: master.stat.fp,

@@ -509,10 +509,9 @@ $shipelement-padding: 20px;
 }
 
 .gearList{
+  --gear-element-width: 320px;
   ul{
     list-style: none;
-    --gear-element-width: 320px;
-
     -webkit-column-width: var(--gear-element-width);
     -moz-column-width: var(--gear-element-width);
     column-width: var(--gear-element-width);
@@ -523,12 +522,11 @@ $shipelement-padding: 20px;
 
     -moz-column-fill: balance;
     column-fill: balance;
-
   }
 
   .gear-mainGroupName,.gear-subGroupName,.gear-element{
     display: inline-block;
-    width:300px;
+    width:var(--gear-element-width);
     min-height:40px;
     vertical-align: middle;
   }
@@ -550,49 +548,128 @@ $shipelement-padding: 20px;
   .gear-mainGroupName{}
   .gear-subGroupName{}
   .gear-element{
-    position:relative;
     display: inline-block;
     background: rgba(255,255,255,0.03);
-    .gear-icon{
-      position:absolute;
-      left:0;
-      top:0;
-      border-radius: 50%;
-      border: 1px solid #ccc;
+    padding-bottom: 5px;
+    .gear-left{
       width:30px;
-      height:30px;
-    }
-    .gear-element-name{
-      position:absolute;
-      font-size:14px;
-      line-height:16px;
-      left:35px;
-      top:0;
-      //white-space: nowrap;
-      //overflow: hidden;
-      //text-overflow: ellipsis;
-      width: calc(var(--gear-element-width) - 35px - 50px);
-    }
-    .gear-element-total{
-      position:absolute;
-      right:2px;
-      vertical-align: top;
-      top:0;
-      font-size:20px;
-    }
-    .gear-element-mod-details{
-      margin-top:30px;
-      text-align:right;
-      div {
-        height:14px;
-        color: #2ec185;
-        :nth-child(2n+1) {
-          padding-right:3px;
-          color:#ffd578;
-          font-size:12px;
-        }
+      float:left;
+      display: inline-block;
+      .gear-icon{
+        border-radius: 50%;
+        border: 1px solid #ccc;
+        width:30px;
+        height:30px;
+        display: inline-block;
       }
-      padding-bottom:15px;
+    }
+    .gear-mid{
+      padding-left:3px;
+      width: calc(var(--gear-element-width) - 30px - 45px);
+      float:left;
+      .gear-element-name{
+        font-size:14px;
+        line-height:16px;
+      }
+      .gear-element-gear-details{
+        margin-bottom: 2px;
+        float:left;
+        .gear-element-stat{
+          > div{
+            display: inline-block;
+            vertical-align: middle;
+            padding:2px;
+          }
+          display: inline-block;
+
+          .gear-stat {
+            width:20px;
+            height:20px;
+            padding:1px;
+
+            margin-right: 8px;
+            vertical-align: middle;
+            text-align: center;
+            background: #ccc;
+            border-radius: 50%;
+            >div{
+              display: inline-block;
+              width:18px;
+              height:18px;
+            }
+            .gear-stat-aa{
+              background-image: url("./../images/stats/aa.png");
+            }
+            .gear-stat-ar{
+              background-image: url("./../images/stats/ar.png");
+            }
+            .gear-stat-as{
+              background-image: url("./../images/stats/as.png");
+            }
+            .gear-stat-dv{
+              background-image: url("./../images/stats/dv.png");
+            }
+            .gear-stat-ev{
+              background-image: url("./../images/stats/ev.png");
+            }
+            .gear-stat-fp{
+              background-image: url("./../images/stats/fp.png");
+            }
+            .gear-stat-ht{
+              background-image: url("./../images/stats/ht.png");
+            }
+            .gear-stat-los{
+              background-image: url("./../images/stats/ls.png");
+            }
+            .gear-stat-range{
+              background-image: url("./../images/stats/or.png");
+            }
+            .gear-stat-rn{
+              background-image: url("./../images/stats/rn.png");
+            }
+            .gear-stat-tp{
+              background-image: url("./../images/stats/tp.png");
+            }
+          }
+        }
+
+      }
+
+    }
+    .gear-right{
+      float:right;
+      display: inline-block;
+      text-align: right;
+      vertical-align: top;
+      width:45px;
+      .gear-element-total{
+        vertical-align: top;
+        font-size:20px;
+        line-height: 20px;
+      }
+      .gear-element-mod-details{
+        >div{
+          float:right;
+          margin-right:2px;
+          div {
+            display: inline-block;
+            height:14px;
+            line-height:14px;
+            color: #2ec185;
+            float:left;
+          }
+          :nth-child(2n+1) {
+            padding-right:3px;
+            color:#ffd578;
+            font-size:12px;
+          }
+        }
+        width: 50px;
+        float: right;
+        text-align:right;
+
+
+      }
     }
   }
 }

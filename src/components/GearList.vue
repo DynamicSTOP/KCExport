@@ -10,21 +10,8 @@
                             <li class="gear-subGroupName" :key="`sgN-`+gearGroup.id+`-`+sgid">{{ subgroup.name }}</li>
                         </template>
                         <template v-for="gear in subgroup.gears">
-                            <li v-bind:key="`sgg-`+gear.id">
-                                <div class="gear-element">
-                                    <div class="gear-icon" :class="`itype${gear.types[3]}`"></div>
-                                    <div class="gear-element-name" :title="gear.name">{{gear.name}}</div>
-                                    <div class="gear-element-total" title="total number">{{gear.mod.reduce((a, b) => a + b, 0)}}</div>
-                                    <div class="gear-element-mod-details">
-                                        <template v-for="(mod, i) in gear.mod">
-                                            <template v-if="i>0 && mod>0">
-                                                <div :key="gear.id+'-'+i">
-                                                    <span>{{i===10?`max`:`+${i}`}}</span><span>{{mod}}</span>
-                                                </div>
-                                            </template>
-                                        </template>
-                                    </div>
-                                </div>
+                            <li :key="`sgg-`+gear.id">
+                                <gear-list-element :gear="gear"></gear-list-element>
                             </li>
                         </template>
                     </template>
@@ -37,12 +24,14 @@
 <script>
     import '@/sass/item_types.scss'
     import {mapGetters} from 'vuex'
+    import GearListElement from '@/components/GearListElement.vue'
 
     export default {
         name: "GearList",
         computed: {
             ...mapGetters(['currentGearGroups']),
         },
+        components:{GearListElement},
         data() {
             return {}
         }
