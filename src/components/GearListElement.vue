@@ -26,9 +26,8 @@
     </div>
 </template>
 <script>
-    const statNames = ["aa", "ar", "tp", "fp", "as", "dv", "ev", "ht", "los", "range"];
     export default {
-        props: ["gear"],
+        props: ["gear","main_stat"],
         name: "GearListElement",
         computed: {
             total() {
@@ -40,7 +39,12 @@
                 }).filter((m) => m.count > 0 && m.level !== '+0');
             },
             stats() {
-                return statNames.map(sName => {
+                let stats = ["aa", "ar", "tp", "fp", "as", "dv", "ev", "ht", "los", "range"];
+                if (typeof this.gear[this.main_stat] !== "undefined" && stats.indexOf(this.main_stat)!==-1) {
+                    stats.splice(stats.indexOf(this.main_stat),1);
+                    stats.unshift(this.main_stat)
+                }
+                return stats.map(sName => {
                     return {name: sName, value: this.gear[sName]}
                 }).filter((s) => s.value > 0);
             }
