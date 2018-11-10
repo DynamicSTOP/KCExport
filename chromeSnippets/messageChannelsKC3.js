@@ -25,6 +25,29 @@
         });
     }
 
+    KC3GearManager.load();
+    const gearsToExport = [];
+    let gears = {};
+    //group all gears
+    for (const idx in KC3GearManager.list) {
+        let gear = KC3GearManager.list[idx];
+        // Skip not locked gears
+        if (gear.lock !== 1) continue;
+        if (typeof gears[`g${gear.masterId}`] === "undefined") {
+            gears[`g${gear.masterId}`] = {
+                id: gear.masterId,
+                mod: Array(11).fill(0)
+            };
+        }
+        gears[`g${gear.masterId}`].mod[gear.stars]++;
+    }
+    //convert to array
+    for (const idx in gears) {
+        if (!gears[idx].id) continue;
+        gearsToExport .push(gears[idx]);
+    }
+    gearsToExport.sort((a, b) => a.id - b.id);
+
     //console.log(ships);
 
     //uncomment to debug next line
@@ -32,7 +55,7 @@
 
     //const trustedDomain="http://localhost:3000";
     //const trustedDomain="http://192.168.1.115:3000";
-    const trustedDomain="https://export.kc-db.info";
+    const trustedDomain="https://export.kc3.moe";
     let listener = (m)=>{
         if(m.origin!==trustedDomain)
             return false;
@@ -40,6 +63,7 @@
         if (m.data === "EXPORTER_STATE_READY" && m.source) {
             m.source.postMessage({
                 ships: JSON.stringify(ships),
+                gears: JSON.stringify(gearsToExport),
                 kc3assets: window.location.origin + "/assets/img/ships/",
                 type: "KC3_SHIPS"
             }, trustedDomain);

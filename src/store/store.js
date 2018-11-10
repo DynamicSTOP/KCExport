@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import VueResource from 'vue-resource'
-import shipLists from '@/store/modules/shipLists'
+import lists from '@/store/modules/lists'
 import assetsUrl from '@/store/modules/assetsUrl'
 import options from '@/store/modules/options'
 import secret from '@/store/modules/secret'
@@ -23,7 +23,7 @@ export default new Vuex.Store({
      */
     actions: {
         loadLast(context) {
-            context.dispatch('loadLastShips');
+            context.dispatch('loadLastList');
         },
         async loadStored(context) {
             await context.dispatch('loadFromLocalStorage');
@@ -32,7 +32,7 @@ export default new Vuex.Store({
         }
     },
     modules: {
-        shipLists,
+        lists,
         assetsUrl,
         options,
         secret

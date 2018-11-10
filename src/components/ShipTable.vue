@@ -90,9 +90,9 @@
         name: "ShipTable",
         components: {ShipTableRow},
         computed: {
-            ...mapGetters(['currentShipList', 'optionsShip', 'optionsCompactMode', 'filterMasterShips', 'optionShipNameLanguage']),
+            ...mapGetters(['currentKCList', 'optionsShip', 'optionsCompactMode', 'filterMasterShips', 'optionShipNameLanguage','currentShipGroups']),
             myShipList() {
-                return [].concat(...this.currentShipList.groups.map(g => g.ships.slice().map(s => {
+                return [].concat(...this.currentShipGroups.map(g => g.ships.slice().map(s => {
                     s.group = g.name;
                     if (this.optionShipNameLanguage === 'en' && (s.nameEn || !s.nameJp)) {
                         s.name = `${s.nameEn} ${s.suffixEn ? s.suffixEn : ""}`.trim();

@@ -12,18 +12,16 @@
                 <div class="column">#</div>
                 <div class="column">ship count</div>
                 <div class="column">Short link</div>
-                <div class="column">Full link</div>
                 <div class="column">Comment</div>
                 <div class="column">Delete</div>
             </div>
-            <div class="columns" @click.once="open(list)" v-for="(list, i) in storedShipLists" :key="i">
+            <div class="columns" @click.once="open(list)" v-for="(list, i) in storedKCLists" :key="i">
                 <div class="column">{{i+1}}</div>
-                <div class="column">{{list.array.length}}</div>
+                <div class="column">{{list.arrayShips.length}}</div>
                 <div class="column">
                     <div v-if="list.listId"><router-link :to="{name:'ShipListShort',params:{'short':list.listId}}">short</router-link></div>
-                    <div v-else><button @click.stop.once="shortifyShipList(i)">make short link</button></div>
+                    <div v-else><button @click.stop.once="shortifyKCList(i)">make short link</button></div>
                 </div>
-                <div class="column"><router-link :to="{path:'/ship-list-raw/'+list.raw}">Raw</router-link></div>
                 <div class="column" @click.stop="edit(i)">{{ list.comment }}</div>
                 <div class="column"><button @click.stop.once="remove(i)">delete</button></div>
             </div>
@@ -37,21 +35,21 @@
 
     export default {
         computed:{
-            ...mapGetters(['storedShipLists'])
+            ...mapGetters(['storedKCLists'])
         },
         methods:{
-            shortifyShipList(index){
-                this.$store.dispatch('shortifyShipList', index);
+            shortifyKCList(index){
+                this.$store.dispatch('shortifyKCList', index);
             },
             open(shipList){
-                this.$store.commit('setCurrentShipList', shipList);
+                this.$store.commit('setCurrentKCList', shipList);
                 this.$router.push({name:"ShipList"});
             },
             edit(i){
                 console.log(`edit comment of ${i}`);
             },
             remove(index){
-                this.$store.dispatch('removeShipList', index);
+                this.$store.dispatch('removeKCList', index);
             }
         }
     }

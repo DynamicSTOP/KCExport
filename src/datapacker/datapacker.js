@@ -22,8 +22,16 @@ class DataPacker {
         return (await this.getPacker(this.desiredVersion)).packShips(shipsArray);
     }
 
+    async packGears(gearsArray) {
+        return (await this.getPacker(this.desiredVersion)).packGears(gearsArray);
+    }
+
     async unpackShips(shipsString) {
         return (await this.getPacker(`v` + shipsString.split(`;;`).shift())).unpackShips(shipsString);
+    }
+
+    async unpackGears(gearsString) {
+        return (await this.getPacker(`v` + gearsString.split(`..`).shift())).unpackShips(gearsString);
     }
 }
 const dataPacker = new DataPacker();

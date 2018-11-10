@@ -30,13 +30,13 @@
         },
         name: "ShipList",
         computed: {
-            ...mapGetters(['currentShipList', 'optionsShip', 'optionsCompactMode', 'filterMasterShips']),
+            ...mapGetters(['currentKCList', 'optionsShip', 'optionsCompactMode', 'filterMasterShips', 'currentShipGroups']),
             shipListFiltred() {
                 /**
                  * TODO check initializers
                  */
-                if (this.currentShipList.groups)
-                    return this.currentShipList.groups.filter((g) => g.ships.length).sort((a, b) => this.order.indexOf(a.name) - this.order.indexOf(b.name));
+                if (this.currentShipGroups)
+                    return this.currentShipGroups.filter((g) => g.ships.length).sort((a, b) => this.order.indexOf(a.name) - this.order.indexOf(b.name));
                 else 
                     return [];
             },
@@ -63,11 +63,11 @@
         components: {kcShipListBlock, kcShip},
         async mounted() {
             if (this.$route.params && this.$route.params.raw) {
-                this.$store.dispatch('updateCurrentShipListByRawLink', await this.$route.params.raw);
+                this.$store.dispatch('updateCurrentKCListByRawLink', await this.$route.params.raw);
                 this.$router.push({name: "ShipList"});
             }
             if (this.$route.params && this.$route.params.short) {
-                this.$store.dispatch('loadShipListByLink', this.$route.params.short);
+                this.$store.dispatch('loadKCListByLink', this.$route.params.short);
                 this.$router.push({name: "ShipList"});
             }
         }

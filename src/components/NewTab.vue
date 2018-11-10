@@ -14,10 +14,10 @@
         methods: {
             newMessage(message) {
                 try {
-                    if (typeof(message.data.kc3assets) !== "undefined")
-                        this.$store.dispatch('updateAssetsUrl', message.data.kc3assets);
-                    if (message.data.type === "KC3_SHIPS") {
-                        this.$store.dispatch('updateCurrentShipListFromMessageChannel', message.data.ships);
+                    if (message.data.type === "KC3_DATA" && window.opener === message.source) {
+                        if (typeof(message.data.kc3assets) !== "undefined")
+                            this.$store.dispatch('updateAssetsUrl', message.data.kc3assets);
+                        this.$store.dispatch('updateCurrentKCListFromMessageChannel', message.data);
                         this.$router.push({name: "ShipList"});
                     }
                 } catch (e) {

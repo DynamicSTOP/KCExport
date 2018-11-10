@@ -39,7 +39,7 @@
         },
         name: "ShipTableRow",
         computed: {
-            ...mapGetters(['currentShipList', 'optionsShip', 'optionsCompactMode', 'filterMasterShips', 'optionShipNameLanguage','isKC3AssetsAvailable','assetsUrl']),
+            ...mapGetters(['currentKCList', 'optionsShip', 'optionsCompactMode', 'filterMasterShips', 'optionShipNameLanguage','isKC3AssetsAvailable','assetsUrl']),
             avatarClass() {
                 return `ship${this.ship.masterId}`;
             },

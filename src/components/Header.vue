@@ -25,7 +25,7 @@
                 <div class="navbar-item senpoi" :class="{active:isSenpoiMode}" @click="$store.commit('toggleSenpoi')"
                      v-show="$route.name === 'ShipList'" title="Helper mode">Senpoi
                 </div>
-                <div class="navbar-item save" @click="$store.dispatch('saveCurrentShipList')" v-show="showSave"
+                <div class="navbar-item save" @click="$store.dispatch('saveCurrentKCList')" v-show="showSave"
                      title="Save into storage">Save
                 </div>
                 <div class="navbar-item share" v-show="showShortify && !shorting"
@@ -35,7 +35,7 @@
                      title="Wait a sec, elves are working!">Shorting...
                 </div>
                 <div class="navbar-item share shorten" v-if="showShortLink" title="Short Link">
-                    <router-link :to="{name:'ShipListShort',params:{'short':currentShipList.listId}}">Short Link
+                    <router-link :to="{name:'ShipListShort',params:{'short':currentKCList.listId}}">Short Link
                     </router-link>
                 </div>
             </div>
@@ -54,7 +54,7 @@
             }
         },
         computed: {
-            ...mapGetters(['isCurrentStored', 'currentShipList', 'currentShipListEmpty', 'isSenpoiMode', 'isCurrentShortified']),
+            ...mapGetters(['isCurrentStored', 'currentKCList', 'currentShipListEmpty', 'isSenpoiMode', 'isCurrentShortified']),
             showSave() {
                 return (this.$route.name === 'ShipList' || this.$route.name === 'ShipTable')
                     && !this.currentShipListEmpty
@@ -73,7 +73,7 @@
         methods: {
             shortifyCurrent() {
                 this.shorting = true;
-                this.$store.dispatch('shortifyCurrentShipList');
+                this.$store.dispatch('shortifyCurrentKCList');
             }
         }
     }

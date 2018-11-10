@@ -120,7 +120,7 @@ const mutations = {
                 state.modes.senpoi.shipNameLanguage = "ja";
             }
             let kce_options = JSON.parse(localStorage.getItem("kce_options"));
-            if (typeof kce_options.optionsVersion !== "undefined") {
+            if (kce_options !== null && typeof kce_options.optionsVersion !== "undefined") {
                 deepAssign(state, kce_options);
             }
         } catch (e) {

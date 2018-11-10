@@ -64,7 +64,7 @@
         <div class="title is-4">(For developers) Can i post\request ship lists directly from my app?</div>
         <p>Yes. But you would have to deal with specific data packer format.</p>
         <p>Check <a href="https://github.com/DynamicSTOP/kcexport/tree/dev/src/datapacker" target="_blank">this</a>
-            and shortifyShipList request <a
+            and shortifyKCList request <a
                     href="https://github.com/DynamicSTOP/kcexport/blob/dev/src/store/modules/shipLists.js"
                     target="_blank">here</a>.</p>
     </div>
