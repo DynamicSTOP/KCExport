@@ -5,6 +5,7 @@
   "scripts": {
     "WCTF": "node scripts/WhoCallsTheFleetDb.js",
     "KC3Avatars": "node scripts/KC3Avatars.js",
+    "KC3Items": "node scripts/KC3Items.js",
     "sprites": "node scripts/sprites.js",
     "versionCheck": "node scripts/cleaner.js",
     "serve": "node ./node_modules/\\@vue/cli-service/bin/vue-cli-service.js serve",

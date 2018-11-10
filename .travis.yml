@@ -34,6 +34,7 @@ install:
  - yarn versionCheck
  - yarn WCTF
  - yarn KC3Avatars
+ - yarn KC3Items
  - yarn sprites
 
 before_script: yarn lint

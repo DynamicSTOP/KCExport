@@ -29,7 +29,11 @@ check("https://raw.githubusercontent.com/TeamFleet/WhoCallsTheFleet/master/app-d
 .then(()=>check("https://raw.githubusercontent.com/TeamFleet/WhoCallsTheFleet/master/app-db/item_types.nedb",__dirname + '/../external/item_types.nedb'))
 .then(()=>check("https://raw.githubusercontent.com/TeamFleet/WhoCallsTheFleet/master/app-db/ship_types.nedb",__dirname + '/../external/ship_types.nedb'))
 .then(()=>check("https://raw.githubusercontent.com/TeamFleet/WhoCallsTheFleet/master/app-db/ship_namesuffix.nedb",__dirname + '/../external/ship_namesuffix.nedb'))
-.then(()=>{
+.then(()=>check("https://raw.githubusercontent.com/TeamFleet/WhoCallsTheFleet/master/app-db/items.nedb",__dirname + '/../external/items.nedb'))
+.then(()=>check("https://raw.githubusercontent.com/KC3Kai/kc3-translations/master/data/en/items.json",__dirname + '/../external/items.json'))
+.then(()=>check("https://raw.githubusercontent.com/KC3Kai/kc3-translations/master/data/en/equiptype.json",__dirname + '/../external/equiptype.json'))
+
+    .then(()=>{
     console.log(`Processing...`);
     let stypes={};
     const rawTypes = fs.readFileSync(__dirname + '/../external/ship_types.nedb', 'utf8');
@@ -116,13 +120,53 @@ check("https://raw.githubusercontent.com/TeamFleet/WhoCallsTheFleet/master/app-d
             ship.name.suffix_jp = suff[`s${master.name.suffix}`].ja_jp;
         }
 
-        obj[ship.id]=ship;
+        obj[ship.id] = ship;
     });
 
     let str = "const ships="+JSON.stringify(obj,false," ")+";\n";
     str+="export default ships;";
 
     fs.writeFileSync(__dirname + '/../src/generated/ships.js',str,{encoding:'utf8'});
+
+    let items = {};
+    let itemTranslations = fs.readFileSync(__dirname + '/../external/items.json', 'utf8');
+    itemTranslations = JSON.parse(itemTranslations);
+
+    const rawItems = fs.readFileSync(__dirname + '/../external/items.nedb', 'utf8');
+    rawItems.split("\n").map((raw_Item)=>{
+        raw_Item = JSON.parse(raw_Item);
+
+        items[`${raw_Item.id}`] = {
+            id:raw_Item.id,
+            types:raw_Item.type_ingame,
+            type: raw_Item.type,
+            name: itemTranslations[raw_Item.name.ja_jp] || raw_Item.name.ja_jp,
+            stat:{
+                aa: raw_Item.stat.aa,
+                ar: raw_Item.stat.armor,
+                tp:raw_Item.stat.torpedo,
+                fp: raw_Item.stat.fire,
+                as: raw_Item.stat.asw,
+                dv: raw_Item.stat.bomb,
+                radius: raw_Item.stat.distance,
+                ev: raw_Item.stat.evasion,
+                ht: raw_Item.stat.hit,
+                los: raw_Item.stat.los,
+                range:  raw_Item.stat.range
+            }
+        };
+    });
+
+    str = "const items="+JSON.stringify(items,false," ")+";\n";
+    str+="export default items;";
+    fs.writeFileSync(__dirname + '/../src/generated/items.js',str,{encoding:'utf8'});
+
+    let itemTypeNames = fs.readFileSync(__dirname + '/../external/equiptype.json', 'utf8');
+    itemTypeNames  = JSON.parse(itemTypeNames);
+    str = "const itemTypes="+JSON.stringify(itemTypeNames)+";\n";
+    str+="export default itemTypes;";
+    fs.writeFileSync(__dirname + '/../src/generated/item_types.js',str,{encoding:'utf8'});
+
 
 },(e)=>console.log(e));
 

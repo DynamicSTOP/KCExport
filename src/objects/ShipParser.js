@@ -35,10 +35,6 @@ class ShipParser {
         ]);
     }
 
-    arrayFromGroups(groups = []) {
-        return this.arrayFromShips(([].concat(...groups.map(g => g.ships))).sort((a, b) => a.id - b.id))
-    }
-
     groupsFromRawArray(ships = []) {
         let tempShipsData = this.stype.map((t) => Object.assign({}, {name: t, ships: []}));
         ships.map((s) => {
@@ -122,116 +118,6 @@ class ShipParser {
                     nameJp: master.name.ja_jp && master.name.ja_jp !== "" ? master.name.ja_jp : null,
                     suffixEn: master.name.suffix_rj || null,
                     suffixJp: master.name.suffix_jp || null,
-                    fast: master.stat.fast,
-                    range: master.stat.range,
-                    stype: master.stype,
-                    slots: master.slot,
-                    daihatsu: !!(master.daihatsu),
-                    sortno: master.no
-                });
-                return true;
-            }
-        );
-        tempShipsData = tempShipsData.map(
-            (g) => {
-                g.ships.sort((a, b) => {
-                    if (a.lvl === b.lvl) {
-                        if (a.sortno === b.sortno) {
-                            return a.id - b.id;
-                        } else {
-                            return a.sortno - b.sortno;
-                        }
-                    } else {
-                        return b.lvl - a.lvl;
-                    }
-                });
-                return g;
-            }
-        );
-        return tempShipsData;
-    }
-
-
-    groupsFromShipsObjects(ships = []) {
-        let tempShipsData = this.stype.map((t) => Object.assign({}, {name: t, ships: []}));
-        ships.map((s) => {
-                const master = WCTFships[s.masterId];
-                if (typeof master === "undefined") {
-                    tempShipsData[0].ships.push({
-                        id: s.id,
-                        masterId: s.masterId,
-                        new: true,
-                        lvl: s.lvl,
-                        sally: s.sally,
-                        extraSlot: s.extraSlot === 1,
-                        aa: s.aa,
-                        aa_max: s.aa,
-                        tp: s.tp,
-                        tp_max: s.tp,
-                        ar: s.ar,
-                        ar_max: s.ar,
-                        fp: s.fp,
-                        fp_max: s.fp,
-                        lk: s.lk,
-                        lk_max: s.lk,
-                        hp: s.hp,
-                        hp_def: s.hp,
-                        hp_max: s.hp,
-                        as: s.as,
-                        as_def: s.as,
-                        as_max: s.as,
-                        los: 0,
-                        los_def: 0,
-                        los_max: 0,
-                        evasion: 0,
-                        evasion_def: 0,
-                        evasion_max: 0,
-                        name: "New Face",
-                        speed: false,
-                        range: 1,
-                        suffix: "",
-                        stype: 0,
-                        slots: [],
-                        daihatsu: false,
-                        sortno: 9999
-                    });
-                    return true;
-                }
-                const type = this.stype.indexOf(WCTFships[s.masterId].api_typen);
-
-                tempShipsData[type].ships.push({
-                    // WCTF: master,
-                    id: s.id,
-                    masterId: s.masterId,
-                    lvl: s.lvl,
-                    sally: s.sally,
-                    extraSlot: s.extraSlot === 1,
-                    aa: s.aa,
-                    aa_max: master.stat.aa_max,
-                    tp: s.tp,
-                    tp_max: master.stat.torpedo_max,
-                    ar: s.ar,
-                    ar_max: master.stat.armor_max,
-                    fp: s.fp,
-                    fp_max: master.stat.fire_max,
-                    lk: s.lk,
-                    lk_max: master.stat.luck_max,
-                    //hp
-                    hp: s.hp,
-                    hp_def: master.stat.hp,
-                    hp_max: master.stat.hp_max,
-                    //asw
-                    as: s.as,
-                    as_def: master.stat.asw,
-                    as_max: master.stat.asw_max,
-                    los: master.stat.los + Math.floor((master.stat.los_max - master.stat.los) * s.lvl / 99.0),
-                    los_def: master.stat.los,
-                    los_max: master.stat.los_max,
-                    evasion: master.stat.evasion + Math.floor((master.stat.evasion_max - master.stat.evasion) * s.lvl / 99.0),
-                    evasion_def: master.stat.evasion,
-                    evasion_max: master.stat.evasion_max,
-                    name: master.name.ja_romaji !== "" ? master.name.ja_romaji : master.name.ja_jp,
-                    suffix: master.name.suffix_rj || null,
                     fast: master.stat.fast,
                     range: master.stat.range,
                     stype: master.stype,

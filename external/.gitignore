@@ -4,3 +4,4 @@
 # run "yarn WCTF" to download files from github
 *.nedb
 .versions.json
+*.json

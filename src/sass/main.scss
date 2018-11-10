@@ -507,3 +507,92 @@ $shipelement-padding: 20px;
 
   }
 }
+
+.gearList{
+  ul{
+    list-style: none;
+    --gear-element-width: 320px;
+
+    -webkit-column-width: var(--gear-element-width);
+    -moz-column-width: var(--gear-element-width);
+    column-width: var(--gear-element-width);
+
+    -webkit-column-gap: 0;
+    -moz-column-gap: 0;
+    column-gap: 0;
+
+    -moz-column-fill: balance;
+    column-fill: balance;
+
+  }
+
+  .gear-mainGroupName,.gear-subGroupName,.gear-element{
+    display: inline-block;
+    width:300px;
+    min-height:40px;
+    vertical-align: middle;
+  }
+  .gear-subGroupName,.gear-mainGroupName{
+    text-align: center;
+    font-weight: 600;
+    line-height: 40px;
+    border-radius: 5px;
+    margin-bottom:1px;
+  }
+  .gear-mainGroupName{
+    background: linear-gradient(#484e55, #3a3f44 60%, #313539);
+    font-size: 22px;
+  }
+  .gear-subGroupName{
+    background: linear-gradient(#555148, #867239 60%, #a98025);
+    font-size: 14px;
+  }
+  .gear-mainGroupName{}
+  .gear-subGroupName{}
+  .gear-element{
+    position:relative;
+    display: inline-block;
+    background: rgba(255,255,255,0.03);
+    .gear-icon{
+      position:absolute;
+      left:0;
+      top:0;
+      border-radius: 50%;
+      border: 1px solid #ccc;
+      width:30px;
+      height:30px;
+    }
+    .gear-element-name{
+      position:absolute;
+      font-size:14px;
+      line-height:16px;
+      left:35px;
+      top:0;
+      //white-space: nowrap;
+      //overflow: hidden;
+      //text-overflow: ellipsis;
+      width: calc(var(--gear-element-width) - 35px - 50px);
+    }
+    .gear-element-total{
+      position:absolute;
+      right:2px;
+      vertical-align: top;
+      top:0;
+      font-size:20px;
+    }
+    .gear-element-mod-details{
+      margin-top:30px;
+      text-align:right;
+      div {
+        height:14px;
+        color: #2ec185;
+        :nth-child(2n+1) {
+          padding-right:3px;
+          color:#ffd578;
+          font-size:12px;
+        }
+      }
+      padding-bottom:15px;
+    }
+  }
+}

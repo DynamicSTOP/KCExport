@@ -1,0 +1,9 @@
+@import "generated/item-types.scss";
+@import "helpers.scss";
+
+@each $spritesheet in $spritesheet-it-sprites{
+  $sprite-name: nth($spritesheet, 10);
+  .#{$sprite-name} {
+    @include responsive-s-sprite($spritesheet);
+  }
+}

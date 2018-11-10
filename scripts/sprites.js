@@ -139,3 +139,7 @@ allShips.map((shipId)=>{
 const lockImages = fs.readdirSync(__dirname + '/../src/images/locks').filter((s)=>s.indexOf("png")!==-1).map((s)=>__dirname + '/../src/images/locks/'+s)
 //4px should prevent stupid overlapping in browser. haha chrome.
 generateSCSS(lockImages, 'ship-locks.png', 'lock', false, false, helpers, 4);
+
+const itemTypes = fs.readdirSync(__dirname + '/../src/images/item_types').filter((s)=>s.indexOf("png")!==-1).map((s)=>__dirname + '/../src/images/item_types/'+s)
+//4px should prevent stupid overlapping in browser. haha chrome.
+generateSCSS(itemTypes, 'item-types.png', 'itype', '-it', false, helpers, 4);

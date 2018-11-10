@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import ShipList from '@/components/ShipList.vue'
+import GearList from '@/components/GearList.vue'
 import ShipTable from '@/components/ShipTable.vue'
 import Options from '@/components/Options.vue'
 import NewTab from '@/components/NewTab.vue'
@@ -42,6 +43,11 @@ export default new Router({
             path: '/ship-list-short/:short',
             name: 'ShipListShort',
             component: ShipList
+        },
+        {
+            path: '/gear-list',
+            name: 'GearList',
+            component: GearList
         },
         {
             path: '/ship-table',

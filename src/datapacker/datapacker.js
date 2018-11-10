@@ -31,7 +31,7 @@ class DataPacker {
     }
 
     async unpackGears(gearsString) {
-        return (await this.getPacker(`v` + gearsString.split(`..`).shift())).unpackShips(gearsString);
+        return (await this.getPacker(`v` + gearsString.split(`..`).shift())).unpackGears(gearsString);
     }
 }
 const dataPacker = new DataPacker();

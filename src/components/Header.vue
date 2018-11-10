@@ -17,6 +17,9 @@
                 <router-link class="navbar-item" :to="{name:'ShipList'}" tag="div" v-show="!currentShipListEmpty">
                     ShipList
                 </router-link>
+                <router-link class="navbar-item" :to="{name:'GearList'}" tag="div" v-show="!currentGearListEmpty">
+                    GearList
+                </router-link>
                 <router-link class="navbar-item" :to="{name:'ShipTable'}" tag="div" v-show="!currentShipListEmpty">
                     ShipTable
                 </router-link>
@@ -54,7 +57,7 @@
             }
         },
         computed: {
-            ...mapGetters(['isCurrentStored', 'currentKCList', 'currentShipListEmpty', 'isSenpoiMode', 'isCurrentShortified']),
+            ...mapGetters(['isCurrentStored', 'currentKCList', 'currentShipListEmpty','currentGearListEmpty', 'isSenpoiMode', 'isCurrentShortified']),
             showSave() {
                 return (this.$route.name === 'ShipList' || this.$route.name === 'ShipTable')
                     && !this.currentShipListEmpty

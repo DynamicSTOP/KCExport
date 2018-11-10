@@ -1,5 +1,6 @@
 import Vue from "vue";
 import ShipParser from '@/objects/ShipParser'
+import GearParser from '@/objects/GearParser'
 import dataPacker from '@/datapacker/datapacker'
 
 class KCList {
@@ -28,6 +29,7 @@ class KCList {
          * @type {Array}
          */
         this.shipGroups = options.shipGroups || [];
+        this.gearGroups = options.gearGroups || [];
 
         this.arrayShips = options.arrayShips || [];
         this.arrayGears = options.arrayGears || [];
@@ -36,7 +38,9 @@ class KCList {
     async restoreFromRaw() {
         if (this.rawShips && this.rawShips.length) {
             this.arrayShips = await dataPacker.unpackShips(this.rawShips);
+            this.arrayGears = await dataPacker.unpackGears(this.rawGears);
             this.shipGroups = ShipParser.groupsFromRawArray(this.arrayShips);
+            this.gearGroups = GearParser.groupsFromRawArray(this.arrayGears);
         }
     }
 }
@@ -55,6 +59,8 @@ const state = {
 const getters = {
     currentKCList: state => state.currentKCList,
     currentShipGroups: state => state.currentKCList.shipGroups,
+    currentGearGroups: state => state.currentKCList.gearGroups,
+    currentGearListEmpty: state=> !(state.currentKCList.rawGears && state.currentKCList.rawGears.length > 0),
     currentShipListEmpty: state => !(state.currentKCList.rawShips && state.currentKCList.rawShips.length > 0),
     storedKCLists: state => state.storedKCLists,
     isCurrentStored: function (state) {
