@@ -510,6 +510,7 @@ $shipelement-padding: 20px;
 
 .gearList{
   --gear-element-width: 320px;
+  text-align: center;
   ul{
     list-style: none;
     -webkit-column-width: var(--gear-element-width);
@@ -549,6 +550,7 @@ $shipelement-padding: 20px;
   .gear-subGroupName{}
   .gear-element{
     display: inline-block;
+    text-align: left;
     background: rgba(255,255,255,0.03);
     padding-bottom: 5px;
     .gear-left{
@@ -587,7 +589,7 @@ $shipelement-padding: 20px;
             height:20px;
             padding:1px;
 
-            margin-right: 8px;
+            margin-right: 7px;
             vertical-align: middle;
             text-align: center;
             background: #ccc;
