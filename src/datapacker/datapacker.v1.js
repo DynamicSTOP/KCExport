@@ -207,9 +207,8 @@ class datapacker_v1 {
         const v = arr.shift();
         if (v !== this.version)
             throw new Error(`Baka! This was packed with different version! ${v}. This object can parse only ${this.version}`);
-        const shipBlocks = arr[0].split(",");
-        if (shipBlocks.length === 0) return [];
-        return shipBlocks.map((s) => this._unpackShip(s)).sort((a, b) => a[0] - b[0]);
+        if (arr[0].length === 0) return [];
+        return arr[0].split(",").map((s) => this._unpackShip(s)).sort((a, b) => a[0] - b[0]);
     }
 
     /**

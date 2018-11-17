@@ -1,14 +1,21 @@
 <template>
     <div class="section" :class="{smallBlocks:smallBlocks}">
-        <div v-if="optionsCompactMode">
-            <ul class="kce-ship-list">
-                <kc-ship class="compact" v-for="ship in shipsToShow" :ship="ship" :key="ship.id"></kc-ship>
-            </ul>
-        </div>
-        <div v-else>
-            <kcShipListBlock :shipsBlock="shipsBlock" v-for="shipsBlock in shipListFiltred"
-                             :key="shipsBlock.name"></kcShipListBlock>
-        </div>
+        <template v-if="currentShipListEmpty">
+            <p>No ships data. Are you sure you <a href="http://kancolle.wikia.com/wiki/Tutorial:_FAQ#I_notice_there_are_heart-locks_in_the_ship_selection_screen." target="_blank">heart-locked</a> your ships before exporting them?</p>
+            <p>KC3 generally doesn't export non locked ships or equips. Otherwise you'd better contact devs. Contacts are in <router-link :to="{name:'Help'}">Help</router-link>.</p>
+        </template>
+        <template v-else>
+            <div v-if="optionsCompactMode">
+                <ul class="kce-ship-list">
+                    <kc-ship class="compact" v-for="ship in shipsToShow" :ship="ship" :key="ship.id"></kc-ship>
+                </ul>
+            </div>
+            <div v-else>
+                <kcShipListBlock :shipsBlock="shipsBlock" v-for="shipsBlock in shipListFiltred"
+                                 :key="shipsBlock.name"></kcShipListBlock>
+            </div>
+        </template>
+
 
     </div>
 </template>
@@ -30,7 +37,7 @@
         },
         name: "ShipList",
         computed: {
-            ...mapGetters(['currentKCList', 'optionsShip', 'optionsCompactMode', 'filterMasterShips', 'currentShipGroups']),
+            ...mapGetters(['currentKCList', 'currentShipListEmpty', 'optionsShip', 'optionsCompactMode', 'filterMasterShips', 'currentShipGroups']),
             shipListFiltred() {
                 /**
                  * TODO check initializers
