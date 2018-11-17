@@ -60,8 +60,8 @@ const getters = {
     currentKCList: state => state.currentKCList,
     currentShipGroups: state => state.currentKCList.shipGroups,
     currentGearGroups: state => state.currentKCList.gearGroups,
-    currentGearListEmpty: state=> !(state.currentKCList.rawGears && state.currentKCList.rawGears.length > 0),
-    currentShipListEmpty: state => !(state.currentKCList.rawShips && state.currentKCList.rawShips.length > 0),
+    currentGearListEmpty: state=> !(state.currentKCList.arrayGears && state.currentKCList.arrayGears.length > 0),
+    currentShipListEmpty: state => !(state.currentKCList.arrayShips && state.currentKCList.arrayShips.length > 0),
     storedKCLists: state => state.storedKCLists,
     isCurrentStored: function (state) {
         if (

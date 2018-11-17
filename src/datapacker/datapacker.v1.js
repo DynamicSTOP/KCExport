@@ -266,27 +266,32 @@ class datapacker_v1 {
             throw new Error(`Baka! This was packed with different version! ${v}. This object can parse only ${this.version}`);
 
         let masterId = null;
-        return arr[0].split(";").map(g => {
-            let id, mod = Array(11).fill(0);
-            if (g.indexOf('.') === -1 && masterId !== null) {
-                id = masterId + 1;
-            } else {
-                let a = g.split('.');
-                id = _decode(a.shift());
-                g = a[0];
-            }
-            if (g.length === 0) {
-                mod[0] = 1;
-            } else {
-                if (g.split(',').length % 2 !== 0) g = `0,${g}`;
-                let chunks = g.split(',');
-                for (let i = 0; i < chunks.length / 2; i++) {
-                    mod[_decode(chunks[i * 2])] = _decode(chunks[i * 2 + 1]);
+        if (arr[0].length) {
+            return arr[0].split(";").map(g => {
+                let id, mod = Array(11).fill(0);
+                if (g.indexOf('.') === -1 && masterId !== null) {
+                    id = masterId + 1;
+                } else {
+                    let a = g.split('.');
+                    id = _decode(a.shift());
+                    g = a[0];
                 }
-            }
-            masterId = id;
-            return {id, mod};
-        });
+                if (g.length === 0) {
+                    mod[0] = 1;
+                } else {
+                    if (g.split(',').length % 2 !== 0) g = `0,${g}`;
+                    let chunks = g.split(',');
+                    for (let i = 0; i < chunks.length / 2; i++) {
+                        mod[_decode(chunks[i * 2])] = _decode(chunks[i * 2 + 1]);
+                    }
+                }
+                masterId = id;
+                return {id, mod};
+            });
+        } else {
+            return [];
+        }
+
     }
 
     _test(shipsArray) {
