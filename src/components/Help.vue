@@ -2,15 +2,9 @@
     <div class="section padding">
         <div class="title is-2">Help.</div>
 
-        <div class="title is-4">How do i import my ship list?</div>
-        <p>If you are using KC3 you should see new option on <strong>Strategy&nbsp;Room > Ships > Ship&nbsp;List</strong> page.
-            Look for <strong>Export to</strong>: <strong>kc3.moe</strong> (Ctrl+F). If it's not there check how it's done manually bellow.</p>
-        <p>While this site is still in <em>"early&nbsp;early&nbsp;alpha"</em> you can run
-            <a href="https://github.com/DynamicSTOP/kcexport/blob/dev/chromeSnippets/messageChannelsKC3.js"
-               target="_blank">this script</a>
-            in your KC3 Strategy room. Just open devtools and paste it into console.</p>
-        <p>There would probably be better ways like button in KC3 viewer once we settle with
-            <a href="https://github.com/DynamicSTOP/kcexport/projects" target="_blank">primary tasks</a>.</p>
+        <div class="title is-4">How do i import my ship\equip list?</div>
+        <p>If you are using KC3 you should see new option on <strong>Strategy&nbsp;Room > Showcase</strong> page.
+            Look for <strong>Export to kc3.moe</strong> button.</p>
 
         <div class="title is-4">Can i change how list looks?</div>
         <p>Yes! Check out

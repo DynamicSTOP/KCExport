@@ -2,11 +2,11 @@
     <div class="section padding">
         <div class="title is-2">Welcome!</div>
         <div>
-            <p>This site was made so you could easily exchange ship lists (and potentially equip lists in future)
+            <p>This site was made so you could easily exchange ship lists and equip lists
                 without posting stuff to imgur and other image exchange sites.</p>
             <p>Actually you still can, but can you do Ctrl+F in those? Hmmmmm?</p>
-            <p>Also since it alpha, some features may be removed and <span title="equip lists!">new one</span> added.
-            </p>
+            <p>Also since it alpha, some features may be removed and new one added.</p>
+            <p>Both ship list and equip list views aren't final and we are planning to keep experimenting with them.</p>
 
             <div class="title is-4">How do i ... ?</div>
             <p>First check
