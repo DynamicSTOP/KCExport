@@ -23,6 +23,7 @@ cache:
   directories:
     - "external"
     - "src/images/ships"
+    - "src/images/item_types"
     - "node_modules"
     - $HOME/.local
 
