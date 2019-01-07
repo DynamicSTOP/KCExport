@@ -31,6 +31,10 @@ const defOptions = {
     }
 };
 
+if(process.env.GITHUB_TOKEN){
+    defOptions.headers['Authorization']=`token ${process.env.GITHUB_TOKEN}`
+}
+
 let load = async (path) => {
     return new Promise((res) => {
         console.log(`Requesting ${path}`);
