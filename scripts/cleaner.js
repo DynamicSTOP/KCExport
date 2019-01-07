@@ -56,9 +56,11 @@ let load = async (path) => {
 load("/repos/KC3Kai/KC3Kai/commits?sha=master&path=src/assets/img/ships/")
 .then((KC3data) => {
     let force = false;
-    if(KC3data.length===0 || typeof KC3data[0].sha ==="undefined"){
-        console.log(JSON.stringify(KC3data));
+    try {
+        console.log(`KC3 images version ${KC3data[0].sha}`)
+    } catch (e) {
         force = true;
+        console.log(`can't read version from ${JSON.stringify(KC3data)}`)
     }
     if (force || versions.KC3 !== KC3data[0].sha) {
         console.log(`Dropping avatars`);
@@ -75,9 +77,11 @@ load("/repos/KC3Kai/KC3Kai/commits?sha=master&path=src/assets/img/ships/")
 .then(() => load("/repos/TeamFleet/WhoCallsTheFleet/commits?sha=master&path=app-db/"))
 .then((WCTFdata) => {
     let force = false;
-    if(WCTFdata.length===0 || typeof WCTFdata[0].sha ==="undefined"){
-        console.log(JSON.stringify(WCTFdata));
+    try {
+        console.log(`WCTF version ${WCTFdata[0].sha}`)
+    } catch (e) {
         force = true;
+        console.log(`can't read version from ${JSON.stringify(WCTFdata)}`)
     }
     if (force || versions.WCTF !== WCTFdata[0].sha) {
         console.log(`Dropping WCTF db`);
