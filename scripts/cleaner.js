@@ -55,29 +55,39 @@ let load = async (path) => {
 //https://developer.github.com/v3/repos/commits/
 load("/repos/KC3Kai/KC3Kai/commits?sha=master&path=src/assets/img/ships/")
 .then((KC3data) => {
-    if (versions.KC3 !== KC3data[0].sha) {
+    let force = false;
+    if(KC3data.length===0 || typeof KC3data[0].sha ==="undefined"){
+        console.log(JSON.stringify(KC3data));
+        force = true;
+    }
+    if (force || versions.KC3 !== KC3data[0].sha) {
         console.log(`Dropping avatars`);
         fs.readdirSync(__dirname+'/../src/images/ships')
           .filter((s)=>s.indexOf("png")!==-1)
           .map((s)=>{
              fs.unlinkSync(__dirname+'/../src/images/ships/'+s);
           });
-        versions.KC3 = KC3data[0].sha;
-        versions.KC3_date = KC3data[0].commit.author.date;
+        versions.KC3 = force ? "" : KC3data[0].sha;
+        versions.KC3_date = force ? "" :KC3data[0].commit.author.date;
         update = true;
     }
 })
 .then(() => load("/repos/TeamFleet/WhoCallsTheFleet/commits?sha=master&path=app-db/"))
 .then((WCTFdata) => {
-    if (versions.WCTF !== WCTFdata[0].sha) {
+    let force = false;
+    if(WCTFdata.length===0 || typeof WCTFdata[0].sha ==="undefined"){
+        console.log(JSON.stringify(WCTFdata));
+        force = true;
+    }
+    if (force || versions.WCTF !== WCTFdata[0].sha) {
         console.log(`Dropping WCTF db`);
         fs.readdirSync(__dirname+'/../external')
             .filter((s)=>s.indexOf("nedb")!==-1)
             .map((s)=>{
                 fs.unlinkSync(__dirname+'/../external/'+s);
             });
-        versions.WCTF = WCTFdata[0].sha;
-        versions.WCTF_date = WCTFdata[0].commit.author.date;
+        versions.WCTF = force ? "" : WCTFdata[0].sha;
+        versions.WCTF_date = force ? "" : WCTFdata[0].commit.author.date;
         update = true;
     }
 }).then(()=>{
