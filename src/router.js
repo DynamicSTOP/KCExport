@@ -12,11 +12,21 @@ import ListStorage from '@/components/ListStorage.vue'
 Vue.use(Router);
 
 export default new Router({
+    mode: "history",
     routes: [
         {
             path: '/',
             name: 'Home',
-            component: Home
+            component: Home,
+            beforeEnter(to,from,next){
+                //it's not parsing by default as expected
+                //to.params.raw = window.location.hash.substr('#/ship-list-raw/'.length);
+                if(window.location.hash.length && typeof window.history.pushState === "function"){
+                    next(window.location.hash.substr(1));
+                } else {
+                    next();
+                }
+            }
         },
         {
             path: '/storage',
@@ -35,7 +45,11 @@ export default new Router({
             component: ShipList,
             beforeEnter(to,from,next){
                 //it's not parsing by default as expected
-                to.params.raw = window.location.hash.substr('#/ship-list-raw/'.length);
+                if (window.location.href) {
+                    to.params.raw = window.location.hash.substr('#/ship-list-raw/'.length);
+                } else {
+                    to.params.raw = window.location.pathname.substr('/ship-list-raw/'.length);
+                }
                 next();
             }
         },
