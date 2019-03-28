@@ -9,12 +9,25 @@ let check = async(url,path) =>{
         }catch(Error) {
             console.log(`Downloading ${url}`);
             request.head(url, function(err, res, body){
-                request(url)
-                    .pipe(fs.createWriteStream(path))
-                    .on('close', ()=>{
-                        console.log(`Finished ${path}`);
-                        resolve();
+                if(res.statusCode!==404){
+                    request(url)
+                        .pipe(fs.createWriteStream(path))
+                        .on('close', ()=>{
+                            console.log(`Finished ${path}`);
+                            resolve();
+                        });
+                } else {
+                    console.log(`missed ${url}`);
+                    url = "https://raw.githubusercontent.com/KC3Kai/KC3Kai/master/src/assets/img/ui/empty.png";
+                    request.head(url, function(err, res, body){
+                        request(url)
+                            .pipe(fs.createWriteStream(path))
+                            .on('close', ()=>{
+                                console.log(`Finished ${path}`);
+                                resolve();
+                            });
                     });
+                }
             });
         }
     })
