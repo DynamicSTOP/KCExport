@@ -8,7 +8,7 @@ elif [ "$1" = "dev" ]; then
 fi
 
 BASE_PATH="https://${AWS_CF_DOMAIN}/"
-sed "s|=/|=${BASE_PATH}|g" ./dist/index.sed.html
+sed "s|=/|=${BASE_PATH}|g" ./dist/index.html > ./dist/index.sed.html
 
 find dist -name "*.png" -exec optipng {} \;
 aws s3 sync ./dist/ s3://${AWS_CF_DOMAIN} --acl public-read --metadata-directive REPLACE --cache-control public,max-age=5184000 --exclude "index.html" --delete
