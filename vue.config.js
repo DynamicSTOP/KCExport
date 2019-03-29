@@ -1,7 +1,7 @@
 // https://github.com/vuejs/vue-cli/blob/dev/docs/config.md
 
 module.exports = {
-    publicPath: `/${process.env.APP_SUB_PATH?process.env.APP_SUB_PATH:''}`,
+    baseUrl: `/${process.env.APP_SUB_PATH?process.env.APP_SUB_PATH:''}`,
     chainWebpack: (config) => {
         //https://github.com/GoogleChromeLabs/preload-webpack-plugin
         config.plugin('preload').tap(options => {
