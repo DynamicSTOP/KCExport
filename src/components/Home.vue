@@ -41,8 +41,8 @@
                 it may be use as uniq fingerprint to identify you. Besides that we use "kce_secretKey" that is stored in
                 your browser localstorage and <em>should</em> be uniq for every user.
                 For now api.kc-db.info remembers only hash (i.e. list id)
-                raw link, secret and timestamp when it was added. We might add google analytics later to understand what
-                features of site are useless and what should probably be improved.
+                raw link, secret and timestamp when it was added. Google analytics is here too. Feel free to block it,
+                though you might make it more difficult to understand what features are used most etc.
             </p>
         </div>
 
