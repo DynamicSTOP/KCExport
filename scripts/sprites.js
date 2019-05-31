@@ -96,7 +96,7 @@ $spritesheet${add}: (${result.properties.width}px, ${result.properties.height}px
 
     `;
             if(outputSCSS){
-                console.log(spriteFilename);
+                console.log(spriteFilename, str.length);
                 return res(str);
             } else {
                 fs.writeFileSync(__dirname + `/../src/sass/generated/${spriteFilename.replace(/\.\w+$/,'.scss')}`,str+addScss);
@@ -121,25 +121,30 @@ allShips.map((shipId)=>{
     shipBlocks[blockId].push(__dirname + `/../src/images/ships/${shipId}.png`);
 });
 
-(async function(){
-    let shipsScss='';
-    let spriteSheets = `$spritesheets-sprites: (`;
-    for(let num=0;num<shipBlocks.length;num++){
-        if(shipBlocks[num].length===0)return;
-        shipsScss += await generateSCSS(shipBlocks[num], `ship-sprite.${num}.png`, 'ship', num);
-        spriteSheets += `$spritesheet${num}, `
-    }
-    spriteSheets+=");";
+let shipsScss='';
+let spriteSheets = `$spritesheets-sprites: (`;
+
+Promise.all(shipBlocks.map(async (block,num) => {
+    if(block.length===0)return Promise.resolve('done');
+    return new Promise((res,rej) => {
+        generateSCSS(block, `ship-sprite.${num}.png`, 'ship', num).then((scssData)=>{
+            console.log(`block ${num} done.`);
+            shipsScss += scssData;
+            spriteSheets += `$spritesheet${num}, `;
+            res()
+        },rej);
+    })
+})).then(()=>{
+    spriteSheets += ");";
 
     fs.writeFileSync(__dirname + `/../src/sass/generated/ship-sprite.scss`, shipsScss + helpers + spriteSheets);
     console.log(`sprite ship-sprite.{x}.png done.`);
+}).then(()=>{
+    const lockImages = fs.readdirSync(__dirname + '/../src/images/locks').filter((s)=>s.indexOf("png")!==-1).map((s)=>__dirname + '/../src/images/locks/'+s)
+    //4px should prevent stupid overlapping in browser. haha chrome.
+    generateSCSS(lockImages, 'ship-locks.png', 'lock', false, false, helpers, 4);
 
-})();
-
-const lockImages = fs.readdirSync(__dirname + '/../src/images/locks').filter((s)=>s.indexOf("png")!==-1).map((s)=>__dirname + '/../src/images/locks/'+s)
-//4px should prevent stupid overlapping in browser. haha chrome.
-generateSCSS(lockImages, 'ship-locks.png', 'lock', false, false, helpers, 4);
-
-const itemTypes = fs.readdirSync(__dirname + '/../src/images/item_types').filter((s)=>s.indexOf("png")!==-1).map((s)=>__dirname + '/../src/images/item_types/'+s)
-//4px should prevent stupid overlapping in browser. haha chrome.
-generateSCSS(itemTypes, 'item-types.png', 'itype', '-it', false, helpers, 4);
+    const itemTypes = fs.readdirSync(__dirname + '/../src/images/item_types').filter((s)=>s.indexOf("png")!==-1).map((s)=>__dirname + '/../src/images/item_types/'+s)
+    //4px should prevent stupid overlapping in browser. haha chrome.
+    generateSCSS(itemTypes, 'item-types.png', 'itype', '-it', false, helpers, 4);
+});
