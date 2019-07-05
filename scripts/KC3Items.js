@@ -32,7 +32,11 @@ fs.readFile(__dirname + '/../external/items.nedb','utf8',function(err,data){
             .map((line)=>JSON.parse(line))
             .filter((item)=> {
                 let t = typeof item.type_ingame !== "undefined" && typeof items['t' + item.type_ingame[3]] === "undefined";
-                items['t' + item.type_ingame[3]] = true;
+                if ([345, 344].indexOf(Number(item.id)) !== -1) {
+                  items['t46'] = true;
+                } else {
+                  items['t' + item.type_ingame[3]] = true;
+                }
                 return t;
             })
             .map((item)=>
