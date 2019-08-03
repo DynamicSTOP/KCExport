@@ -38,7 +38,10 @@ function workOnPack(ids) {
         Promise.all(ids.splice(0,10).map((item) => check(item.url, item.path)))
           .then(()=>{
               if (ids.length > 0) {
+                  console.log(`items left ` + ids.length);
                   return workOnPack(ids).then(()=>res());
+              } else {
+                res();
               }
           })
           .catch((reason)=>rej(reason));
