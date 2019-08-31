@@ -121,6 +121,12 @@ $shipelement-padding: 20px;
       float: left;
       border-radius: var(--ship-element-height);
       box-shadow: 2px 2px 2px #000;
+      overflow: hidden;
+      img {
+        width: var(--ship-element-height);
+        height: var(--ship-element-height);
+        object-fit: cover;
+      }
     }
 
     .kce-ship-lock {
@@ -305,8 +311,13 @@ $shipelement-padding: 20px;
       border-radius: var(--ship-element-height);
       box-shadow: 2px 2px 2px #000;
       margin-left: 2px;
+      overflow: hidden;
+      img {
+        width: var(--ship-element-height);
+        height: var(--ship-element-height);
+        object-fit: cover;
+      }
     }
-
   }
 }
 
@@ -429,8 +440,8 @@ $shipelement-padding: 20px;
       .ship-icon{
         >div, >img {
           height:25px;
-          width:25px;
           vertical-align: middle;
+          object-fit: cover;
         }
       }
       &.odd{
