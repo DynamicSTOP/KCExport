@@ -1,5 +1,5 @@
 #based on node package https://hub.docker.com/r/_/node/
-FROM node:8.11.2
+FROM node:12.9.1
 
 RUN apt-get update && apt-get install -y \
     less \

@@ -1,4 +1,4 @@
-const Spritesmith = require('spritesmith'), fs = require("fs");
+const Spritesmith = require('spritesmith'), fs = require("fs"), jimp = require('jimp');
 
 const helpers = `
 @mixin sprite-width($sprite) {
@@ -109,32 +109,58 @@ $spritesheet${add}: (${result.properties.width}px, ${result.properties.height}px
 
 
 const blockSize = 75;
-const allShips = fs.readdirSync(__dirname + '/../src/images/ships').filter((s)=>s.indexOf("png")!==-1).map((s)=>Number(s.split(".").shift())).sort((a,b)=>a-b);
+const allShips = fs.readdirSync(__dirname + '/../src/images/raw_ships').filter((s)=>s.indexOf("png")!==-1).map((s)=>Number(s.split(".").shift())).sort((a,b)=>a-b);
 console.log(`ships count ${allShips.length}`);
 const maxId = allShips[allShips.length-1];
 
 //i don't actually like js for stuff like this
 let shipBlocks = Array.from(Array(Math.ceil(maxId/blockSize)),()=>[]);
 
-allShips.map((shipId)=>{
-    const blockId = Math.floor(shipId/blockSize);
+let processed = [];
+const iconSize = 48;
+
+allShips.map((shipId) => {
+    processed.push(
+      new Promise((res, rej) => {
+          jimp.read(__dirname + `/../src/images/raw_ships/${shipId}.png`)
+            .then(image => {
+                if (image.bitmap.height !== image.bitmap.width) {
+                    const xStart = Math.floor(image.bitmap.width / 6.0);
+                    const size = image.bitmap.height;
+                    console.log(`${shipId}: ${xStart} ${size}`);
+                    let img = image.crop(xStart, 0, size, size);
+                    if(size > iconSize){
+                        img.resize(iconSize,iconSize,jimp.RESIZE_BICUBIC);   
+                    }
+                    return img.writeAsync(__dirname + `/../src/images/ships/${shipId}.png`);
+                } else {
+                    fs.copyFileSync(__dirname + `/../src/images/raw_ships/${shipId}.png`,__dirname + `/../src/images/ships/${shipId}.png`);
+                }
+            }).catch(err => {
+              console.error(`error in ship ${shipId} png`);
+              return rej(err);
+          }).then(() => res('ok'));
+      })
+    );
+    const blockId = Math.floor(shipId / blockSize);
     shipBlocks[blockId].push(__dirname + `/../src/images/ships/${shipId}.png`);
 });
 
 let shipsScss='';
 let spriteSheets = `$spritesheets-sprites: (`;
-
-Promise.all(shipBlocks.map(async (block,num) => {
-    if(block.length===0)return Promise.resolve('done');
-    return new Promise((res,rej) => {
-        generateSCSS(block, `ship-sprite.${num}.png`, 'ship', num).then((scssData)=>{
-            console.log(`block ${num} done.`);
-            shipsScss += scssData;
-            spriteSheets += `$spritesheet${num}, `;
-            res()
-        },rej);
-    })
-})).then(()=>{
+Promise.all(processed).then(()=>{
+    return Promise.all(shipBlocks.map(async (block,num) => {
+        if(block.length===0)return Promise.resolve('done');
+        return new Promise((res,rej) => {
+            generateSCSS(block, `ship-sprite.${num}.png`, 'ship', num).then((scssData)=>{
+                console.log(`block ${num} done.`);
+                shipsScss += scssData;
+                spriteSheets += `$spritesheet${num}, `;
+                res()
+            },rej);
+        })
+    }));    
+}).then(()=>{
     spriteSheets += ");";
 
     fs.writeFileSync(__dirname + `/../src/sass/generated/ship-sprite.scss`, shipsScss + helpers + spriteSheets);

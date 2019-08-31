@@ -59,7 +59,7 @@ fs.readFile(__dirname + '/../external/ships.nedb','utf8',function(err,data){
       .map((ship)=>{
           return {
               url:`https://raw.githubusercontent.com/KC3Kai/KC3Kai/master/src/assets/img/ships/${ship.id}.png`,
-              path:__dirname + `/../src/images/ships/${ship.id}.png`
+              path:__dirname + `/../src/images/raw_ships/${ship.id}.png`
           }
       });
     
