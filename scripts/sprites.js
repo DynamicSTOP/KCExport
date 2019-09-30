@@ -127,7 +127,6 @@ allShips.map((shipId) => {
                 if (image.bitmap.height !== image.bitmap.width) {
                     const xStart = Math.floor(image.bitmap.width / 6.0);
                     const size = image.bitmap.height;
-                    console.log(`${shipId}: ${xStart} ${size}`);
                     let img = image.crop(xStart, 0, size, size);
                     if(size > iconSize){
                         img.resize(iconSize,iconSize,jimp.RESIZE_BICUBIC);   

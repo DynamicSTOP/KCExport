@@ -138,7 +138,7 @@ check("https://raw.githubusercontent.com/TeamFleet/WhoCallsTheFleet/master/app-d
 
         items[`${raw_Item.id}`] = {
             id:raw_Item.id,
-            types:raw_Item.type_ingame,
+            types: typeof raw_Item.type_ingame !== "undefined" ? raw_Item.type_ingame : [0, 0, 0, 0, 0],
             type: raw_Item.type,
             name: itemTranslations[raw_Item.name.ja_jp] || raw_Item.name.ja_jp,
             stat:{
@@ -155,10 +155,6 @@ check("https://raw.githubusercontent.com/TeamFleet/WhoCallsTheFleet/master/app-d
                 range:  raw_Item.stat.range
             }
         };
-
-        if ([345, 344].indexOf(Number(raw_Item.id)) !== -1) {
-            items[`${raw_Item.id}`].types = [3, 5, 8, 46, 33];
-        }
     });
 
     str = "const items="+JSON.stringify(items,false," ")+";\n";
