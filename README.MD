@@ -36,6 +36,8 @@ You have two variants:
 
 ### 3. Update helper files  
 
+If you don't care about traffic just run `npm run init` otherwise follow steps bellow.
+
 This step will most likely would be repeated a lot. Once new ship\remodel is added or new equip is out or stats changed etc.   
 
 - if you've previously downloaded WCTF run `npm run versionCheck`
