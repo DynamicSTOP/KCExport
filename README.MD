@@ -38,13 +38,15 @@ You have two variants:
 
 This step will most likely would be repeated a lot. Once new ship\remodel is added or new equip is out or stats changed etc.   
 
+- if you've previously downloaded WCTF run `yarn versionCheck`
 - you will need to run script that will download [WCTF db](https://github.com/TeamFleet/WhoCallsTheFleet) files (btw spend a minute and add a star, we use it a lot after all).
   To do so run `yarn WCTF`. If you want to update existing db files you need to manually remove them from `./external` folder.
-- now you need to make ship sprites!  
+- now you need to make ship and item sprites!  
   -  2 options here
      - either copy images **without _d** from `KC3Kai/src/assets/img/ships` to `src/images/ships` (check .gitignore for more info)
      - or run `yarn KC3Avatars`
   - if needed update lock images `src/images/locks`
+  - download item icons with `yarn KC3Items`
   - run `yarn sprites`
   
 ### 4. Run local server
