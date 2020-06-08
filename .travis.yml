@@ -32,16 +32,16 @@ before_install:
   - pip install --user awscli
 
 install:
- - yarn install
- - yarn versionCheck
- - yarn WCTF
- - yarn KC3Avatars
- - yarn KC3Items
- - yarn sprites
+ - npm run install
+ - npm run versionCheck
+ - npm run WCTF
+ - npm run KC3Avatars
+ - npm run KC3Items
+ - npm run sprites
 
-before_script: yarn lint
+before_script: npm run lint
 
-script: yarn build
+script: npm run build
 
 deploy:
   - provider: script

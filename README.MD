@@ -32,26 +32,26 @@ You have two variants:
    
 ### 2. Setup modules  
 
-- generally all you need to do now is run `yarn install` to get node_modules
+- generally all you need to do now is run `npm run install` to get node_modules
 
 ### 3. Update helper files  
 
 This step will most likely would be repeated a lot. Once new ship\remodel is added or new equip is out or stats changed etc.   
 
-- if you've previously downloaded WCTF run `yarn versionCheck`
+- if you've previously downloaded WCTF run `npm run versionCheck`
 - you will need to run script that will download [WCTF db](https://github.com/TeamFleet/WhoCallsTheFleet) files (btw spend a minute and add a star, we use it a lot after all).
-  To do so run `yarn WCTF`. If you want to update existing db files you need to manually remove them from `./external` folder.
+  To do so run `npm run WCTF`. If you want to update existing db files you need to manually remove them from `./external` folder.
 - now you need to make ship and item sprites!  
   -  2 options here
      - either copy images **without _d** from `KC3Kai/src/assets/img/ships` to `src/images/ships` (check .gitignore for more info)
-     - or run `yarn KC3Avatars`
+     - or run `npm run KC3Avatars`
   - if needed update lock images `src/images/locks`
-  - download item icons with `yarn KC3Items`
-  - run `yarn sprites`
+  - download item icons with `npm run KC3Items`
+  - run `npm run sprites`
   
 ### 4. Run local server
 
-  - run `yarn serve`
+  - run `npm run serve`
   
 ### 5. Deploy
 
