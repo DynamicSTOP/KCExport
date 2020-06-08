@@ -32,7 +32,7 @@ before_install:
   - pip install --user awscli
 
 install:
- - npm run install
+ - npm install
  - npm run versionCheck
  - npm run WCTF
  - npm run KC3Avatars
