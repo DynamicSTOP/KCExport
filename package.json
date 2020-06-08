@@ -14,8 +14,8 @@
     "lint": "./node_modules/\\@vue/cli-service/bin/vue-cli-service.js lint"
   },
   "dependencies": {
-    "@vue/babel-preset-app": "^3.12.1",
-    "@vue/cli": "^3.12.1",
+    "@vue/babel-preset-app": "^4.4.1",
+    "@vue/cli": "^4.4.1",
     "buefy": "^0.8.20",
     "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2",
@@ -26,9 +26,10 @@
     "vuex": "^3.4.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.12.1",
-    "@vue/cli-plugin-eslint": "^3.12.1",
-    "@vue/cli-service": "^3.12.1",
+    "@vue/cli-plugin-babel": "^4.4.1",
+    "@vue/cli-plugin-eslint": "^4.4.1",
+    "@vue/cli-service": "^4.4.1",
+    "@vue/cli-service-global": "^4.4.1",
     "jimp": "^0.13.0",
     "spritesmith": "^3.4.0",
     "vue-template-compiler": "^2.6.11"
