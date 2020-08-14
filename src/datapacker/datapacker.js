@@ -1,6 +1,6 @@
 class DataPacker {
     constructor() {
-        this.desiredVersion = `v1`;
+        this.desiredVersion = `v2`;
         this.versions = {};
     }
 

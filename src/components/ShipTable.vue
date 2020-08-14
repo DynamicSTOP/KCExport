@@ -40,7 +40,7 @@
                      :class="[column.class,{active:column.sortBy===sortBy}]"
                      @click="setSort(column.sortBy)" :key="'ch_'+i">{{column.text || ''}}</div>
             </div>
-            <ship-table-row v-for="ship in finilShipList" :class="{hidden:!ship.show,odd:ship.odd}" :num="ship.num"
+            <ship-table-row v-for="ship in finalShipList" :class="{hidden:!ship.show,odd:ship.odd}" :num="ship.num"
                             :ship="ship" :key="`s`+ship.id"></ship-table-row>
         </div>
     </div>
@@ -147,7 +147,7 @@
                     return a.id - b.id;
                 });
             },
-            finilShipList() {
+            finalShipList() {
                 let odd = true;
                 let num = 0;
                 return this.mySortedShipList.slice().map(s => {
