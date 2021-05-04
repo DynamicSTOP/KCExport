@@ -43,7 +43,7 @@ jobs:
         run: pip install --user awscli
 
       - name: install optipng
-        run: apt-get install optipng
+        run: sudo apt-get update && sudo apt-get install optipng
 
       - name: Linter
         run: npm run lint
