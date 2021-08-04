@@ -1,5 +1,6 @@
 name: deploy master branch to s3
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
